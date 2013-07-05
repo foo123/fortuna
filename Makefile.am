@@ -18,6 +18,11 @@
 ACLOCAL_AMFLAGS = -I m4
 
 
+stdex_SOURCES = \
+    stdex/algorithm.hpp \
+    stdex/cstdlib.hpp
+
+
 
 lib_LTLIBRARIES = libfortuna.la
 
@@ -25,8 +30,7 @@ libfortuna_la_SOURCES = \
     fortuna/accumulator.cpp \
     fortuna/fortuna_exception.cpp \
     fortuna/generator.cpp \
-    fortuna/pool.cpp \
-    fortuna/stdex/algorithm.hpp
+    fortuna/pool.cpp
 
 libfortuna_la_includedir = $(includedir)/fortuna
 libfortuna_la_include_HEADERS = \
@@ -54,10 +58,9 @@ pkgconfig_DATA = pc/fortuna.pc
 bin_PROGRAMS = fortunad
 
 fortunad_SOURCES = \
-    daemon/config.hpp \
+    daemon/application.cpp \
+    daemon/application.hpp \
     daemon/main.cpp \
-    daemon/options.cpp \
-    daemon/options.hpp \
     daemon/server.cpp \
     daemon/server.hpp \
     daemon/session.cpp \
