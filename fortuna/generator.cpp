@@ -22,7 +22,7 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #include <cryptopp/misc.h>
 #include <cryptopp/sha3.h>
 
-#include "../stdex/algorithm.hpp"
+#include "stdex/algorithm.hpp"
 
 
 namespace fortuna {

@@ -26,11 +26,11 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include "session.hpp"
 
 
-Server::Server(boost::asio::io_service& ios, fortuna::Accumulator& acc, Config&& conf)
+Server::Server(boost::asio::io_service& ios, Config&& conf)
     : config(std::move(conf))
-    , accumulator(acc)
     , io_service(ios)
-    , acceptor(ios, boost::asio::local::stream_protocol::endpoint(conf.socket_path))
+    , accumulator()
+    , acceptor(ios, boost::asio::local::stream_protocol::endpoint(conf.socket))
 {
     boost::shared_ptr<Session> new_session;
     create_session(new_session);

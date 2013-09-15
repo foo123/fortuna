@@ -32,7 +32,7 @@ AC_SUBST(LIBFORTUNA_LT_VERSION)
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([fortuna/accumulator.hpp])
-AC_CONFIG_HEADERS([config.h])
+#AC_CONFIG_HEADERS([config.h])
 
 # Automake
 AM_INIT_AUTOMAKE([foreign -Wall no-dist-gzip dist-bzip2])

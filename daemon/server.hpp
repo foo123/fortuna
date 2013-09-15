@@ -22,11 +22,11 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <string>
 
-#include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/local/stream_protocol.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 
-namespace fortuna { class Accumulator; }
+#include <fortuna/accumulator.hpp>
 
 class Session;
 
@@ -37,19 +37,27 @@ class Server
 public:
     struct Config
     {
-        std::string socket_path {"./fortunad.socket"};
+        std::string socket{"./fortunad.socket"};
+
+        fortuna::Accumulator::Config fortuna;
+
+        Config()
+        {}
     };
 
 private:
     const Config config;
 
-    fortuna::Accumulator& accumulator;
-
     boost::asio::io_service& io_service;
+
+    fortuna::Accumulator accumulator;
+
     boost::asio::local::stream_protocol::acceptor acceptor;
 
 public:
-    Server(boost::asio::io_service& ios, fortuna::Accumulator& acc, Config&& conf);
+    Server(boost::asio::io_service& ios, Config&& conf = Config());
+
+    void run();
 
 private:
     void create_session(boost::shared_ptr<Session>& new_session);

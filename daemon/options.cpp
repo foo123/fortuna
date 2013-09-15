@@ -1,3 +1,5 @@
+#include "options.hpp"
+
 #include <iostream>
 
 #include <boost/program_options.hpp>
@@ -16,15 +18,14 @@ boost::program_options::typed_value<T>* self_default_value(T* val)
 
 } // namespace
 
-Application::Config handle_options(int argc, char* argv[], Application::Config&& config)
+Server::Config handle_options(int argc, char* argv[], Server::Config&& config)
 {
     namespace po = boost::program_options;
     
     po::options_description options("General Options");
     options.add_options()
         ("help,h", "print this help")
-        ("notify-ready,n", "print \"ready\" to stdout when ready for incomming connections")
-        ("port,p", self_default_value<unsigned short>(&config.server.port), "tcp port number for incomming connections")
+        ("socket,s", self_default_value<std::string>(&config.socket))
     ;
     
     po::options_description accumulator_options("Accumulator Options");
@@ -44,9 +45,6 @@ Application::Config handle_options(int argc, char* argv[], Application::Config&&
         std::cout << options << std::endl;
         std::exit(0);
     }
-    
-    if (vm.count("notify-ready"))
-        config.notify_ready = true;
     
     return std::move(config);
 }

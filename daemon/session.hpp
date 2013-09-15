@@ -20,7 +20,7 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef FORTUNAD_SESSION_HPP
 #define FORTUNAD_SESSION_HPP
 
-#include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/local/stream_protocol.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/noncopyable.hpp>
 

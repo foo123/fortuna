@@ -1,12 +1,12 @@
 #include "application.hpp"
+#include "options.hpp"
 
-Application::Application(Config&& default_config = Config())
-    : config(std::move(default_config))
-    , accumulator(std::move(config.fortuna))
-    , io_service()
+
+Application::Application(int argc, char* argv[], Server::Config&& default_config)
+    : io_service()
     , signals(io_service)
-    , server(io_service, accumulator, std::move(config.server))
     , threads()
+    , server(io_service, handle_options(argc, argv, std::move(default_config)))
 {
     signals.add(SIGINT);
     signals.add(SIGTERM);
@@ -15,7 +15,8 @@ Application::Application(Config&& default_config = Config())
 
 void Application::run()
 {
-    for (std::size_t i = 0; i < config.threads_count; ++i)
+    unsigned hardware_concurrency = boost::thread::hardware_concurrency();
+    for (unsigned i = 0; i < hardware_concurrency; ++i)
         threads.create_thread(boost::bind(&boost::asio::io_service::run, &io_service));
     threads.join_all();
 }

@@ -19,9 +19,8 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <exception>
 
-#include "../stdex/cstdlib.hpp"
-
 #include "application.hpp"
+#include "stdex/cstdlib.hpp"
 
 
 int main(int argc, char* argv[])
