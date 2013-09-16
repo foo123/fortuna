@@ -20,13 +20,14 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include <exception>
 
 #include "application.hpp"
+#include "options.hpp"
 #include "stdex/cstdlib.hpp"
 
 
 int main(int argc, char* argv[])
 {
     try {
-        Application app(argc, argv);
+        Application app(handle_options(argc, argv));
         app.run();
     }
     catch (std::exception& e) {

@@ -1,10 +1,10 @@
 #ifndef FORTUNAD_OPTIONS_HPP
 #define FORTUNAD_OPTIONS_HPP
 
-#include "server.hpp"
+#include "application.hpp"
 
 
-Server::Config handle_options(int argc, char* argv[], Server::Config&& config);
+Application::AllConfig handle_options(int argc, char* argv[], Application::AllConfig&& config = Application::AllConfig());
 
 
 #endif // FORTUNAD_OPTIONS_HPP

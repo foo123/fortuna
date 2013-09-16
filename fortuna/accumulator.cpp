@@ -60,8 +60,8 @@ std::chrono::steady_clock::time_point distant_past()
 
 
 
-Accumulator::Accumulator(Config&& conf)
-    : config(std::move(conf))
+Accumulator::Accumulator(AllConfig&& all_config)
+    : config(std::move(all_config.accumulator))
     , last_reseed(distant_past())
 {}
 

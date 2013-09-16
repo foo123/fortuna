@@ -39,10 +39,14 @@ public:
     {
         std::string socket{"./fortunad.socket"};
 
-        fortuna::Accumulator::Config fortuna;
-
         Config()
         {}
+    };
+
+    struct AllConfig
+        : public fortuna::Accumulator::AllConfig
+    {
+        Config server;
     };
 
 private:
@@ -55,7 +59,7 @@ private:
     boost::asio::local::stream_protocol::acceptor acceptor;
 
 public:
-    Server(boost::asio::io_service& ios, Config&& conf = Config());
+    Server(boost::asio::io_service& ios, AllConfig&& all_config = AllConfig());
 
     void run();
 
