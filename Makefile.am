@@ -54,16 +54,16 @@ pkgconfig_DATA = pc/fortuna.pc
 bin_PROGRAMS = fortunad
 
 fortunad_SOURCES = \
-    daemon/application.cpp \
-    daemon/application.hpp \
-    daemon/main.cpp \
-    daemon/options.cpp \
-    daemon/options.hpp \
-    daemon/server.cpp \
-    daemon/server.hpp \
-    daemon/session.cpp \
-    daemon/session.hpp \
-    daemon/stdex/cstdlib.hpp
+    fortunad/application.cpp \
+    fortunad/application.hpp \
+    fortunad/main.cpp \
+    fortunad/options.cpp \
+    fortunad/options.hpp \
+    fortunad/server.cpp \
+    fortunad/server.hpp \
+    fortunad/session.cpp \
+    fortunad/session.hpp \
+    fortunad/stdex/cstdlib.hpp
 
 fortunad_CPPFLAGS = \
     $(BOOST_CPPFLAGS) \
