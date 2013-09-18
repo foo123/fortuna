@@ -33,18 +33,8 @@ Client::Impl::Impl(Config&& config)
     , socket(io_service)
     , buffer()
 {
-    connect_socket(config.connection_info);
-    prepare_header();
-}
-
-void Client::Impl::connect_socket(const ConnectionInfo& connection_info)
-{
-    using namespace boost::asio::local;
-    socket.connect(stream_protocol::endpoint(connection_info.socket));
-}
-
-void Client::Impl::prepare_header()
-{
+    socket.connect(boost::asio::local::stream_protocol::endpoint(config.connection_info.socket));
+    
     buffer.BytePtr()[0] = 0x01; // get random data
 }
 

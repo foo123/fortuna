@@ -41,11 +41,6 @@ private:
 public:
     Impl(Config&& config);
 
-private:
-    void connect_socket(const ConnectionInfo& connection_info);
-    void prepare_header();
-
-public:
     void get_random_data(byte* data, std::size_t length);
 
 private:

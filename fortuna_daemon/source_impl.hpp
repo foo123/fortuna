@@ -40,11 +40,6 @@ public:
     explicit
     Impl(Config&& config);
 
-private:
-    void connect_socket(const ConnectionInfo& connection_info);
-    void prepare_header(byte source_number);
-
-public:
     /**
      * \throw std::length_error if length == 0 || length > 32
      */

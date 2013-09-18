@@ -32,21 +32,11 @@ Source::Impl::Impl(Config&& config)
     , socket(io_service)
     , header()
 {
-    connect_socket(config.connection_info);
-    prepare_header(config.source_number);
-}
-
-void Source::Impl::connect_socket(const ConnectionInfo& connection_info)
-{
-    using namespace boost::asio::local;
-    socket.connect(stream_protocol::endpoint(connection_info.socket));
-}
-
-void Source::Impl::prepare_header(byte source_number)
-{
+    socket.connect(boost::asio::local::stream_protocol::endpoint(config.connection_info.socket));
+    
     header.BytePtr()[0] = 0x00; // add random event
     header.BytePtr()[1] = 0x00; // pool number
-    header.BytePtr()[2] = source_number;
+    header.BytePtr()[2] = config.source_number;
 }
 
 void Source::Impl::add_random_event(const byte* data, byte length)
