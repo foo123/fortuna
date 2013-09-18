@@ -49,11 +49,6 @@ public:
         {}
     };
 
-    struct AllConfig
-    {
-        Config accumulator;
-    };
-
 private:
     const Config config;
 
@@ -76,7 +71,7 @@ public:
 
 
     explicit
-    Accumulator(AllConfig&& all_config = AllConfig());
+    Accumulator(Config&& config = Config());
 
     /**
      * \throw FortunaException if blocks_count is too big (greater than 2^20/CryptoPP::AES::BLOCKSIZE).

@@ -1,7 +1,7 @@
 /*
 Copyright 2013 Adam Mizerski <adam@mizerski.pl>
 
-This file is part of fortuna_daemon.
+This file is part of fortuna.
 
 fortuna_daemon is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -29,6 +29,9 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna {
     class Accumulator;
 }
+
+
+namespace fortuna_daemon {
 
 
 class Session
@@ -97,5 +100,8 @@ private:
     void async_write_request_too_big();
     void handle_write_request_too_big(const boost::system::error_code& error);
 };
+
+
+} // namespace fortuna_daemon
 
 #endif // FORTUNAD_SESSION_HPP

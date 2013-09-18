@@ -1,7 +1,7 @@
 /*
 Copyright 2013 Adam Mizerski <adam@mizerski.pl>
 
-This file is part of fortuna_daemon.
+This file is part of fortuna.
 
 fortuna_daemon is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -26,9 +26,9 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 int main(int argc, char* argv[])
 {
+    using namespace fortuna_daemon;
     try {
-        Application app(handle_options(argc, argv));
-        app.run();
+        Application(handle_options(argc, argv)).run();
     }
     catch (std::exception& e) {
         stdex::die( e.what() );

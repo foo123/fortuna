@@ -26,20 +26,25 @@ AH_TOP(/*LIBFORTUNA_COPYRIGHT*/)
 
 AC_PREREQ([2.69])
 AC_INIT([fortuna], [0.1.0])
+
 LIBFORTUNA_LT_VERSION=0:0:0
+LIBFORTUNA_DAEMON_CLIENT_LT_VERSION=0:0:0
+LIBFORTUNA_DAEMON_SOURCE_LT_VERSION=0:0:0
 AC_SUBST(LIBFORTUNA_LT_VERSION)
+AC_SUBST(LIBFORTUNA_DAEMON_CLIENT_LT_VERSION)
+AC_SUBST(LIBFORTUNA_DAEMON_SOURCE_LT_VERSION)
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([fortuna/accumulator.hpp])
-#AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_HEADERS([config.h])
 
 # Automake
-AM_INIT_AUTOMAKE([foreign -Wall no-dist-gzip dist-bzip2])
+AM_INIT_AUTOMAKE([foreign -Wall no-dist-gzip dist-bzip2 silent-rules])
 AM_PROG_AR
 
 # Libtool
-LT_INIT
+LT_INIT([disable-static])
 
 # Checks for programs.
 AC_PROG_CXX
@@ -70,5 +75,7 @@ AX_CXX_COMPILE_STDCXX_11([noext])
 AC_CONFIG_FILES([
     Makefile
     pc/fortuna.pc
+    pc/fortuna_daemon_client.pc
+    pc/fortuna_daemon_source.pc
 ])
 AC_OUTPUT

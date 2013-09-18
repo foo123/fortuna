@@ -1,7 +1,7 @@
 /*
 Copyright 2013 Adam Mizerski <adam@mizerski.pl>
 
-This file is part of fortuna_daemon.
+This file is part of fortuna.
 
 fortuna_daemon is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,11 +22,17 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <string>
 
+#include <boost/asio/io_service.hpp>
 #include <boost/asio/local/stream_protocol.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include <fortuna/accumulator.hpp>
+
+#include <fortuna_daemon/connection_info.hpp>
+
+
+namespace fortuna_daemon {
 
 class Session;
 
@@ -37,16 +43,13 @@ class Server
 public:
     struct Config
     {
-        std::string socket{"./fortunad.socket"};
-
-        Config()
-        {}
+        ConnectionInfo connection_info;
     };
 
     struct AllConfig
-        : public fortuna::Accumulator::AllConfig
     {
         Config server;
+        fortuna::Accumulator::Config accumulator;
     };
 
 private:
@@ -67,5 +70,8 @@ private:
     void create_session(boost::shared_ptr<Session>& new_session);
     void handle_accept(boost::shared_ptr<Session> new_session, const boost::system::error_code& error);
 };
+
+
+} // namespace fortuna_daemon
 
 #endif // FORTUNAD_SERVER_HPP

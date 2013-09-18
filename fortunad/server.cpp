@@ -1,7 +1,7 @@
 /*
 Copyright 2013 Adam Mizerski <adam@mizerski.pl>
 
-This file is part of fortuna_daemon.
+This file is part of fortuna.
 
 fortuna_daemon is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -26,11 +26,14 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include "session.hpp"
 
 
+namespace fortuna_daemon {
+
+
 Server::Server(boost::asio::io_service& ios, AllConfig&& all_config)
     : config(std::move(all_config.server))
     , io_service(ios)
-    , accumulator(std::move(static_cast<fortuna::Accumulator::AllConfig>(all_config)))
-    , acceptor(ios, boost::asio::local::stream_protocol::endpoint(config.socket))
+    , accumulator(std::move(all_config.accumulator))
+    , acceptor(ios, boost::asio::local::stream_protocol::endpoint(config.connection_info.socket))
 {
     boost::shared_ptr<Session> new_session;
     create_session(new_session);
@@ -57,3 +60,6 @@ void Server::handle_accept(boost::shared_ptr<Session> new_session, const boost::
         create_session(new_session);
     }
 }
+
+
+} // namespace fortuna_daemon

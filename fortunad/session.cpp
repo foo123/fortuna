@@ -1,7 +1,7 @@
 /*
 Copyright 2013 Adam Mizerski <adam@mizerski.pl>
 
-This file is part of fortuna_daemon.
+This file is part of fortuna.
 
 fortuna_daemon is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -26,6 +26,9 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <fortuna/accumulator.hpp>
+
+
+namespace fortuna_daemon {
 
 
 Session::Session(boost::asio::io_service& io_service, fortuna::Accumulator& acc)
@@ -217,3 +220,6 @@ void Session::handle_write_generator_not_seeded(const boost::system::error_code&
     
     async_read_command();
 }
+
+
+} // namespace fortuna_daemon
