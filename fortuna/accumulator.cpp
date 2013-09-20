@@ -47,7 +47,7 @@ std::uint8_t ilog2(std::uint32_t n) noexcept
 
 /**
  * Using time_point::min() causes overflow.
- * 102 ms is enough distant past that generator must be reseeded.
+ * 102 ms is enough distant past that forces generator reseed.
  */
 inline
 std::chrono::steady_clock::time_point distant_past()

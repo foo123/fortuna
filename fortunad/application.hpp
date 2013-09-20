@@ -20,8 +20,6 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef FORTUNAD_APPLICATION_HPP
 #define FORTUNAD_APPLICATION_HPP
 
-#include <tuple>
-
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/signal_set.hpp>
 #include <boost/noncopyable.hpp>

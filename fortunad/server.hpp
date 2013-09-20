@@ -21,11 +21,11 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #define FORTUNAD_SERVER_HPP
 
 #include <string>
+#include <memory>
 
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/local/stream_protocol.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/shared_ptr.hpp>
 
 #include <fortuna/accumulator.hpp>
 
@@ -67,8 +67,8 @@ public:
     void run();
 
 private:
-    void create_session(boost::shared_ptr<Session>& new_session);
-    void handle_accept(boost::shared_ptr<Session> new_session, const boost::system::error_code& error);
+    void create_session(std::shared_ptr<Session>& new_session);
+    void handle_accept(std::shared_ptr<Session> new_session, const boost::system::error_code& error);
 };
 
 

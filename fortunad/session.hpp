@@ -20,8 +20,9 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef FORTUNAD_SESSION_HPP
 #define FORTUNAD_SESSION_HPP
 
+#include <memory>
+
 #include <boost/asio/local/stream_protocol.hpp>
-#include <boost/enable_shared_from_this.hpp>
 #include <boost/noncopyable.hpp>
 
 #include <cryptopp/secblock.h>
@@ -35,7 +36,7 @@ namespace fortuna_daemon {
 
 
 class Session
-    : public boost::enable_shared_from_this<Session>
+    : public std::enable_shared_from_this<Session>
     , boost::noncopyable
 {
 private:

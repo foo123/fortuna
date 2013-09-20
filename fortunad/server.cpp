@@ -35,11 +35,11 @@ Server::Server(boost::asio::io_service& ios, AllConfig&& all_config)
     , accumulator(std::move(all_config.accumulator))
     , acceptor(ios, boost::asio::local::stream_protocol::endpoint(config.connection_info.socket))
 {
-    boost::shared_ptr<Session> new_session;
+    std::shared_ptr<Session> new_session;
     create_session(new_session);
 }
 
-void Server::create_session(boost::shared_ptr<Session>& new_session)
+void Server::create_session(std::shared_ptr<Session>& new_session)
 {
     new_session.reset(new Session(io_service, accumulator));
     acceptor.async_accept(
@@ -53,7 +53,7 @@ void Server::create_session(boost::shared_ptr<Session>& new_session)
     );
 }
 
-void Server::handle_accept(boost::shared_ptr<Session> new_session, const boost::system::error_code& error)
+void Server::handle_accept(std::shared_ptr<Session> new_session, const boost::system::error_code& error)
 {
     if (!error) {
         new_session->start();

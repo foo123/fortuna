@@ -19,7 +19,7 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "source_impl.hpp"
 
-#include <boost/array.hpp>
+#include <array>
 
 #include <boost/asio/write.hpp>
 
@@ -52,7 +52,7 @@ void Source::Impl::send_data(const byte* data, byte length)
 {
     header.BytePtr()[3] = length;
     
-    boost::array<boost::asio::const_buffer,2> buffer = {{
+    std::array<boost::asio::const_buffer,2> buffer = {{
         boost::asio::const_buffer(header, 4),
         boost::asio::const_buffer(data, length)
     }};
