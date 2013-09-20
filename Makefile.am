@@ -110,6 +110,30 @@ pkgconfig_DATA += pc/fortuna_daemon_source.pc
 
 
 
+bin_PROGRAMS += fortuna_client
+
+fortuna_client_SOURCES = \
+    fortuna_client/application.cpp \
+    fortuna_client/application.hpp \
+    fortuna_client/main.cpp \
+    fortuna_client/options.cpp \
+    fortuna_client/options.hpp
+
+fortuna_client_CPPFLAGS = \
+    $(BOOST_CPPFLAGS) \
+    $(CRYPTOPP_CPPFLAGS)
+
+fortuna_client_LDFLAGS = \
+    $(BOOST_LDFLAGS) \
+    $(CRYPTOPP_LDFLAGS)
+
+fortuna_client_LDADD = \
+    $(BOOST_PROGRAM_OPTIONS_LIB) \
+    -lcryptopp \
+    libfortuna_daemon_client.la
+
+
+
 bin_PROGRAMS += fortunad
 
 fortunad_SOURCES = \
