@@ -18,6 +18,9 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "source.hpp"
+
+#include <utility>
+
 #include "source_impl.hpp"
 
 

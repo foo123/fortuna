@@ -19,8 +19,11 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "server.hpp"
 
-#include <boost/asio.hpp>
+#include <utility>
+
+#include <boost/asio/placeholders.hpp>
 #include <boost/bind.hpp>
+
 #include <fortuna/accumulator.hpp>
 
 #include "session.hpp"

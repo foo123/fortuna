@@ -36,7 +36,9 @@ class Client::Impl
 private:
     boost::asio::io_service io_service;
     boost::asio::local::stream_protocol::socket socket;
-    CryptoPP::FixedSizeSecBlock<byte, 1+sizeof(std::size_t)> buffer;
+
+    // ofc sizeof('\0') == 1, but it makes clear why it's needed here.
+    CryptoPP::FixedSizeSecBlock<byte, sizeof(std::size_t)+sizeof('\0')> buffer;
 
 public:
     Impl(Config&& config);

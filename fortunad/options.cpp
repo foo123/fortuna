@@ -20,6 +20,7 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include "options.hpp"
 
 #include <iostream>
+#include <utility>
 
 #include <boost/program_options.hpp>
 
@@ -28,6 +29,7 @@ namespace fortuna_daemon {
 
 
 namespace {
+
 
 /**
  * Creates boost::program_options::value that is connected to given object
@@ -39,7 +41,9 @@ boost::program_options::typed_value<T>* self_default_value(T* val)
     return boost::program_options::value<T>(val)->default_value(*val);
 }
 
+
 } // namespace
+
 
 Application::AllConfig handle_options(int argc, char* argv[], Application::AllConfig&& config)
 {

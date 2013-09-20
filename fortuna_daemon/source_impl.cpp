@@ -65,4 +65,5 @@ void Source::Impl::update_pool_number()
     header.BytePtr()[1] = (header.BytePtr()[1] + 1) % 32;
 }
 
+
 } // namespace fortuna_daemon

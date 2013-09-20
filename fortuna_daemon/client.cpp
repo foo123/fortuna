@@ -18,6 +18,9 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "client.hpp"
+
+#include <utility>
+
 #include "client_impl.hpp"
 
 

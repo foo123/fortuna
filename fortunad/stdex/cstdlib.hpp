@@ -11,7 +11,9 @@
 #include <iosfwd>
 #include <iostream>
 
+
 namespace stdex {
+
 
 /**
  * If you're using it in place other than top-level catch block,

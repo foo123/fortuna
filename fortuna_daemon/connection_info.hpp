@@ -22,6 +22,7 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <string>
 
+
 namespace fortuna_daemon {
 
 

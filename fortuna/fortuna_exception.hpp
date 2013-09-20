@@ -1,7 +1,7 @@
 /*
 Copyright 2013 Adam Mizerski <adam@mizerski.pl>
 
-This file is part of libfortuna.
+This file is part of fortuna.
 
 libfortuna is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -23,6 +23,7 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdexcept>
 
 typedef unsigned char byte;
+
 
 namespace fortuna {
 

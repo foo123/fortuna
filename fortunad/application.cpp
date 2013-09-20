@@ -19,6 +19,8 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "application.hpp"
 
+#include <utility>
+
 
 namespace fortuna_daemon {
 

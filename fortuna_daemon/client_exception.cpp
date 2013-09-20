@@ -19,6 +19,7 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "client_exception.hpp"
 
+
 namespace fortuna_daemon {
 
 
