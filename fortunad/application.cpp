@@ -19,8 +19,6 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "application.hpp"
 
-#include <boost/bind.hpp>
-
 
 namespace fortuna_daemon {
 
@@ -28,13 +26,13 @@ namespace fortuna_daemon {
 Application::Application(Application::AllConfig&& all_config)
     : config(std::move(all_config.application))
     , io_service()
-    , signals(io_service)
+    , signals(io_service, SIGINT, SIGTERM)
     , threads()
     , server(io_service, std::move(static_cast<Server::AllConfig>(all_config)))
 {
-    for (const auto signal : {SIGINT, SIGTERM, SIGQUIT})
-        signals.add(signal);
-    signals.async_wait(boost::bind(&boost::asio::io_service::stop, &io_service));
+    signals.async_wait([&](const boost::system::error_code& /*error*/, int /*signal_number*/){
+        io_service.stop();
+    });
 }
 
 void Application::run()
@@ -45,7 +43,10 @@ void Application::run()
             : config.custom_threads_num
     ;
     for (unsigned i = 0; i < threads_num; ++i)
-        threads.create_thread(boost::bind(&boost::asio::io_service::run, &io_service));
+        threads.create_thread([&]{
+            io_service.run();
+        });
+    
     threads.join_all();
 }
 
