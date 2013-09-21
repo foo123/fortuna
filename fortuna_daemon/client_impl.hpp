@@ -37,8 +37,7 @@ private:
     boost::asio::io_service io_service;
     boost::asio::local::stream_protocol::socket socket;
 
-    // ofc sizeof('\0') == 1, but it makes clear why it's needed here.
-    CryptoPP::FixedSizeSecBlock<byte, sizeof(std::size_t)+sizeof('\0')> buffer;
+    CryptoPP::FixedSizeSecBlock<byte, sizeof(byte)+sizeof(std::size_t)> buffer;
 
 public:
     Impl(Config&& config);
