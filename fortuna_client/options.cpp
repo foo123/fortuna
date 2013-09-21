@@ -23,6 +23,8 @@ along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/program_options.hpp>
 
+#include "stdex/cstdlib.hpp"
+
 
 namespace fortuna_client {
 
@@ -48,21 +50,12 @@ Application::AllConfig handle_options(int argc, char* argv[], Application::AllCo
 {
     namespace po = boost::program_options;
     
-    po::options_description options("General Options");
+    po::options_description options("Options");
     options.add_options()
         ("help,h", "print this help")
-        ("length,l", self_default_value(&config.application.length))
-        ("output,o", self_default_value(&config.application.outfilename))
-        ("progress", "print to stdout progress (number of % in each line) (ignored if output is \"-\")")
-    ;
-    
-    po::options_description fortunad_client_options("Fortuna Daemon Client Options");
-    fortunad_client_options.add_options()
+        ("length,l", po::value(&config.application.length), "required")
+        ("output,o", self_default_value(&config.application.outfilename), "output file. If exists, it's truncated. If \"-\", data is written to stdout.")
         ("socket,s", self_default_value(&config.client.connection_info.socket))
-    ;
-    
-    options
-        .add(fortunad_client_options)
     ;
     
     po::variables_map vm;
@@ -74,8 +67,9 @@ Application::AllConfig handle_options(int argc, char* argv[], Application::AllCo
         std::exit(0);
     }
     
-    if (vm.count("progress"))
-        config.application.print_progress = true;
+    if (!vm.count("length")) {
+        stdex::die("you must specify length");
+    }
     
     return std::move(config);
 }

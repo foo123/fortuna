@@ -44,6 +44,7 @@ void Application::run()
     }
 }
 
+
 void Application::write_data_to_stream(std::ostream& ostream)
 {
     ullong data_left_to_write = config.length;
@@ -51,9 +52,6 @@ void Application::write_data_to_stream(std::ostream& ostream)
         std::size_t data_to_write_now = std::min(static_cast<ullong>(fortuna_daemon::Client::max_request_length), data_left_to_write);
         write_chunk_of_data_to_stream(ostream, data_to_write_now);
         data_left_to_write -= data_to_write_now;
-        
-        if (config.print_progress && config.outfilename != "-")
-            print_progress(data_left_to_write);
     }
 }
 
@@ -61,13 +59,6 @@ void Application::write_chunk_of_data_to_stream(std::ostream& ostream, std::size
 {
     fortuna.get_random_data(buffer, length);
     ostream.write(reinterpret_cast<char*>(buffer.BytePtr()), length);
-}
-
-void Application::print_progress(ullong data_left_to_write) const
-{
-    auto data_written = config.length - data_left_to_write;
-    ullong precentage = (data_written * 100) / config.length;
-    std::cout << precentage << std::endl;
 }
 
 

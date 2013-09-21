@@ -38,9 +38,8 @@ class Application
 public:
     struct Config
     {
-        ullong length = 1;
-        std::string outfilename {"./random_data.dat"};
-        bool print_progress = false;
+        ullong length;
+        std::string outfilename {"-"};
 
         Config()
         {}
@@ -67,7 +66,6 @@ public:
 private:
     void write_data_to_stream(std::ostream& ostream);
     void write_chunk_of_data_to_stream(std::ostream& ostream, std::size_t length);
-    void print_progress(ullong data_left_to_write) const;
 };
 
 
