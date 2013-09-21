@@ -37,6 +37,7 @@ libfortuna_la_SOURCES = \
 libfortuna_la_includedir = $(includedir)/fortuna
 libfortuna_la_include_HEADERS = \
     fortuna/accumulator.hpp \
+    fortuna/counter.hpp \
     fortuna/fortuna_exception.hpp \
     fortuna/generator.hpp \
     fortuna/noncopyable.hpp \

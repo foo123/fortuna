@@ -25,6 +25,7 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #include <cryptopp/secblock.h>
 #include <cryptopp/aes.h>
 
+#include "counter.hpp"
 #include "fortuna_exception.hpp"
 #include "noncopyable.hpp"
 
@@ -40,21 +41,20 @@ private:
     static const std::size_t counter_length = 16; // 128 bit
 
     CryptoPP::FixedSizeSecBlock<byte, key_length> key;
-    CryptoPP::FixedSizeSecBlock<byte, counter_length> counter;
-    bool counter_is_zero {true}; // should be faster than checking if counter is zero
-    std::mutex key_and_counter_access;
+    Counter<byte, counter_length> counter;
+    mutable std::mutex key_and_counter_access;
 
 public:
     static constexpr const std::size_t output_block_length = CryptoPP::AES::BLOCKSIZE;
 
     Generator();
 
+    bool is_seeded() const;
+
     void reseed(const byte* seed, std::size_t length);
 
 private:
     void compute_new_key(const byte* seed, std::size_t length);
-
-    void increment_counter();
 
 public:
     /**
