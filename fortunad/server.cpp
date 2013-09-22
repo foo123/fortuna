@@ -24,8 +24,6 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include <boost/asio/placeholders.hpp>
 #include <boost/bind.hpp>
 
-#include <fortuna/accumulator.hpp>
-
 #include "session.hpp"
 
 

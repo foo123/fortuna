@@ -27,7 +27,7 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include <boost/asio/local/stream_protocol.hpp>
 #include <boost/noncopyable.hpp>
 
-#include <fortuna/accumulator.hpp>
+#include <libfortuna/accumulator.hpp>
 
 #include <fortuna_daemon/connection_info.hpp>
 

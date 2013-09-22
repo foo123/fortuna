@@ -28,19 +28,19 @@ pkgconfig_DATA =
 lib_LTLIBRARIES += libfortuna.la
 
 libfortuna_la_SOURCES = \
-    fortuna/accumulator.cpp \
-    fortuna/fortuna_exception.cpp \
-    fortuna/generator.cpp \
-    fortuna/pool.cpp \
-    fortuna/stdex/algorithm.hpp
+    libfortuna/accumulator.cpp \
+    libfortuna/fortuna_exception.cpp \
+    libfortuna/generator.cpp \
+    libfortuna/pool.cpp \
+    libfortuna/stdex/algorithm.hpp
 
 libfortuna_la_includedir = $(includedir)/fortuna
 libfortuna_la_include_HEADERS = \
-    fortuna/accumulator.hpp \
-    fortuna/fortuna_exception.hpp \
-    fortuna/generator.hpp \
-    fortuna/noncopyable.hpp \
-    fortuna/pool.hpp
+    libfortuna/accumulator.hpp \
+    libfortuna/fortuna_exception.hpp \
+    libfortuna/generator.hpp \
+    libfortuna/noncopyable.hpp \
+    libfortuna/pool.hpp
 
 libfortuna_la_CPPFLAGS = \
     $(CRYPTOPP_CPPFLAGS)

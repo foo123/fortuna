@@ -25,7 +25,8 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
-#include <fortuna/accumulator.hpp>
+
+#include <libfortuna/accumulator.hpp>
 
 
 namespace fortuna_daemon {
