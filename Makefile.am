@@ -117,7 +117,8 @@ fortuna_client_SOURCES = \
     fortuna_client/application.hpp \
     fortuna_client/main.cpp \
     fortuna_client/options.cpp \
-    fortuna_client/options.hpp
+    fortuna_client/options.hpp \
+    fortuna_client/stdex/cstdlib.hpp
 
 fortuna_client_CPPFLAGS = \
     $(BOOST_CPPFLAGS) \
