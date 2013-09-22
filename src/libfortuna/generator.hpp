@@ -95,7 +95,6 @@ public:
 
     void reseed(const byte* seed, std::size_t seed_length);
 
-public:
     /**
      * \throw FortunaException if blocks_count is too big.
      * \throw FortunaException if generator is not seeded.
