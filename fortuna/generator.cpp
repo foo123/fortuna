@@ -28,10 +28,34 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna {
 
 
-Generator::Generator()
+Generator::Key::Key()
 {
-    stdex::fill(key, 0);
+    stdex::fill(data, 0);
 }
+
+void Generator::Key::reseed(const byte* seed, std::size_t seed_length)
+{
+    CryptoPP::SHA3 hash(/*digestSize=*/data.size());
+    hash.Update(data, data.size());
+    hash.Update(seed, seed_length);
+    hash.Final(data);
+}
+
+
+
+Generator::Counter::Counter()
+{
+    stdex::fill(data, 0);
+}
+
+auto Generator::Counter::operator++() -> Counter&
+{
+    CryptoPP::IncrementCounterByOne(data, data.size());
+    _is_zero = false;
+    return *this;
+}
+
+
 
 bool Generator::is_seeded() const
 {
@@ -39,19 +63,11 @@ bool Generator::is_seeded() const
     return !counter.is_zero();
 }
 
-void Generator::reseed(const byte* seed, std::size_t length)
+void Generator::reseed(const byte* seed, std::size_t seed_length)
 {
     std::lock_guard<std::mutex> lock(key_and_counter_access);
-    compute_new_key(seed, length);
+    key.reseed(seed, seed_length);
     ++counter;
-}
-
-void Generator::compute_new_key(const byte* seed, std::size_t length)
-{
-    CryptoPP::SHA3 hash(/*digestSize=*/key_length);
-    hash.Update(key, key_length);
-    hash.Update(seed, length);
-    hash.Final(key);
 }
 
 
@@ -66,19 +82,13 @@ void Generator::get_pseudo_random_data(byte* output, std::size_t blocks_count)
         throw FortunaException::generator_is_not_seeded();
     
     generate_blocks(output, blocks_count);
-    generate_blocks(key, key_length/CryptoPP::AES::BLOCKSIZE); // we're lucky that's exactly 2
-}
-
-constexpr
-bool Generator::is_request_too_big(std::size_t blocks_count) /*noexcept*/
-{
-    return blocks_count > /*2^20*/ 1048576ul / CryptoPP::AES::BLOCKSIZE;
+    generate_blocks(key, key.size()/CryptoPP::AES::BLOCKSIZE /* we're lucky that's exactly 2 */ );
 }
 
 void Generator::generate_blocks(byte* output, std::size_t blocks_count)
 {
-    // assert(counter != 0) is done at the beginning of Generator::get_pseudo_random_data
-    CryptoPP::AES::Encryption aes(key, key_length); // makes copy of key, so it's not a problem when key is also an output
+    // assert(!counter.is_zero()) is done at the beginning of Generator::get_pseudo_random_data
+    CryptoPP::AES::Encryption aes(key, key.size()); // makes a copy of the key, so it's not a problem when the key is also an output
     for (unsigned long i = 0; i < blocks_count; ++i) {
         aes.ProcessBlock(counter, output + i*CryptoPP::AES::BLOCKSIZE);
         ++counter;

@@ -22,10 +22,9 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <mutex>
 
-#include <cryptopp/secblock.h>
 #include <cryptopp/aes.h>
+#include <cryptopp/secblock.h>
 
-#include "counter.hpp"
 #include "fortuna_exception.hpp"
 #include "noncopyable.hpp"
 
@@ -37,24 +36,64 @@ class Generator
     : noncopyable
 {
 private:
-    static const std::size_t key_length = 32; // 256 bit
-    static const std::size_t counter_length = 16; // 128 bit
+    class Key
+    {
+    private:
+        CryptoPP::FixedSizeSecBlock<byte, 32> data; // 256 bit
 
-    CryptoPP::FixedSizeSecBlock<byte, key_length> key;
-    Counter<byte, counter_length> counter;
+    public:
+        Key();
+
+        std::size_t size() const
+        { return data.size(); }
+
+        operator byte*()
+        { return data; }
+
+        operator const byte*() const
+        { return data; }
+
+
+        void reseed(const byte* seed, std::size_t seed_length);
+    };
+
+    class Counter
+    {
+    private:
+        CryptoPP::FixedSizeSecBlock<byte, 16> data; // 128 bit
+        bool _is_zero {true};
+
+    public:
+        typedef typename decltype(data)::const_iterator const_iterator;
+
+        Counter();
+
+        const_iterator begin() const
+        { return data.begin(); }
+
+        const_iterator end() const
+        { return data.end(); }
+
+        operator const byte*() const
+        { return data; }
+
+
+        bool is_zero() const noexcept
+        { return _is_zero; }
+
+        Counter& operator++();
+    };
+
+    Key key;
+    Counter counter;
     mutable std::mutex key_and_counter_access;
 
 public:
     static constexpr const std::size_t output_block_length = CryptoPP::AES::BLOCKSIZE;
 
-    Generator();
-
     bool is_seeded() const;
 
-    void reseed(const byte* seed, std::size_t length);
-
-private:
-    void compute_new_key(const byte* seed, std::size_t length);
+    void reseed(const byte* seed, std::size_t seed_length);
 
 public:
     /**
@@ -64,11 +103,9 @@ public:
     void get_pseudo_random_data(byte* output, std::size_t blocks_count);
 
 private:
-    /**
-     * \todo non-inline static constexpr noexcept works in g++ >= 4.8 and clang++ >= 3.3
-     */
     static constexpr
-    bool is_request_too_big(std::size_t blocks_count) /*noexcept*/;
+    bool is_request_too_big(std::size_t blocks_count) noexcept
+    { return blocks_count > /*2^20*/ 1048576ul / CryptoPP::AES::BLOCKSIZE; }
 
     void generate_blocks(byte* output, std::size_t blocks_count);
 };
