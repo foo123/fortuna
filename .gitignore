@@ -1,10 +1,7 @@
-*.o
-*.la
-*.lo
-*.tar.bz2
-
-/doc
-
+/*.o
+/*.la
+/*.lo
+/*.tar.bz2
 /.deps
 /.libs
 /aclocal.m4
@@ -14,6 +11,9 @@
 /config.log
 /config.status
 /configure
+/doc
+/fortuna_client
+/fortunad
 /libtool
 /m4/libtool.m4
 /m4/lt~obsolete.m4

@@ -23,27 +23,30 @@ bin_PROGRAMS =
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA =
 
+AM_CPPFLAGS = -I$(top_srcdir)/src
+
 
 
 lib_LTLIBRARIES += libfortuna.la
 
 libfortuna_la_SOURCES = \
-    libfortuna/accumulator.cpp \
-    libfortuna/fortuna_exception.cpp \
-    libfortuna/generator.cpp \
-    libfortuna/pool.cpp \
-    libfortuna/stdex/algorithm.hpp
+    src/libfortuna/accumulator.cpp \
+    src/libfortuna/fortuna_exception.cpp \
+    src/libfortuna/generator.cpp \
+    src/libfortuna/pool.cpp \
+    src/libfortuna/stdex/algorithm.hpp
 
 libfortuna_la_includedir = $(includedir)/fortuna
 libfortuna_la_include_HEADERS = \
-    libfortuna/accumulator.hpp \
-    libfortuna/fortuna_exception.hpp \
-    libfortuna/generator.hpp \
-    libfortuna/noncopyable.hpp \
-    libfortuna/pool.hpp
+    src/libfortuna/accumulator.hpp \
+    src/libfortuna/fortuna_exception.hpp \
+    src/libfortuna/generator.hpp \
+    src/libfortuna/noncopyable.hpp \
+    src/libfortuna/pool.hpp
 
 libfortuna_la_CPPFLAGS = \
-    $(CRYPTOPP_CPPFLAGS)
+    $(CRYPTOPP_CPPFLAGS) \
+    $(AM_CPPFLAGS)
 
 libfortuna_la_LDFLAGS = \
     $(CRYPTOPP_LDFLAGS) \
@@ -59,19 +62,20 @@ pkgconfig_DATA += pc/fortuna.pc
 lib_LTLIBRARIES += libfortuna_daemon_client.la
 
 libfortuna_daemon_client_la_SOURCES = \
-    libfortuna_daemon/client.cpp \
-    libfortuna_daemon/client_exception.cpp \
-    libfortuna_daemon/client_impl.hpp \
-    libfortuna_daemon/client_impl.cpp
+    src/libfortuna_daemon/client.cpp \
+    src/libfortuna_daemon/client_exception.cpp \
+    src/libfortuna_daemon/client_impl.hpp \
+    src/libfortuna_daemon/client_impl.cpp
 
 libfortuna_daemon_client_la_includedir = $(includedir)/fortuna_daemon
 libfortuna_daemon_client_la_include_HEADERS = \
-    libfortuna_daemon/client.hpp \
-    libfortuna_daemon/client_exception.hpp \
-    libfortuna_daemon/connection_info.hpp
+    src/libfortuna_daemon/client.hpp \
+    src/libfortuna_daemon/client_exception.hpp \
+    src/libfortuna_daemon/connection_info.hpp
 
 libfortuna_daemon_client_la_CPPFLAGS = \
-    $(BOOST_CPPFLAGS)
+    $(BOOST_CPPFLAGS) \
+    $(AM_CPPFLAGS)
 
 libfortuna_daemon_client_la_LDFLAGS = \
     $(BOOST_LDFLAGS) \
@@ -87,17 +91,18 @@ pkgconfig_DATA += pc/fortuna_daemon_client.pc
 lib_LTLIBRARIES += libfortuna_daemon_source.la
 
 libfortuna_daemon_source_la_SOURCES = \
-    libfortuna_daemon/source.cpp \
-    libfortuna_daemon/source_impl.hpp \
-    libfortuna_daemon/source_impl.cpp
+    src/libfortuna_daemon/source.cpp \
+    src/libfortuna_daemon/source_impl.hpp \
+    src/libfortuna_daemon/source_impl.cpp
 
 libfortuna_daemon_source_la_includedir = $(includedir)/fortuna_daemon
 libfortuna_daemon_source_la_include_HEADERS = \
-    libfortuna_daemon/connection_info.hpp \
-    libfortuna_daemon/source.hpp
+    src/libfortuna_daemon/connection_info.hpp \
+    src/libfortuna_daemon/source.hpp
 
 libfortuna_daemon_source_la_CPPFLAGS = \
-    $(BOOST_CPPFLAGS)
+    $(BOOST_CPPFLAGS) \
+    $(AM_CPPFLAGS)
 
 libfortuna_daemon_source_la_LDFLAGS = \
     $(BOOST_LDFLAGS) \
@@ -113,16 +118,17 @@ pkgconfig_DATA += pc/fortuna_daemon_source.pc
 bin_PROGRAMS += fortuna_client
 
 fortuna_client_SOURCES = \
-    fortuna_client/application.cpp \
-    fortuna_client/application.hpp \
-    fortuna_client/main.cpp \
-    fortuna_client/options.cpp \
-    fortuna_client/options.hpp \
-    fortuna_client/stdex/cstdlib.hpp
+    src/fortuna_client/application.cpp \
+    src/fortuna_client/application.hpp \
+    src/fortuna_client/main.cpp \
+    src/fortuna_client/options.cpp \
+    src/fortuna_client/options.hpp \
+    src/fortuna_client/stdex/cstdlib.hpp
 
 fortuna_client_CPPFLAGS = \
     $(BOOST_CPPFLAGS) \
-    $(CRYPTOPP_CPPFLAGS)
+    $(CRYPTOPP_CPPFLAGS) \
+    $(AM_CPPFLAGS)
 
 fortuna_client_LDFLAGS = \
     $(BOOST_LDFLAGS) \
@@ -138,21 +144,22 @@ fortuna_client_LDADD = \
 bin_PROGRAMS += fortunad
 
 fortunad_SOURCES = \
-    fortunad/application.cpp \
-    fortunad/application.hpp \
-    fortunad/main.cpp \
-    fortunad/options.cpp \
-    fortunad/options.hpp \
-    fortunad/server.cpp \
-    fortunad/server.hpp \
-    fortunad/session.cpp \
-    fortunad/session.hpp \
-    fortunad/stdex/cstdlib.hpp \
-    fortuna_daemon/connection_info.hpp
+    src/fortunad/application.cpp \
+    src/fortunad/application.hpp \
+    src/fortunad/main.cpp \
+    src/fortunad/options.cpp \
+    src/fortunad/options.hpp \
+    src/fortunad/server.cpp \
+    src/fortunad/server.hpp \
+    src/fortunad/session.cpp \
+    src/fortunad/session.hpp \
+    src/fortunad/stdex/cstdlib.hpp \
+    src/libfortuna_daemon/connection_info.hpp
 
 fortunad_CPPFLAGS = \
     $(BOOST_CPPFLAGS) \
-    $(CRYPTOPP_CPPFLAGS)
+    $(CRYPTOPP_CPPFLAGS) \
+    $(AM_CPPFLAGS)
 
 fortunad_LDFLAGS = \
     $(BOOST_LDFLAGS) \
