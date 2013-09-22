@@ -59,16 +59,16 @@ pkgconfig_DATA += pc/fortuna.pc
 lib_LTLIBRARIES += libfortuna_daemon_client.la
 
 libfortuna_daemon_client_la_SOURCES = \
-    fortuna_daemon/client.cpp \
-    fortuna_daemon/client_exception.cpp \
-    fortuna_daemon/client_impl.hpp \
-    fortuna_daemon/client_impl.cpp
+    libfortuna_daemon/client.cpp \
+    libfortuna_daemon/client_exception.cpp \
+    libfortuna_daemon/client_impl.hpp \
+    libfortuna_daemon/client_impl.cpp
 
 libfortuna_daemon_client_la_includedir = $(includedir)/fortuna_daemon
 libfortuna_daemon_client_la_include_HEADERS = \
-    fortuna_daemon/client.hpp \
-    fortuna_daemon/client_exception.hpp \
-    fortuna_daemon/connection_info.hpp
+    libfortuna_daemon/client.hpp \
+    libfortuna_daemon/client_exception.hpp \
+    libfortuna_daemon/connection_info.hpp
 
 libfortuna_daemon_client_la_CPPFLAGS = \
     $(BOOST_CPPFLAGS)
@@ -87,14 +87,14 @@ pkgconfig_DATA += pc/fortuna_daemon_client.pc
 lib_LTLIBRARIES += libfortuna_daemon_source.la
 
 libfortuna_daemon_source_la_SOURCES = \
-    fortuna_daemon/source.cpp \
-    fortuna_daemon/source_impl.hpp \
-    fortuna_daemon/source_impl.cpp
+    libfortuna_daemon/source.cpp \
+    libfortuna_daemon/source_impl.hpp \
+    libfortuna_daemon/source_impl.cpp
 
 libfortuna_daemon_source_la_includedir = $(includedir)/fortuna_daemon
 libfortuna_daemon_source_la_include_HEADERS = \
-    fortuna_daemon/connection_info.hpp \
-    fortuna_daemon/source.hpp
+    libfortuna_daemon/connection_info.hpp \
+    libfortuna_daemon/source.hpp
 
 libfortuna_daemon_source_la_CPPFLAGS = \
     $(BOOST_CPPFLAGS)

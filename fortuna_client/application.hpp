@@ -25,7 +25,7 @@ along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <cryptopp/secblock.h>
 
-#include <fortuna_daemon/client.hpp>
+#include <libfortuna_daemon/client.hpp>
 
 
 namespace fortuna_client {

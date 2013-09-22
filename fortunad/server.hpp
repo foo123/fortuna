@@ -29,7 +29,7 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <libfortuna/accumulator.hpp>
 
-#include <fortuna_daemon/connection_info.hpp>
+#include <libfortuna_daemon/connection_info.hpp>
 
 
 namespace fortuna_daemon {

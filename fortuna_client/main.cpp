@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <fortuna_daemon/client_exception.hpp>
+#include <libfortuna_daemon/client_exception.hpp>
 
 #include "application.hpp"
 #include "options.hpp"
