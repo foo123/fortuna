@@ -5,6 +5,8 @@
 
 /doc
 
+/.deps
+/.libs
 /aclocal.m4
 /autom4te.cache
 /build-aux
@@ -20,8 +22,5 @@
 /m4/ltversion.m4
 /Makefile
 /Makefile.in
-/src/.deps
-/src/.libs
-/src/Makefile
-/src/Makefile.in
+/pc/*.pc
 /stamp-h1
