@@ -30,39 +30,37 @@ namespace fortuna {
 
 template <typename T, unsigned int S>
 class Counter
-    : protected CryptoPP::FixedSizeSecBlock<T, S>
 {
 private:
-    typedef typename CryptoPP::FixedSizeSecBlock<T, S> base_type;
-
+    CryptoPP::FixedSizeSecBlock<T, S> data;
     bool _is_zero {true};
 
 public:
-    typedef typename base_type::const_iterator const_iterator;
+    typedef typename decltype(data)::const_iterator const_iterator;
 
     Counter()
-        : base_type()
     {
-        stdex::fill(static_cast<base_type&>(*this), 0);
+        stdex::fill(data, 0);
     }
 
     const_iterator begin() const
-    { return base_type::begin(); }
+    { return data.begin(); }
 
     const_iterator end() const
-    { return base_type::end(); }
+    { return data.end(); }
 
     operator const T*() const
-    { return base_type::operator const T*(); }
+    { return data; }
 
 
     bool is_zero() const noexcept
     { return _is_zero; }
 
-    void increment()
+    Counter& operator++()
     {
-        CryptoPP::IncrementCounterByOne(*this, S);
+        CryptoPP::IncrementCounterByOne(data, S);
         _is_zero = false;
+        return *this;
     }
 };
 

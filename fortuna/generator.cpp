@@ -43,7 +43,7 @@ void Generator::reseed(const byte* seed, std::size_t length)
 {
     std::lock_guard<std::mutex> lock(key_and_counter_access);
     compute_new_key(seed, length);
-    counter.increment();
+    ++counter;
 }
 
 void Generator::compute_new_key(const byte* seed, std::size_t length)
@@ -80,9 +80,8 @@ void Generator::generate_blocks(byte* output, std::size_t blocks_count)
     // assert(counter != 0) is done at the beginning of Generator::get_pseudo_random_data
     CryptoPP::AES::Encryption aes(key, key_length); // makes copy of key, so it's not a problem when key is also an output
     for (unsigned long i = 0; i < blocks_count; ++i) {
-        // TODO:                 \      fix that      /
-        aes.ProcessBlock(counter.operator const byte*(), output + i*CryptoPP::AES::BLOCKSIZE);
-        counter.increment();
+        aes.ProcessBlock(counter, output + i*CryptoPP::AES::BLOCKSIZE);
+        ++counter;
     }
 }
 
