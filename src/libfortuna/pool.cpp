@@ -32,11 +32,11 @@ void Pool::add_random_event(byte source_number, const byte* data, byte length)
     
     std::lock_guard<std::mutex> lock(hash_access);
     
+    total_length_of_appended_data += length;
+    
     hash.Update(&source_number, 1);
     hash.Update(&length, 1);
     hash.Update(data, length);
-    
-    total_length_of_appended_data += length;
 }
 
 void Pool::get_hash_and_clear(byte* output)
@@ -44,6 +44,7 @@ void Pool::get_hash_and_clear(byte* output)
     std::lock_guard<std::mutex> lock(hash_access);
     
     total_length_of_appended_data = 0;
+    
     hash.Final(output);
 }
 
