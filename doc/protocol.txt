@@ -1,0 +1,23 @@
+This protocol is very simple and passes raw data. If you want to connect clients or sources over network, you should use
+properly secured tunneling software, like ssh. Also, there is no error recovery - if received data is wrong,
+the connection is closed.
+
+
+What daemon does:
+
+switch(read 1 byte)
+case 0x00: // source sends entropy
+    read 3 bytes:
+        - pool number // must be in range [0,31]
+        - source number
+        - data_size // must be in range [1,31]
+    read data_size bytes
+case 0x01: // send me random data
+    read 4 bytes: requested_length
+    if (data generated successfully):
+        write 1 byte: 0x00
+        write requested_length bytes
+    else if (request too big): // implemented in libfortuna
+        write 1 byte: 0x01
+    else if (generator is not seeded):
+        write 1 byte: 0x02
