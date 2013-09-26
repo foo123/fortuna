@@ -28,11 +28,11 @@ namespace fortuna_daemon {
 
 
 Source::Impl::Impl(Config&& config)
-    : io_service()
-    , socket(io_service)
-    , header()
+    : io_service{}
+    , socket{io_service}
+    , header{}
 {
-    socket.connect(boost::asio::local::stream_protocol::endpoint(config.connection_info.socket));
+    socket.connect(boost::asio::local::stream_protocol::endpoint{config.connection_info.socket});
     
     header.BytePtr()[0] = 0x00; // add random event
     header.BytePtr()[1] = 0x00; // pool number

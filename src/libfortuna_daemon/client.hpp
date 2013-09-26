@@ -38,7 +38,8 @@ private:
     Impl* impl;
 
 public:
-    static const std::size_t max_request_length = /*2^20*/ 1048576;
+    static constexpr
+    const std::size_t max_request_length = /*2^20*/ 1048576;
 
     struct Config
     {

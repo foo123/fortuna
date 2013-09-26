@@ -44,21 +44,21 @@ private:
 
     explicit
     ClientException(msg_id_t __msg_id)
-        : _msg_id(__msg_id)
+        : _msg_id{__msg_id}
     {}
 
 public:
     static
     ClientException request_too_big()
-    { return ClientException(msg_id_t::request_too_big); }
+    { return ClientException{msg_id_t::request_too_big}; }
 
     static
     ClientException generator_is_not_seeded()
-    { return ClientException(msg_id_t::generator_is_not_seeded); }
+    { return ClientException{msg_id_t::generator_is_not_seeded}; }
 
     static
     ClientException illegal_status()
-    { return ClientException(msg_id_t::illegal_status); }
+    { return ClientException{msg_id_t::illegal_status}; }
 
 
     msg_id_t msg_id() const noexcept

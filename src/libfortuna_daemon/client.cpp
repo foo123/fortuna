@@ -27,10 +27,8 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna_daemon {
 
 
-const std::size_t fortuna_daemon::Client::max_request_length;
-
 Client::Client(Config&& config)
-    : impl(new Impl(std::move(config)))
+    : impl{new Impl(std::move(config))}
 {}
 
 Client::~Client()

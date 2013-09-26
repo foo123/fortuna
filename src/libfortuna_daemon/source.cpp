@@ -28,7 +28,7 @@ namespace fortuna_daemon {
 
 
 Source::Source(Config&& config)
-    : impl(new Impl(std::move(config)))
+    : impl{new Impl(std::move(config))}
 {}
 
 Source::~Source()

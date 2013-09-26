@@ -29,11 +29,11 @@ namespace fortuna_daemon {
 
 
 Client::Impl::Impl(Config&& config)
-    : io_service()
-    , socket(io_service)
-    , buffer()
+    : io_service{}
+    , socket{io_service}
+    , buffer{}
 {
-    socket.connect(boost::asio::local::stream_protocol::endpoint(config.connection_info.socket));
+    socket.connect(boost::asio::local::stream_protocol::endpoint{config.connection_info.socket});
     
     buffer.BytePtr()[0] = 0x01; // get random data
 }
