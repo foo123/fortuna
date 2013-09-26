@@ -87,7 +87,9 @@ private:
 
 public:
     void add_random_event(std::uint8_t pool_number, std::uint8_t source_number, const byte* data, std::uint8_t length)
-    { pools.at(pool_number).add_random_event(source_number, data, length); }
+    {
+        pools.at(pool_number).add_random_event(source_number, data, length);
+    }
 };
 
 

@@ -101,11 +101,13 @@ public:
      */
     void get_pseudo_random_data(byte* output, std::size_t blocks_count);
 
-private:
     static constexpr
     bool is_request_too_big(std::size_t blocks_count) noexcept
-    { return blocks_count > /*2^20*/ 1048576ul / CryptoPP::AES::BLOCKSIZE; }
+    {
+        return blocks_count > /*2^20*/ 1048576ul / CryptoPP::AES::BLOCKSIZE;
+    }
 
+private:
     void generate_blocks(byte* output, std::size_t blocks_count);
 };
 
