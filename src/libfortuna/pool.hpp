@@ -20,7 +20,6 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef FORTUNA_POOL_HPP
 #define FORTUNA_POOL_HPP
 
-#include <atomic>
 #include <mutex>
 
 #include <cryptopp/sha3.h>
@@ -38,8 +37,8 @@ class Pool
 {
 private:
     CryptoPP::SHA3_256 hash;
-    std::mutex hash_access;
-    std::atomic_ulong total_length_of_appended_data {0ul};
+    unsigned long total_length_of_appended_data {0ul};
+    mutable std::mutex access;
 
 public:
     static constexpr const byte hash_length = CryptoPP::SHA3_256::DIGESTSIZE;
@@ -54,8 +53,7 @@ public:
      */
     void get_hash_and_clear(byte* output);
 
-    unsigned long get_total_length_of_appended_data() const noexcept
-    { return total_length_of_appended_data; }
+    unsigned long get_total_length_of_appended_data() const;
 };
 
 

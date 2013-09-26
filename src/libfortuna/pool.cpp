@@ -30,22 +30,28 @@ void Pool::add_random_event(byte source_number, const byte* data, byte length)
     if (length == 0 || length > 32)
         throw FortunaException::invaild_event_length();
     
-    std::lock_guard<std::mutex> lock(hash_access);
-    
-    total_length_of_appended_data += length;
+    std::lock_guard<std::mutex> lock{access};
     
     hash.Update(&source_number, 1);
     hash.Update(&length, 1);
     hash.Update(data, length);
+    
+    total_length_of_appended_data += length;
 }
 
 void Pool::get_hash_and_clear(byte* output)
 {
-    std::lock_guard<std::mutex> lock(hash_access);
-    
-    total_length_of_appended_data = 0;
+    std::lock_guard<std::mutex> lock{access};
     
     hash.Final(output);
+    
+    total_length_of_appended_data = 0;
+}
+
+unsigned long Pool::get_total_length_of_appended_data() const
+{
+    std::lock_guard<std::mutex> lock{access};
+    return total_length_of_appended_data;
 }
 
 
