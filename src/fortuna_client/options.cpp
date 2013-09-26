@@ -46,9 +46,11 @@ boost::program_options::typed_value<T>* self_default_value(T* val)
 } // namespace
 
 
-Application::AllConfig handle_options(int argc, char* argv[], Application::AllConfig&& config)
+Application::AllConfig handle_options(int argc, char* argv[])
 {
     namespace po = boost::program_options;
+    
+    Application::AllConfig config;
     
     po::options_description options{"Options"};
     options.add_options()

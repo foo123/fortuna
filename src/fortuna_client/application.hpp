@@ -40,18 +40,12 @@ public:
     {
         ullong length;
         std::string outfilename {"-"};
-
-        Config()
-        {}
     };
 
     struct AllConfig
     {
         Config application;
         fortuna_daemon::Client::Config client;
-
-        AllConfig()
-        {}
     };
 
 private:
@@ -62,7 +56,7 @@ private:
     CryptoPP::SecByteBlock buffer;
 
 public:
-    Application(AllConfig&& all_config = AllConfig{});
+    Application(AllConfig&& all_config);
 
     void run();
 
