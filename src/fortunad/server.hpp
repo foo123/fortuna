@@ -44,25 +44,30 @@ public:
     struct Config
     {
         ConnectionInfo connection_info;
+
+        Config()
+        {}
     };
 
     struct AllConfig
     {
         Config server;
         fortuna::Accumulator::Config accumulator;
+
+        AllConfig()
+        {}
     };
 
 private:
     const Config config;
 
     boost::asio::io_service& io_service;
+    boost::asio::local::stream_protocol::acceptor acceptor;
 
     fortuna::Accumulator accumulator;
 
-    boost::asio::local::stream_protocol::acceptor acceptor;
-
 public:
-    Server(boost::asio::io_service& ios, AllConfig&& all_config = AllConfig());
+    Server(boost::asio::io_service& ios, AllConfig&& all_config = AllConfig{});
 
     void run();
 

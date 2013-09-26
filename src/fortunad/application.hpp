@@ -37,8 +37,8 @@ class Application
 public:
     struct Config
     {
-        bool default_threads_num {true};
-        unsigned custom_threads_num {0};
+        bool default_threads_num = true;
+        unsigned custom_threads_num = 0;
 
         constexpr
         Config()
@@ -49,6 +49,9 @@ public:
         : public Server::AllConfig
     {
         Config application;
+
+        AllConfig()
+        {}
     };
 
 private:
@@ -61,7 +64,7 @@ private:
     Server server;
 
 public:
-    Application(AllConfig&& all_config = AllConfig());
+    Application(AllConfig&& all_config = AllConfig{});
 
     void run();
 };

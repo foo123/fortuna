@@ -31,10 +31,10 @@ namespace fortuna_daemon {
 
 
 Server::Server(boost::asio::io_service& ios, AllConfig&& all_config)
-    : config(std::move(all_config.server))
+    : config{std::move(all_config.server)}
     , io_service(ios)
-    , accumulator(std::move(all_config.accumulator))
-    , acceptor(ios, boost::asio::local::stream_protocol::endpoint(config.connection_info.socket))
+    , acceptor{ios, boost::asio::local::stream_protocol::endpoint{config.connection_info.socket}}
+    , accumulator{std::move(all_config.accumulator)}
 {
     std::shared_ptr<Session> new_session;
     create_session(new_session);
@@ -42,7 +42,7 @@ Server::Server(boost::asio::io_service& ios, AllConfig&& all_config)
 
 void Server::create_session(std::shared_ptr<Session>& new_session)
 {
-    new_session.reset(new Session(io_service, accumulator));
+    new_session.reset(new Session{io_service, accumulator});
     acceptor.async_accept(
         new_session->get_socket(),
         boost::bind(

@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 {
     using namespace fortuna_daemon;
     try {
-        Application(handle_options(argc, argv)).run();
+        Application{handle_options(argc, argv)}.run();
     }
     catch (std::exception& e) {
         stdex::die( e.what() );

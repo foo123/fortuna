@@ -33,9 +33,9 @@ namespace fortuna_daemon {
 
 
 Session::Session(boost::asio::io_service& io_service, fortuna::Accumulator& acc)
-    : std::enable_shared_from_this<Session>()
-    , socket(io_service)
-    , buffer()
+    : std::enable_shared_from_this<Session>{}
+    , socket{io_service}
+    , buffer{}
     , accumulator(acc)
 {}
 

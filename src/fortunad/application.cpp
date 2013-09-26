@@ -26,11 +26,11 @@ namespace fortuna_daemon {
 
 
 Application::Application(Application::AllConfig&& all_config)
-    : config(std::move(all_config.application))
-    , io_service()
-    , signals(io_service, SIGINT, SIGTERM)
-    , threads()
-    , server(io_service, std::move(static_cast<Server::AllConfig>(all_config)))
+    : config{std::move(all_config.application)}
+    , io_service{}
+    , signals{io_service, SIGINT, SIGTERM}
+    , threads{}
+    , server{io_service, std::move(static_cast<Server::AllConfig>(all_config))}
 {
     signals.async_wait([&](const boost::system::error_code& /*error*/, int /*signal_number*/){
         io_service.stop();

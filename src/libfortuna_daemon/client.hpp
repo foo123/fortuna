@@ -44,6 +44,9 @@ public:
     struct Config
     {
         ConnectionInfo connection_info;
+
+        Config()
+        {}
     };
 
 

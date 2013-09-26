@@ -40,6 +40,9 @@ public:
     {
         byte source_number = 0;
         ConnectionInfo connection_info;
+
+        Config()
+        {}
     };
 
     explicit
