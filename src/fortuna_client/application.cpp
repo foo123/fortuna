@@ -29,9 +29,9 @@ namespace fortuna_client {
 
 
 Application::Application(AllConfig&& all_config)
-    : config(std::move(all_config.application))
-    , fortuna(std::move(all_config.client))
-    , buffer(std::min(static_cast<ullong>(fortuna_daemon::Client::max_request_length), config.length))
+    : config{std::move(all_config.application)}
+    , fortuna{std::move(all_config.client)}
+    , buffer{std::min(static_cast<ullong>(fortuna_daemon::Client::max_request_length), config.length)}
 {}
 
 void Application::run()
@@ -39,7 +39,7 @@ void Application::run()
     if (config.outfilename == "-")
         write_data_to_stream(std::cout);
     else {
-        std::ofstream outfile(config.outfilename, std::ios_base::binary|std::ios_base::trunc);
+        std::ofstream outfile{config.outfilename, std::ios_base::binary|std::ios_base::trunc};
         write_data_to_stream(outfile);
     }
 }

@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 {
     try {
         using namespace fortuna_client;
-        Application(handle_options(argc, argv)).run();
+        Application{handle_options(argc, argv)}.run();
     }
     catch (fortuna_daemon::ClientException& e) {
         stdex::die(e.what(), 2+static_cast<int>(e.msg_id()));

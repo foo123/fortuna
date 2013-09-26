@@ -50,7 +50,7 @@ Application::AllConfig handle_options(int argc, char* argv[], Application::AllCo
 {
     namespace po = boost::program_options;
     
-    po::options_description options("Options");
+    po::options_description options{"Options"};
     options.add_options()
         ("help,h", "print this help")
         ("length,l", po::value(&config.application.length), "required")

@@ -26,7 +26,7 @@ along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna_client {
 
 
-Application::AllConfig handle_options(int argc, char* argv[], Application::AllConfig&& default_config = Application::AllConfig());
+Application::AllConfig handle_options(int argc, char* argv[], Application::AllConfig&& default_config = Application::AllConfig{});
 
 
 } // fortuna_client
