@@ -38,14 +38,15 @@ class Generator
 private:
     class Key
     {
+    public:
+        static constexpr
+        const std::size_t size = 32; // 256 bit
+
     private:
-        CryptoPP::FixedSizeSecBlock<byte, 32> data; // 256 bit
+        CryptoPP::FixedSizeSecBlock<byte, size> data;
 
     public:
         Key();
-
-        std::size_t size() const
-        { return data.size(); }
 
         operator byte*()
         { return data; }
@@ -89,7 +90,8 @@ private:
     mutable std::mutex key_and_counter_access;
 
 public:
-    static constexpr const std::size_t output_block_length = CryptoPP::AES::BLOCKSIZE;
+    static constexpr
+    const std::size_t output_block_length = CryptoPP::AES::BLOCKSIZE;
 
     bool is_seeded() const;
 

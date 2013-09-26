@@ -43,21 +43,21 @@ private:
 
     explicit
     FortunaException(msg_id_t _msg_id) noexcept
-        : msg_id(_msg_id)
+        : msg_id{_msg_id}
     {}
 
 public:
     static
     FortunaException request_length_too_big() noexcept
-    { return FortunaException(msg_id_t::request_length_too_big); }
+    { return FortunaException{msg_id_t::request_length_too_big}; }
 
     static
     FortunaException generator_is_not_seeded() noexcept
-    { return FortunaException(msg_id_t::generator_is_not_seeded); }
+    { return FortunaException{msg_id_t::generator_is_not_seeded}; }
 
     static
     FortunaException invaild_event_length() noexcept
-    { return FortunaException(msg_id_t::invaild_event_length); }
+    { return FortunaException{msg_id_t::invaild_event_length}; }
 
 
     msg_id_t get_msg_id() const noexcept

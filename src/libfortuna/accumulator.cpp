@@ -54,7 +54,8 @@ std::uint8_t ilog2(std::uint32_t n) noexcept
 inline
 std::chrono::steady_clock::time_point distant_past()
 {
-    return std::chrono::steady_clock::now() - std::chrono::milliseconds(102);
+    using namespace std::chrono;
+    return steady_clock::now() - milliseconds(102);
 }
 
 
@@ -63,13 +64,14 @@ std::chrono::steady_clock::time_point distant_past()
 
 
 Accumulator::Accumulator(Config&& config)
-    : config(std::move(config))
-    , last_reseed(distant_past())
+    : config{std::move(config)}
+    , last_reseed{distant_past()}
 {}
 
 void Accumulator::get_random_data(byte* output, std::size_t blocks_count)
 {
-    std::lock_guard<std::mutex> lock(get_random_data_access);
+    std::lock_guard<std::mutex> lock{get_random_data_access};
+    
     reseed_generator_if_needed();
     generator.get_pseudo_random_data(output, blocks_count);
 }
@@ -99,9 +101,12 @@ bool Accumulator::is_time_to_reseed(const std::chrono::steady_clock::time_point&
 void Accumulator::reseed_generator()
 {
     const std::uint8_t pools_to_use = ilog2(greatest_power_of_2_that_divides(reseed_counter)) + 1;
-    CryptoPP::SecByteBlock buffer(pools_to_use * Pool::hash_length);
+    
+    CryptoPP::SecByteBlock buffer{pools_to_use * Pool::hash_length};
+    
     for (byte i = 0; i < pools_to_use; ++i)
         pools[i].get_hash_and_clear(buffer.BytePtr() + i*Pool::hash_length);
+    
     generator.reseed(buffer, buffer.SizeInBytes());
 }
 

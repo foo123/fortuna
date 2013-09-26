@@ -41,7 +41,7 @@ class Accumulator
 public:
     struct Config
     {
-        unsigned long min_pool_size {64ul};
+        unsigned long min_pool_size = 64;
 
         // It seems useless, but without it compilation fails. See http://stackoverflow.com/q/17430377/952263
         constexpr
@@ -56,22 +56,25 @@ private:
     Generator generator;
 
     std::mutex get_random_data_access;
-    std::uint32_t reseed_counter {0}; // 32 bits - 32 pools
+    std::uint32_t reseed_counter = 0; // 32 bits, because 32 pools
     std::chrono::steady_clock::time_point last_reseed;
 
 public:
-    static const std::size_t output_block_length = Generator::output_block_length;
+    static constexpr
+    const std::size_t output_block_length = Generator::output_block_length;
 
     /**
      * \return number of blocks required to store given bytes
      */
     static constexpr
     std::size_t bytes_to_blocks(std::size_t bytes) noexcept
-    { return ((bytes-1)/output_block_length) + 1; /* ceil( size / (float)output_block_size ) without using floats */ }
+    {
+        return ((bytes-1)/output_block_length) + 1; /* ceil( size / (float)output_block_size ) without using floats */
+    }
 
 
     explicit
-    Accumulator(Config&& config = Config());
+    Accumulator(Config&& config = Config{});
 
     /**
      * \throw FortunaException if blocks_count is too big (greater than 2^20/CryptoPP::AES::BLOCKSIZE).

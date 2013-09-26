@@ -37,11 +37,12 @@ class Pool
 {
 private:
     CryptoPP::SHA3_256 hash;
-    unsigned long total_length_of_appended_data {0ul};
+    unsigned long total_length_of_appended_data = 0;
     mutable std::mutex access;
 
 public:
-    static constexpr const byte hash_length = CryptoPP::SHA3_256::DIGESTSIZE;
+    static constexpr
+    const byte hash_length = CryptoPP::SHA3_256::DIGESTSIZE;
 
     /**
      * \throw FortunaException if length == 0 || length > 32
