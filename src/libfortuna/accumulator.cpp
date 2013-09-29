@@ -77,6 +77,8 @@ void Accumulator::get_random_data(byte* output, std::size_t blocks_count)
     
     monitored_generator([=](Generator& generator){
         reseed_if_needed(generator);
+        if (!generator.is_seeded())
+            throw FortunaException::generator_is_not_seeded();
         generator.get_pseudo_random_data(output, blocks_count);
     });
 }
@@ -115,6 +117,9 @@ void Accumulator::reseed(Generator& generator)
     generator.reseed(buffer, buffer.SizeInBytes());
 }
 
+/**
+ * \throw FortunaException if Pool::is_event_data_length_invalig(length)
+ */
 void Accumulator::add_random_event(std::uint8_t pool_number, std::uint8_t source_number, const byte* data, std::uint8_t length)
 {
     if (Pool::is_event_data_length_invalid(length))

@@ -45,12 +45,12 @@ public:
     { return length == 0 || length > 32; }
 
     /**
-     * \throw FortunaException if is_event_data_length_invalig(length)
+     * \pre !is_event_data_length_invalid(length)
      */
     void add_random_event(byte source_number, const byte* data, byte length);
 
     /**
-     * \param output must be valid buffer of length hash_length
+     * \param[out] output must be valid buffer of length hash_length
      */
     void get_hash_and_clear(byte* output);
 

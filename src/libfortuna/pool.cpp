@@ -19,17 +19,12 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "pool.hpp"
 
-#include "fortuna_exception.hpp"
-
 
 namespace fortuna {
 
 
 void Pool::add_random_event(byte source_number, const byte* data, byte length)
 {
-    /*if (is_event_data_length_invalid(length))
-        throw FortunaException::invaild_event_length();*/
-    
     hash.Update(&source_number, 1);
     hash.Update(&length, 1);
     hash.Update(data, length);

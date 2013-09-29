@@ -66,12 +66,6 @@ void Generator::reseed(const byte* seed, std::size_t seed_length)
 
 void Generator::get_pseudo_random_data(byte* output, std::size_t blocks_count)
 {
-    /*if (is_request_too_big(blocks_count))
-        throw FortunaException::request_length_too_big();*/
-    
-    if (counter.is_zero())
-        throw FortunaException::generator_is_not_seeded();
-    
     generate_blocks(output, blocks_count);
     static_assert(key.size() % CryptoPP::AES::BLOCKSIZE == 0, "key.size must be multiple of CryptoPP::AES::BLOCKSIZE");
     generate_blocks(key, key.size()/CryptoPP::AES::BLOCKSIZE);
@@ -79,7 +73,6 @@ void Generator::get_pseudo_random_data(byte* output, std::size_t blocks_count)
 
 void Generator::generate_blocks(byte* output, std::size_t blocks_count)
 {
-    // assert(!counter.is_zero()) is done at the beginning of Generator::get_pseudo_random_data
     CryptoPP::AES::Encryption aes{key, key.size()}; // makes a copy of the key, so it's not a problem when the key is also an output
     for (unsigned long i = 0; i < blocks_count; ++i) {
         aes.ProcessBlock(counter, output + i*CryptoPP::AES::BLOCKSIZE);

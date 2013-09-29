@@ -90,6 +90,10 @@ private:
     void reseed(Generator& generator);
 
 public:
+    /**
+     * \throw FortunaException if Pool::is_event_data_length_invalig(length)
+     * \throw std::out_of_range if pool_number > 31
+     */
     void add_random_event(std::uint8_t pool_number, std::uint8_t source_number, const byte* data, std::uint8_t length);
 };
 

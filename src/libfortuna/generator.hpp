@@ -25,8 +25,6 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #include <cryptopp/aes.h>
 #include <cryptopp/secblock.h>
 
-#include "fortuna_exception.hpp"
-
 
 namespace fortuna {
 
@@ -93,11 +91,14 @@ public:
     static constexpr
     const std::size_t output_block_length = CryptoPP::AES::BLOCKSIZE;
 
+    bool is_seeded() const
+    { return !counter.is_zero(); }
+
     void reseed(const byte* seed, std::size_t seed_length);
 
     /**
-     * \throw FortunaException if blocks_count is too big.
-     * \throw FortunaException if generator is not seeded.
+     * \pre !is_request_too_big(blocks_count)
+     * \pre is_seeded()
      */
     void get_pseudo_random_data(byte* output, std::size_t blocks_count);
 
