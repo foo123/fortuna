@@ -117,9 +117,6 @@ void Accumulator::reseed(Generator& generator)
     generator.reseed(buffer, buffer.SizeInBytes());
 }
 
-/**
- * \throw FortunaException if Pool::is_event_data_length_invalig(length)
- */
 void Accumulator::add_random_event(std::uint8_t pool_number, std::uint8_t source_number, const byte* data, std::uint8_t length)
 {
     if (Pool::is_event_data_length_invalid(length))

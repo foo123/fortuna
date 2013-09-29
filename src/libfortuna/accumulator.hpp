@@ -26,7 +26,6 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #include <chrono>
 
 #include "generator.hpp"
-#include "noncopyable.hpp"
 #include "pool.hpp"
 
 #include "stdex/monitor.hpp"
@@ -38,7 +37,6 @@ namespace fortuna {
 
 
 class Accumulator
-    : noncopyable
 {
 public:
     struct Config

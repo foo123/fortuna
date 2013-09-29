@@ -18,21 +18,41 @@ template <class T>
 class monitor
 {
 private:
-    mutable T t;
+    mutable T obj;
     mutable std::mutex mutex;
+
+    T synced_obj_copy() const
+    {
+        std::lock_guard<std::mutex> lock{mutex};
+        return obj;
+    }
 
 public:
     monitor() = default;
 
-    monitor(const T& _t)
-        : t(_t)
+    monitor(const T& _obj)
+        : obj(_obj)
     {}
 
+    monitor(const monitor<T>& other_monitor)
+        : obj(other_monitor.synced_obj_copy())
+    {}
+
+    monitor& operator=(const monitor& other_monitor)
+    {
+        {
+            std::lock_guard<std::mutex> lock{mutex};
+            obj = other_monitor.synced_obj_copy();
+        }
+        return *this;
+    }
+
+
     template <typename F>
-    auto operator()(F f) const -> decltype(f(t))
+    auto operator()(F f) const -> decltype(f(obj))
     {
         std::lock_guard<std::mutex> lock{mutex};
-        return f(t);
+        return f(obj);
     }
 };
 
