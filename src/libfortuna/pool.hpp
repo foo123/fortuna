@@ -20,8 +20,6 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef FORTUNA_POOL_HPP
 #define FORTUNA_POOL_HPP
 
-#include <mutex>
-
 #include <cryptopp/sha3.h>
 
 typedef unsigned char byte;

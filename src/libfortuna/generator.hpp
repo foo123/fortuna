@@ -20,8 +20,6 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef FORTUNA_GENERATOR_HPP
 #define FORTUNA_GENERATOR_HPP
 
-#include <mutex>
-
 #include <cryptopp/aes.h>
 #include <cryptopp/secblock.h>
 

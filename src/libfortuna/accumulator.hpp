@@ -22,7 +22,6 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <cstdint>
 #include <array>
-#include <mutex>
 #include <chrono>
 
 #include "generator.hpp"

@@ -19,7 +19,6 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "accumulator.hpp"
 
-#include <fstream>
 #include <utility>
 
 #include "fortuna_exception.hpp"
