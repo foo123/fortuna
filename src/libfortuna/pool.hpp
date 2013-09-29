@@ -24,8 +24,6 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <cryptopp/sha3.h>
 
-#include "noncopyable.hpp"
-
 typedef unsigned char byte;
 
 
@@ -33,19 +31,21 @@ namespace fortuna {
 
 
 class Pool
-    : noncopyable
 {
 private:
     CryptoPP::SHA3_256 hash;
     unsigned long total_length_of_appended_data = 0;
-    mutable std::mutex access;
 
 public:
     static constexpr
-    const byte hash_length = CryptoPP::SHA3_256::DIGESTSIZE;
+    const byte hash_length = decltype(hash)::DIGESTSIZE;
+
+    static constexpr
+    bool is_event_data_length_invalid(byte length)
+    { return length == 0 || length > 32; }
 
     /**
-     * \throw FortunaException if length == 0 || length > 32
+     * \throw FortunaException if is_event_data_length_invalig(length)
      */
     void add_random_event(byte source_number, const byte* data, byte length);
 
@@ -54,7 +54,8 @@ public:
      */
     void get_hash_and_clear(byte* output);
 
-    unsigned long get_total_length_of_appended_data() const;
+    unsigned long get_total_length_of_appended_data() const
+    { return total_length_of_appended_data; }
 };
 
 

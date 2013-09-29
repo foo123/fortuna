@@ -22,6 +22,8 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #include <fstream>
 #include <utility>
 
+#include "fortuna_exception.hpp"
+
 
 namespace fortuna {
 
@@ -89,7 +91,7 @@ void Accumulator::reseed_generator_if_needed()
 
 bool Accumulator::is_min_pool_size_satisfied() const
 {
-    return pools[0].get_total_length_of_appended_data() >= config.min_pool_size;
+    return pools[0]([](Pool& pool){ return pool.get_total_length_of_appended_data(); }) >= config.min_pool_size;
 }
 
 bool Accumulator::is_time_to_reseed(const std::chrono::steady_clock::time_point& now) const
@@ -100,14 +102,24 @@ bool Accumulator::is_time_to_reseed(const std::chrono::steady_clock::time_point&
 
 void Accumulator::reseed_generator()
 {
-    const std::uint8_t pools_to_use = ilog2(greatest_power_of_2_that_divides(reseed_counter)) + 1;
+    const unsigned long pools_to_use = ilog2(greatest_power_of_2_that_divides(reseed_counter)) + 1;
     
     CryptoPP::SecByteBlock buffer{pools_to_use * Pool::hash_length};
     
     for (byte i = 0; i < pools_to_use; ++i)
-        pools[i].get_hash_and_clear(buffer.BytePtr() + i*Pool::hash_length);
+        pools[i]([&buffer,i](Pool& pool){ pool.get_hash_and_clear(buffer.BytePtr() + i*Pool::hash_length); });
     
     generator.reseed(buffer, buffer.SizeInBytes());
+}
+
+void Accumulator::add_random_event(std::uint8_t pool_number, std::uint8_t source_number, const byte* data, std::uint8_t length)
+{
+    if (Pool::is_event_data_length_invalid(length))
+        throw FortunaException::invaild_event_length();
+    
+    pools.at(pool_number)([=](Pool& pool){
+        pool.add_random_event(source_number, data, length);
+    });
 }
 
 

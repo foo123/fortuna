@@ -29,6 +29,8 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #include "noncopyable.hpp"
 #include "pool.hpp"
 
+#include "stdex/monitor.hpp"
+
 typedef unsigned char byte;
 
 
@@ -52,7 +54,7 @@ public:
 private:
     const Config config;
 
-    std::array<Pool, 32> pools;
+    std::array<stdex::monitor<Pool>, 32> pools;
     Generator generator;
 
     std::mutex get_random_data_access;
@@ -89,10 +91,7 @@ private:
     void reseed_generator();
 
 public:
-    void add_random_event(std::uint8_t pool_number, std::uint8_t source_number, const byte* data, std::uint8_t length)
-    {
-        pools.at(pool_number).add_random_event(source_number, data, length);
-    }
+    void add_random_event(std::uint8_t pool_number, std::uint8_t source_number, const byte* data, std::uint8_t length);
 };
 
 
