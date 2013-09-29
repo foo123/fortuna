@@ -36,15 +36,18 @@ class Generator
 private:
     class Key
     {
-    public:
-        static constexpr
-        const std::size_t size = 32; // 256 bit
-
     private:
-        CryptoPP::FixedSizeSecBlock<byte, size> data;
+        static constexpr
+        const std::size_t data_size = 32; // 256 bit
+
+        CryptoPP::FixedSizeSecBlock<byte, data_size> data;
 
     public:
         Key();
+
+        static constexpr
+        std::size_t size()
+        { return data_size; }
 
         operator byte*()
         { return data; }
