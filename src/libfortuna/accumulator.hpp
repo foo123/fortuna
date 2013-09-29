@@ -54,10 +54,9 @@ public:
 private:
     const Config config;
 
-    std::array<stdex::monitor<Pool>, 32> pools;
-    Generator generator;
+    std::array<stdex::monitor<Pool>, 32> monitored_pools;
+    stdex::monitor<Generator> monitored_generator;
 
-    std::mutex get_random_data_access;
     std::uint32_t reseed_counter = 0; // 32 bits, because 32 pools
     std::chrono::steady_clock::time_point last_reseed;
 
@@ -85,10 +84,10 @@ public:
     void get_random_data(byte* output, std::size_t blocks_count);
 
 private:
-    void reseed_generator_if_needed();
+    void reseed_if_needed(Generator& generator);
     bool is_min_pool_size_satisfied() const;
     bool is_time_to_reseed(const std::chrono::steady_clock::time_point& now) const;
-    void reseed_generator();
+    void reseed(Generator& generator);
 
 public:
     void add_random_event(std::uint8_t pool_number, std::uint8_t source_number, const byte* data, std::uint8_t length);

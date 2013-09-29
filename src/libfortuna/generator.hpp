@@ -26,14 +26,12 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #include <cryptopp/secblock.h>
 
 #include "fortuna_exception.hpp"
-#include "noncopyable.hpp"
 
 
 namespace fortuna {
 
 
 class Generator
-    : noncopyable
 {
 private:
     class Key
@@ -87,13 +85,10 @@ private:
 
     Key key;
     Counter counter;
-    mutable std::mutex key_and_counter_access;
 
 public:
     static constexpr
     const std::size_t output_block_length = CryptoPP::AES::BLOCKSIZE;
-
-    bool is_seeded() const;
 
     void reseed(const byte* seed, std::size_t seed_length);
 

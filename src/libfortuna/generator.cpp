@@ -57,16 +57,8 @@ auto Generator::Counter::operator++() -> Counter&
 
 
 
-bool Generator::is_seeded() const
-{
-    std::lock_guard<std::mutex> lock{key_and_counter_access};
-    return !counter.is_zero();
-}
-
 void Generator::reseed(const byte* seed, std::size_t seed_length)
 {
-    std::lock_guard<std::mutex> lock{key_and_counter_access};
-    
     key.reseed(seed, seed_length);
     ++counter;
 }
@@ -74,10 +66,8 @@ void Generator::reseed(const byte* seed, std::size_t seed_length)
 
 void Generator::get_pseudo_random_data(byte* output, std::size_t blocks_count)
 {
-    if (is_request_too_big(blocks_count))
-        throw FortunaException::request_length_too_big();
-    
-    std::lock_guard<std::mutex> lock{key_and_counter_access};
+    /*if (is_request_too_big(blocks_count))
+        throw FortunaException::request_length_too_big();*/
     
     if (counter.is_zero())
         throw FortunaException::generator_is_not_seeded();

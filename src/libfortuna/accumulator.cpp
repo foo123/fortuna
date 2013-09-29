@@ -72,26 +72,29 @@ Accumulator::Accumulator(Config&& config)
 
 void Accumulator::get_random_data(byte* output, std::size_t blocks_count)
 {
-    std::lock_guard<std::mutex> lock{get_random_data_access};
+    if (Generator::is_request_too_big(blocks_count))
+        throw FortunaException::request_length_too_big();
     
-    reseed_generator_if_needed();
-    generator.get_pseudo_random_data(output, blocks_count);
+    monitored_generator([=](Generator& generator){
+        reseed_if_needed(generator);
+        generator.get_pseudo_random_data(output, blocks_count);
+    });
 }
 
-void Accumulator::reseed_generator_if_needed()
+void Accumulator::reseed_if_needed(Generator& generator)
 {
     const auto now = std::chrono::steady_clock::now();
     
     if (is_min_pool_size_satisfied() && is_time_to_reseed(now)) {
         last_reseed = now;
         ++reseed_counter;
-        reseed_generator();
+        reseed(generator);
     }
 }
 
 bool Accumulator::is_min_pool_size_satisfied() const
 {
-    return pools[0]([](Pool& pool){ return pool.get_total_length_of_appended_data(); }) >= config.min_pool_size;
+    return monitored_pools[0]([](Pool& pool){ return pool.get_total_length_of_appended_data(); }) >= config.min_pool_size;
 }
 
 bool Accumulator::is_time_to_reseed(const std::chrono::steady_clock::time_point& now) const
@@ -100,14 +103,14 @@ bool Accumulator::is_time_to_reseed(const std::chrono::steady_clock::time_point&
     return duration_cast<milliseconds>(now - last_reseed).count() > 100;
 }
 
-void Accumulator::reseed_generator()
+void Accumulator::reseed(Generator& generator)
 {
     const unsigned long pools_to_use = ilog2(greatest_power_of_2_that_divides(reseed_counter)) + 1;
     
     CryptoPP::SecByteBlock buffer{pools_to_use * Pool::hash_length};
     
     for (byte i = 0; i < pools_to_use; ++i)
-        pools[i]([&buffer,i](Pool& pool){ pool.get_hash_and_clear(buffer.BytePtr() + i*Pool::hash_length); });
+        monitored_pools[i]([&buffer,i](Pool& pool){ pool.get_hash_and_clear(buffer.BytePtr() + i*Pool::hash_length); });
     
     generator.reseed(buffer, buffer.SizeInBytes());
 }
@@ -117,7 +120,7 @@ void Accumulator::add_random_event(std::uint8_t pool_number, std::uint8_t source
     if (Pool::is_event_data_length_invalid(length))
         throw FortunaException::invaild_event_length();
     
-    pools.at(pool_number)([=](Pool& pool){
+    monitored_pools.at(pool_number)([=](Pool& pool){
         pool.add_random_event(source_number, data, length);
     });
 }
