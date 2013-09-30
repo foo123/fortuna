@@ -19,10 +19,6 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "session.hpp"
 
-#ifdef FORTUNAD_DEBUG
-#include <iostream>
-#endif
-
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 
@@ -134,14 +130,6 @@ void Session::handle_read_random_event_data(const boost::system::error_code& err
         buffer.BytePtr()[2]  /* data length */
     );
     
-#ifdef FORTUNAD_DEBUG
-    std::cout
-        << "received from source " << int(buffer.BytePtr()[1])
-        << " to pool " << int(buffer.BytePtr()[0])
-        << ' ' << int(buffer.BytePtr()[2]) << " bytes of data"
-        << std::endl;
-#endif
-    
     async_read_command();
 }
 
@@ -159,10 +147,6 @@ void Session::handle_read_request_length(const boost::system::error_code& error)
     const unsigned long length = *reinterpret_cast<std::size_t*>(buffer.BytePtr());
     if (length == 0)
         return;
-    
-#ifdef FORTUNAD_DEBUG
-    std::cout << "received request for " << length << " bytes of data" << std::endl;
-#endif
     
     try {
         async_write_random_data(length);
