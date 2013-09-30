@@ -4,11 +4,17 @@ This work is free. You can redistribute it and/or modify it under the
 terms of the Do What The Fuck You Want To Public License, Version 2,
 as published by Sam Hocevar. See the COPYING file for more details.
 */
+/*
+Based on Herb Shutter's monitor implementation presented on
+https://channel9.msdn.com/Shows/Going+Deep/C-and-Beyond-2012-Herb-Sutter-Concurrency-and-Parallelism at 40:30,
+which is, I hope, public domain.
+*/
 
 #ifndef STDEX_MONITOR_HPP
 #define STDEX_MONITOR_HPP
 
 #include <mutex>
+#include <utility>
 
 
 namespace stdex {
@@ -32,6 +38,10 @@ public:
 
     monitor(const T& _obj)
         : obj(_obj)
+    {}
+
+    monitor(T&& _obj)
+        : obj{std::move(_obj)}
     {}
 
     monitor(const monitor<T>& other_monitor)
