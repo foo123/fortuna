@@ -32,6 +32,17 @@ Accumulator::Accumulator(Config&& config)
 {}
 
 
+void Accumulator::add_random_event(std::uint8_t pool_number, std::uint8_t source_number, const byte* data, std::uint8_t length)
+{
+    if (Pool::is_event_data_length_invalid(length))
+        throw FortunaException::invaild_event_length();
+    
+    monitored_pools.at(pool_number)([=](Pool& pool){
+        pool.add_random_event(source_number, data, length);
+    });
+}
+
+
 void Accumulator::get_random_data(byte* output, std::size_t blocks_count)
 {
     if (Generator::is_request_too_big(blocks_count))
@@ -84,17 +95,6 @@ void Accumulator::reseed(Generator& generator)
         monitored_pools[i]([&buffer,i](Pool& pool){ pool.get_hash_and_clear(buffer.BytePtr() + i*Pool::hash_length); });
     
     generator.reseed(buffer, buffer.SizeInBytes());
-}
-
-
-void Accumulator::add_random_event(std::uint8_t pool_number, std::uint8_t source_number, const byte* data, std::uint8_t length)
-{
-    if (Pool::is_event_data_length_invalid(length))
-        throw FortunaException::invaild_event_length();
-    
-    monitored_pools.at(pool_number)([=](Pool& pool){
-        pool.add_random_event(source_number, data, length);
-    });
 }
 
 
