@@ -41,8 +41,11 @@ libfortuna_la_include_HEADERS = \
     src/libfortuna/accumulator.hpp \
     src/libfortuna/fortuna_exception.hpp \
     src/libfortuna/generator.hpp \
-    src/libfortuna/noncopyable.hpp \
     src/libfortuna/pool.hpp
+libfortuna_la_stdex_includedir = $(includedir)/fortuna/stdex
+libfortuna_la_stdex_include_HEADERS = \
+    src/libfortuna/stdex/monitor.hpp
+
 
 libfortuna_la_CPPFLAGS = \
     $(CRYPTOPP_CPPFLAGS) \
