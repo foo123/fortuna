@@ -45,15 +45,24 @@ public:
         {}
     };
 
+
+    Source()
+        : impl(nullptr)
+    {}
+
     explicit
     Source(Config&& config);
 
     Source(const Source&) = delete;
     Source& operator=(const Source&) = delete;
 
+    Source(Source&& other);
+    Source& operator=(Source&& other);
+
     ~Source();
 
     /**
+     * \throw std::logic_error if object is not associated with a connection
      * \throw std::length_error if length == 0 || length > 32
      * \throw boost::system::system_error on connection failure
      */

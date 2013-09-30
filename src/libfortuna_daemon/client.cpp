@@ -19,6 +19,7 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "client.hpp"
 
+#include <stdexcept>
 #include <utility>
 
 #include "client_impl.hpp"
@@ -31,6 +32,18 @@ Client::Client(Config&& config)
     : impl{new Impl(std::move(config))}
 {}
 
+Client::Client(Client&& other)
+    : impl(other.impl)
+{
+    other.impl = nullptr;
+}
+
+Client& Client::operator=(Client&& other)
+{
+    std::swap(impl, other.impl);
+    return *this;
+}
+
 Client::~Client()
 {
     delete impl;
@@ -38,6 +51,8 @@ Client::~Client()
 
 void Client::get_random_data(byte* data, std::size_t length)
 {
+    if (!impl)
+        throw std::logic_error("Client object is not associated with a connection");
     impl->get_random_data(data, length);
 }
 

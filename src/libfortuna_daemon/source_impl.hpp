@@ -40,6 +40,11 @@ public:
     explicit
     Impl(Config&& config);
 
+    Impl(const Impl&) = delete;
+    Impl& operator=(const Impl&) = delete;
+    Impl(Impl&&) = delete;
+    Impl& operator=(Impl&&) = delete;
+
     /**
      * \throw std::length_error if length == 0 || length > 32
      */

@@ -40,7 +40,13 @@ private:
     CryptoPP::FixedSizeSecBlock<byte, sizeof(byte)+sizeof(std::size_t)> buffer;
 
 public:
+    explicit
     Impl(Config&& config);
+
+    Impl(const Impl&) = delete;
+    Impl& operator=(const Impl&) = delete;
+    Impl(Impl&&) = delete;
+    Impl& operator=(Impl&&) = delete;
 
     void get_random_data(byte* data, std::size_t length);
 
