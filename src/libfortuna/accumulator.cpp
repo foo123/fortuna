@@ -27,47 +27,10 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna {
 
 
-namespace {
-
-
-inline constexpr
-std::uint32_t greatest_power_of_2_that_divides(std::uint32_t n) noexcept
-{
-    return n & -n; // Bits magic. Powered by "Two's complement"
-}
-
-/**
- * \todo use something faster like http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogLookup or some one instruction assembly
- */
-inline
-std::uint8_t ilog2(std::uint32_t n) noexcept
-{
-    std::uint8_t ans = 0;
-    while (n >>= 1)
-        ++ans;
-    return ans;
-}
-
-/**
- * Using time_point::min() causes overflow.
- * 102 ms is enough distant past that forces generator reseed.
- */
-inline
-std::chrono::steady_clock::time_point distant_past()
-{
-    using namespace std::chrono;
-    return steady_clock::now() - milliseconds(102);
-}
-
-
-} // namespace
-
-
-
 Accumulator::Accumulator(Config&& config)
     : config{std::move(config)}
-    , last_reseed{distant_past()}
 {}
+
 
 void Accumulator::get_random_data(byte* output, std::size_t blocks_count)
 {
@@ -84,13 +47,8 @@ void Accumulator::get_random_data(byte* output, std::size_t blocks_count)
 
 void Accumulator::reseed_if_needed(Generator& generator)
 {
-    const auto now = std::chrono::steady_clock::now();
-    
-    if (is_min_pool_size_satisfied() && is_time_to_reseed(now)) {
-        last_reseed = now;
-        ++reseed_counter;
+    if (is_min_pool_size_satisfied() && generator.is_time_to_reseed())
         reseed(generator);
-    }
 }
 
 bool Accumulator::is_min_pool_size_satisfied() const
@@ -98,15 +56,27 @@ bool Accumulator::is_min_pool_size_satisfied() const
     return monitored_pools[0]([](Pool& pool){ return pool.get_total_length_of_appended_data(); }) >= config.min_pool_size;
 }
 
-bool Accumulator::is_time_to_reseed(const std::chrono::steady_clock::time_point& now) const
+static inline constexpr
+std::uint32_t greatest_power_of_2_that_divides(std::uint32_t n) noexcept
 {
-    using namespace std::chrono;
-    return duration_cast<milliseconds>(now - last_reseed).count() > 100;
+    return n & -n; // Bits magic. Powered by "Two's complement"
+}
+
+/**
+ * \todo use something faster like http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogLookup or some one instruction assembly
+ */
+static inline
+std::uint8_t ilog2(std::uint32_t n) noexcept
+{
+    std::uint8_t ans = 0;
+    while (n >>= 1)
+        ++ans;
+    return ans;
 }
 
 void Accumulator::reseed(Generator& generator)
 {
-    const unsigned long pools_to_use = ilog2(greatest_power_of_2_that_divides(reseed_counter)) + 1;
+    const unsigned long pools_to_use = ilog2(greatest_power_of_2_that_divides(generator.get_reseed_count())) + 1;
     
     CryptoPP::SecByteBlock buffer{pools_to_use * Pool::hash_length};
     
@@ -115,6 +85,7 @@ void Accumulator::reseed(Generator& generator)
     
     generator.reseed(buffer, buffer.SizeInBytes());
 }
+
 
 void Accumulator::add_random_event(std::uint8_t pool_number, std::uint8_t source_number, const byte* data, std::uint8_t length)
 {

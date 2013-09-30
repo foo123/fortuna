@@ -57,10 +57,35 @@ auto Generator::Counter::operator++() -> Counter&
 
 
 
+/**
+ * Using time_point::min() causes overflow.
+ * 102 ms is enough distant past that forces generator reseed.
+ */
+static inline
+std::chrono::steady_clock::time_point distant_past()
+{
+    using namespace std::chrono;
+    return steady_clock::now() - milliseconds(102);
+}
+
+Generator::Generator()
+    : last_reseed{distant_past()}
+{}
+
+
+bool Generator::is_time_to_reseed() const
+{
+    using namespace std::chrono;
+    return duration_cast<milliseconds>(steady_clock::now() - last_reseed).count() > 100; // TODO: config?
+}
+
+
 void Generator::reseed(const byte* seed, std::size_t seed_length)
 {
     key.reseed(seed, seed_length);
     ++counter;
+    ++reseed_counter;
+    last_reseed = std::chrono::steady_clock::now();
 }
 
 

@@ -20,6 +20,9 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef FORTUNA_GENERATOR_HPP
 #define FORTUNA_GENERATOR_HPP
 
+#include <chrono>
+#include <cstdint>
+
 #include <cryptopp/aes.h>
 #include <cryptopp/secblock.h>
 
@@ -85,12 +88,22 @@ private:
     Key key;
     Counter counter;
 
+    std::uint32_t reseed_counter = 0; // 32 bits, because 32 pools
+    std::chrono::steady_clock::time_point last_reseed;
+
 public:
     static constexpr
     const std::size_t output_block_length = CryptoPP::AES::BLOCKSIZE;
 
+    Generator();
+
     bool is_seeded() const
     { return !counter.is_zero(); }
+
+    std::uint32_t get_reseed_count() const noexcept
+    { return reseed_counter; }
+
+    bool is_time_to_reseed() const;
 
     void reseed(const byte* seed, std::size_t seed_length);
 

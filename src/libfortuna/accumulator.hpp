@@ -20,9 +20,7 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef FORTUNA_ACCUMULATOR_HPP
 #define FORTUNA_ACCUMULATOR_HPP
 
-#include <cstdint>
 #include <array>
-#include <chrono>
 
 #include "generator.hpp"
 #include "pool.hpp"
@@ -54,9 +52,6 @@ private:
     std::array<stdex::monitor<Pool>, 32> monitored_pools;
     stdex::monitor<Generator> monitored_generator;
 
-    std::uint32_t reseed_counter = 0; // 32 bits, because 32 pools
-    std::chrono::steady_clock::time_point last_reseed;
-
 public:
     static constexpr
     const std::size_t output_block_length = Generator::output_block_length;
@@ -83,7 +78,6 @@ public:
 private:
     void reseed_if_needed(Generator& generator);
     bool is_min_pool_size_satisfied() const;
-    bool is_time_to_reseed(const std::chrono::steady_clock::time_point& now) const;
     void reseed(Generator& generator);
 
 public:
