@@ -11,6 +11,7 @@
 /config.log
 /config.status
 /configure
+/doc/html
 /fortuna_client
 /fortunad
 /libtool
