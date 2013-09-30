@@ -19,6 +19,7 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "accumulator.hpp"
 
+#include <future>
 #include <utility>
 
 #include "fortuna_exception.hpp"
@@ -91,8 +92,20 @@ void Accumulator::reseed(Generator& generator)
     
     CryptoPP::SecByteBlock buffer{pools_to_use * Pool::hash_length};
     
-    for (byte i = 0; i < pools_to_use; ++i)
-        monitored_pools[i]([&buffer,i](Pool& pool){ pool.get_hash_and_clear(buffer.BytePtr() + i*Pool::hash_length); });
+    std::vector<std::future<void>> tasks;
+    tasks.reserve(pools_to_use);
+    
+    {
+        auto task = [this](byte i, byte* dest) {
+            monitored_pools[i]( [dest](Pool& pool) {
+                pool.get_hash_and_clear(dest);
+            });
+        };
+        for (byte i = 0; i < pools_to_use; ++i)
+            tasks.push_back(std::async(std::launch::async, task, i, buffer.BytePtr() + i*Pool::hash_length));
+    }
+    for (auto& task : tasks)
+        task.wait();
     
     generator.reseed(buffer, buffer.SizeInBytes());
 }
