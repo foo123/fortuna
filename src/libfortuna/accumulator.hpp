@@ -23,9 +23,8 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #include <array>
 
 #include "generator.hpp"
+#include "monitor.hpp"
 #include "pool.hpp"
-
-#include "stdex/monitor.hpp"
 
 typedef unsigned char byte;
 
@@ -49,8 +48,8 @@ public:
 private:
     const Config config;
 
-    std::array<stdex::monitor<Pool>, 32> monitored_pools;
-    stdex::monitor<Generator> monitored_generator;
+    std::array<monitor<Pool>, 32> monitored_pools;
+    monitor<Generator> monitored_generator;
 
 public:
     static constexpr

@@ -23,7 +23,7 @@ along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/program_options.hpp>
 
-#include "stdex/cstdlib.hpp"
+#include "die.hpp"
 
 
 namespace fortuna_client {
@@ -70,7 +70,7 @@ Application::AllConfig handle_options(int argc, char* argv[])
     }
     
     if (!vm.count("length")) {
-        stdex::die("you must specify length");
+        die("you must specify length");
     }
     
     return std::move(config);

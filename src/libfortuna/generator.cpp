@@ -19,18 +19,29 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "generator.hpp"
 
+#include <algorithm>
+#include <iterator>
+
 #include <cryptopp/misc.h>
 #include <cryptopp/sha3.h>
-
-#include "stdex/algorithm.hpp"
 
 
 namespace fortuna {
 
 
+template <class Iterable, class T>
+static inline
+void my_fill(Iterable& iterable, const T& value)
+{
+    using std::begin;
+    using std::end;
+    std::fill(begin(iterable), end(iterable), value);
+}
+
+
 Generator::Key::Key()
 {
-    stdex::fill(data, 0);
+    my_fill(data, 0);
 }
 
 void Generator::Key::reseed(const byte* seed, std::size_t seed_length)
@@ -45,7 +56,7 @@ void Generator::Key::reseed(const byte* seed, std::size_t seed_length)
 
 Generator::Counter::Counter()
 {
-    stdex::fill(data, 0);
+    my_fill(data, 0);
 }
 
 auto Generator::Counter::operator++() -> Counter&

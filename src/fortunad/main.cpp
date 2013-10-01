@@ -20,8 +20,8 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include <exception>
 
 #include "application.hpp"
+#include "die.hpp"
 #include "options.hpp"
-#include "stdex/cstdlib.hpp"
 
 
 int main(int argc, char* argv[])
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
         Application{handle_options(argc, argv)}.run();
     }
     catch (std::exception& e) {
-        stdex::die( e.what() );
+        die( e.what() );
     }
     return 0;
 }

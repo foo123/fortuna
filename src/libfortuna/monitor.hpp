@@ -1,8 +1,20 @@
 /*
-Copyright (C) 2013 Adam Mizerski <adam@mizerski.pl>
-This work is free. You can redistribute it and/or modify it under the
-terms of the Do What The Fuck You Want To Public License, Version 2,
-as published by Sam Hocevar. See the COPYING file for more details.
+Copyright 2013 Adam Mizerski <adam@mizerski.pl>
+
+This file is part of fortuna.
+
+libfortuna is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+libfortuna is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
 Based on Herb Shutter's monitor implementation presented on
@@ -10,14 +22,14 @@ https://channel9.msdn.com/Shows/Going+Deep/C-and-Beyond-2012-Herb-Sutter-Concurr
 which is, I hope, public domain.
 */
 
-#ifndef STDEX_MONITOR_HPP
-#define STDEX_MONITOR_HPP
+#ifndef FORTUNA_MONITOR_HPP
+#define FORTUNA_MONITOR_HPP
 
 #include <mutex>
 #include <utility>
 
 
-namespace stdex {
+namespace fortuna {
 
 
 template <class T>
@@ -67,6 +79,6 @@ public:
 };
 
 
-} // namespace stdex
+} // namespace fortuna
 
-#endif // STDEX_MONITOR_HPP
+#endif // FORTUNA_MONITOR_HPP

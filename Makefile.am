@@ -33,18 +33,15 @@ libfortuna_la_SOURCES = \
     src/libfortuna/accumulator.cpp \
     src/libfortuna/fortuna_exception.cpp \
     src/libfortuna/generator.cpp \
-    src/libfortuna/pool.cpp \
-    src/libfortuna/stdex/algorithm.hpp
+    src/libfortuna/pool.cpp
 
 libfortuna_la_includedir = $(includedir)/fortuna
 libfortuna_la_include_HEADERS = \
     src/libfortuna/accumulator.hpp \
     src/libfortuna/fortuna_exception.hpp \
     src/libfortuna/generator.hpp \
+    src/libfortuna/monitor.hpp \
     src/libfortuna/pool.hpp
-libfortuna_la_stdex_includedir = $(includedir)/fortuna/stdex
-libfortuna_la_stdex_include_HEADERS = \
-    src/libfortuna/stdex/monitor.hpp
 
 
 libfortuna_la_CPPFLAGS = \
@@ -123,10 +120,11 @@ bin_PROGRAMS += fortuna_client
 fortuna_client_SOURCES = \
     src/fortuna_client/application.cpp \
     src/fortuna_client/application.hpp \
+    src/fortuna_client/die.cpp \
+    src/fortuna_client/die.hpp \
     src/fortuna_client/main.cpp \
     src/fortuna_client/options.cpp \
-    src/fortuna_client/options.hpp \
-    src/fortuna_client/stdex/cstdlib.hpp
+    src/fortuna_client/options.hpp
 
 fortuna_client_CPPFLAGS = \
     $(BOOST_CPPFLAGS) \
@@ -149,6 +147,8 @@ bin_PROGRAMS += fortunad
 fortunad_SOURCES = \
     src/fortunad/application.cpp \
     src/fortunad/application.hpp \
+    src/fortunad/die.cpp \
+    src/fortunad/die.hpp \
     src/fortunad/main.cpp \
     src/fortunad/options.cpp \
     src/fortunad/options.hpp \
@@ -156,7 +156,6 @@ fortunad_SOURCES = \
     src/fortunad/server.hpp \
     src/fortunad/session.cpp \
     src/fortunad/session.hpp \
-    src/fortunad/stdex/cstdlib.hpp \
     src/libfortuna_daemon/connection_info.hpp
 
 fortunad_CPPFLAGS = \
