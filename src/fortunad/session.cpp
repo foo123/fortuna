@@ -23,6 +23,7 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 
 #include <boost/asio.hpp>
+#include <boost/asio/detail/socket_ops.hpp>
 #include <boost/bind.hpp>
 
 #include <libfortuna/accumulator.hpp>
@@ -155,7 +156,7 @@ void Session::handle_read_random_event_data(const boost::system::error_code& err
 
 void Session::async_read_request_length()
 {
-    async_read(0, sizeof(std::size_t), &Session::handle_read_request_length);
+    async_read(0, sizeof(std::uint32_t), &Session::handle_read_request_length);
 }
 
 void Session::handle_read_request_length(const boost::system::error_code& error)
@@ -165,7 +166,9 @@ void Session::handle_read_request_length(const boost::system::error_code& error)
         return;
     }
     
-    const unsigned long length = *reinterpret_cast<std::size_t*>(buffer.BytePtr());
+    using boost::asio::detail::socket_ops::network_to_host_long;
+    
+    const std::uint32_t length = network_to_host_long(*reinterpret_cast<std::uint32_t*>(buffer.BytePtr()));
     if (length == 0) {
         log_error("length 0 not allowed");
         return;
@@ -182,7 +185,7 @@ void Session::handle_read_request_length(const boost::system::error_code& error)
 }
 
 
-void Session::async_write_random_data(unsigned long length)
+void Session::async_write_random_data(std::uint32_t length)
 {
     const unsigned long blocks_count = fortuna::Accumulator::bytes_to_blocks(length);
     buffer.New(1 + blocks_count * fortuna::Accumulator::output_block_length);

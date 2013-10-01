@@ -37,7 +37,7 @@ private:
     boost::asio::io_service io_service;
     boost::asio::local::stream_protocol::socket socket;
 
-    CryptoPP::FixedSizeSecBlock<byte, sizeof(byte)+sizeof(std::size_t)> buffer;
+    CryptoPP::FixedSizeSecBlock<byte, sizeof(byte)+sizeof(std::uint32_t)> buffer;
 
 public:
     explicit
@@ -48,12 +48,12 @@ public:
     Impl(Impl&&) = delete;
     Impl& operator=(Impl&&) = delete;
 
-    void get_random_data(byte* data, std::size_t length);
+    void get_random_data(byte* data, std::uint32_t length);
 
 private:
-    void send_request(std::size_t length);
+    void send_request(std::uint32_t length);
     byte receive_status();
-    void receive_data(byte* data, std::size_t length);
+    void receive_data(byte* data, std::uint32_t length);
 };
 
 

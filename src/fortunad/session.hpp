@@ -20,6 +20,7 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef FORTUNAD_SESSION_HPP
 #define FORTUNAD_SESSION_HPP
 
+#include <cstdint>
 #include <memory>
 
 #include <boost/asio/local/stream_protocol.hpp>
@@ -92,7 +93,7 @@ private:
     void async_read_request_length();
     void handle_read_request_length(const boost::system::error_code& error);
 
-    void async_write_random_data(unsigned long size);
+    void async_write_random_data(std::uint32_t size);
     void handle_write_random_data(const boost::system::error_code& error);
 
     void async_write_generator_not_seeded();

@@ -49,7 +49,7 @@ Client::~Client()
     delete impl;
 }
 
-void Client::get_random_data(byte* data, std::size_t length)
+void Client::get_random_data(byte* data, std::uint32_t length)
 {
     if (!impl)
         throw std::logic_error("Client object is not associated with a connection");

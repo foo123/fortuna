@@ -19,6 +19,7 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "client_impl.hpp"
 
+#include <boost/asio/detail/socket_ops.hpp>
 #include <boost/asio/read.hpp>
 #include <boost/asio/write.hpp>
 
@@ -39,7 +40,7 @@ Client::Impl::Impl(Config&& config)
 }
 
 
-void Client::Impl::get_random_data(byte* data, std::size_t length)
+void Client::Impl::get_random_data(byte* data, std::uint32_t length)
 {
     send_request(length);
     byte status = receive_status();
@@ -57,9 +58,11 @@ void Client::Impl::get_random_data(byte* data, std::size_t length)
     }
 }
 
-void Client::Impl::send_request(std::size_t length)
+void Client::Impl::send_request(std::uint32_t length)
 {
-    *reinterpret_cast<std::size_t*>(buffer.BytePtr()+1) = length;
+    using boost::asio::detail::socket_ops::host_to_network_long;
+    
+    *reinterpret_cast<std::uint32_t*>(buffer.BytePtr()+1) = host_to_network_long(length);
     boost::asio::write(socket, boost::asio::buffer(buffer, buffer.SizeInBytes()));
 }
 
@@ -70,7 +73,7 @@ byte Client::Impl::receive_status()
     return status;
 }
 
-void Client::Impl::receive_data(byte* data, std::size_t length)
+void Client::Impl::receive_data(byte* data, std::uint32_t length)
 {
     boost::asio::read(socket, boost::asio::buffer(data, length));
 }

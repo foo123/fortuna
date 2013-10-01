@@ -20,6 +20,7 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef FORTUNA_DAEMON_CLIENT_HPP
 #define FORTUNA_DAEMON_CLIENT_HPP
 
+#include <cstdint>
 #include <string>
 
 #include "connection_info.hpp"
@@ -71,7 +72,7 @@ public:
      * \throw ClientException if length is too big (max is 2^20 == 1048576)
      * \throw ClientException if generator is not seeded
      */
-    void get_random_data(byte* data, std::size_t length);
+    void get_random_data(byte* data, std::uint32_t length);
 };
 
 

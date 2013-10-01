@@ -1,10 +1,9 @@
-- import source timer
+- import timer source
 - create raw data source
 - libraries visibility
 - build system: enable/disable components -> enable/disable library checks
 - seed file
 
 networking:
-- convert networking to endianess agnostic (it's only in one place, but still...)
 - add loopback tcp socket; options to enable/disable unix domain or tcp sockets
 - allow compile-time enable/disable unix domain socket
