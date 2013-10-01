@@ -19,6 +19,9 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "session.hpp"
 
+#include <iosfwd>
+#include <iostream>
+
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 
@@ -27,6 +30,13 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 
 namespace fortuna_daemon {
+
+
+static inline
+void log_error(const std::string& msg)
+{
+    std::cerr << "error: " << msg << std::endl;
+}
 
 
 Session::Session(boost::asio::io_service& io_service, fortuna::Accumulator& acc)
@@ -81,8 +91,10 @@ void Session::async_read_command()
 
 void Session::handle_read_command(const boost::system::error_code& error)
 {
-    if (error)
+    if (error) {
+        log_error(error.message());
         return;
+    }
     
     switch (buffer.BytePtr()[0]) {
     case 0x00:
@@ -102,12 +114,17 @@ void Session::async_read_random_event_header()
 
 void Session::handle_read_random_event_header(const boost::system::error_code& error)
 {
-    if (error
-        || buffer.BytePtr()[0]/*pool number*/ >= 32
+    if (error) {
+        log_error(error.message());
+        return;
+    }
+    if (buffer.BytePtr()[0]/*pool number*/ >= 32
         || buffer.BytePtr()[2]/*data length*/ == 0
         || buffer.BytePtr()[2]/*data length*/ > 32
-    )
+    ) {
+        log_error("header data incorrect");
         return;
+    }
     
     async_read_random_event_data();
 }
@@ -120,8 +137,10 @@ void Session::async_read_random_event_data()
 
 void Session::handle_read_random_event_data(const boost::system::error_code& error)
 {
-    if (error)
+    if (error) {
+        log_error(error.message());
         return;
+    }
     
     accumulator.add_random_event(
         buffer.BytePtr()[0], /* pool number */
@@ -141,12 +160,16 @@ void Session::async_read_request_length()
 
 void Session::handle_read_request_length(const boost::system::error_code& error)
 {
-    if (error)
+    if (error) {
+        log_error(error.message());
         return;
+    }
     
     const unsigned long length = *reinterpret_cast<std::size_t*>(buffer.BytePtr());
-    if (length == 0)
+    if (length == 0) {
+        log_error("length 0 not allowed");
         return;
+    }
     
     try {
         async_write_random_data(length);
@@ -171,8 +194,10 @@ void Session::async_write_random_data(unsigned long length)
 
 void Session::handle_write_random_data(const boost::system::error_code& error)
 {
-    if (error)
+    if (error) {
+        log_error(error.message());
         return;
+    }
     
     async_read_command();
 }
@@ -186,8 +211,10 @@ void Session::async_write_request_too_big()
 
 void Session::handle_write_request_too_big(const boost::system::error_code& error)
 {
-    if (error)
+    if (error) {
+        log_error(error.message());
         return;
+    }
     
     async_read_command();
 }
@@ -201,8 +228,10 @@ void Session::async_write_generator_not_seeded()
 
 void Session::handle_write_generator_not_seeded(const boost::system::error_code& error)
 {
-    if (error)
+    if (error) {
+        log_error(error.message());
         return;
+    }
     
     async_read_command();
 }

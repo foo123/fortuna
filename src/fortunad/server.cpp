@@ -56,10 +56,9 @@ void Server::create_session(std::shared_ptr<Session>& new_session)
 
 void Server::handle_accept(std::shared_ptr<Session> new_session, const boost::system::error_code& error)
 {
-    if (!error) {
+    if (!error)
         new_session->start();
-        create_session(new_session);
-    }
+    create_session(new_session);
 }
 
 
