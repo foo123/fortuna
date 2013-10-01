@@ -25,9 +25,6 @@ along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 #include <utility>
 
 
-namespace fortuna_client {
-
-
 Application::Application(AllConfig&& all_config)
     : config{std::move(all_config.application)}
     , fortuna{std::move(all_config.client)}
@@ -60,6 +57,3 @@ void Application::write_chunk_of_data_to_stream(std::ostream& ostream, std::size
     fortuna.get_random_data(buffer, length);
     ostream.write(reinterpret_cast<char*>(buffer.BytePtr()), length);
 }
-
-
-} // namespace fortuna_client

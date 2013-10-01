@@ -28,9 +28,6 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include "server.hpp"
 
 
-namespace fortuna_daemon {
-
-
 class Application
     : boost::noncopyable
 {
@@ -69,7 +66,5 @@ public:
     void run();
 };
 
-
-} // namespace fortuna_daemon
 
 #endif // FORTUNAD_APPLICATION_HPP

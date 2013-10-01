@@ -32,9 +32,6 @@ namespace fortuna {
 }
 
 
-namespace fortuna_daemon {
-
-
 class Session
     : public std::enable_shared_from_this<Session>
     , boost::noncopyable
@@ -101,8 +98,5 @@ private:
     void async_write_request_too_big();
     void handle_write_request_too_big(const boost::system::error_code& error);
 };
-
-
-} // namespace fortuna_daemon
 
 #endif // FORTUNAD_SESSION_HPP

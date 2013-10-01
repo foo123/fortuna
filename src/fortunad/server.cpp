@@ -27,9 +27,6 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include "session.hpp"
 
 
-namespace fortuna_daemon {
-
-
 Server::Server(boost::asio::io_service& ios, AllConfig&& all_config)
     : config{std::move(all_config.server)}
     , io_service(ios)
@@ -61,6 +58,3 @@ void Server::handle_accept(std::shared_ptr<Session> new_session, const boost::sy
         create_session(new_session);
     }
 }
-
-
-} // namespace fortuna_daemon
