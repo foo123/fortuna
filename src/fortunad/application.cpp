@@ -22,6 +22,9 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include <utility>
 
 
+namespace fortuna_daemon {
+
+
 Application::Application(Application::AllConfig&& all_config)
     : config{std::move(all_config.application)}
     , io_service{}
@@ -48,3 +51,6 @@ void Application::run()
     
     threads.join_all();
 }
+
+
+} // namespace fortuna_daemon

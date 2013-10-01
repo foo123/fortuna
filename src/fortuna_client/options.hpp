@@ -23,7 +23,12 @@ along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 #include "application.hpp"
 
 
+namespace fortuna_client {
+
+
 Application::AllConfig handle_options(int argc, char* argv[]);
 
+
+} // fortuna_client
 
 #endif // FORTUNA_CLIENT_OPTIONS_HPP

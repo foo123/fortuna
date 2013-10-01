@@ -26,6 +26,7 @@ along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 
 int main(int argc, char* argv[])
 {
+    using namespace fortuna_client;
     try {
         Application{handle_options(argc, argv)}.run();
     }

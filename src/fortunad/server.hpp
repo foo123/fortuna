@@ -32,6 +32,8 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include <libfortuna_daemon/connection_info.hpp>
 
 
+namespace fortuna_daemon {
+
 class Session;
 
 
@@ -41,7 +43,7 @@ class Server
 public:
     struct Config
     {
-        fortuna_daemon::ConnectionInfo connection_info;
+        ConnectionInfo connection_info;
 
         Config()
         {}
@@ -73,5 +75,8 @@ private:
     void create_session(std::shared_ptr<Session>& new_session);
     void handle_accept(std::shared_ptr<Session> new_session, const boost::system::error_code& error);
 };
+
+
+} // namespace fortuna_daemon
 
 #endif // FORTUNAD_SERVER_HPP

@@ -25,6 +25,9 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include <boost/program_options.hpp>
 
 
+namespace fortuna_daemon {
+
+
 namespace {
 
 
@@ -80,3 +83,6 @@ Application::AllConfig handle_options(int argc, char* argv[])
     
     return std::move(config);
 }
+
+
+} // namespace fortuna_daemon

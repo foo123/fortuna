@@ -26,6 +26,9 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include <libfortuna/fortuna_exception.hpp>
 
 
+namespace fortuna_daemon {
+
+
 Session::Session(boost::asio::io_service& io_service, fortuna::Accumulator& acc)
     : std::enable_shared_from_this<Session>{}
     , socket{io_service}
@@ -203,3 +206,6 @@ void Session::handle_write_generator_not_seeded(const boost::system::error_code&
     
     async_read_command();
 }
+
+
+} // namespace fortuna_daemon

@@ -28,6 +28,8 @@ along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 #include <libfortuna_daemon/client.hpp>
 
 
+namespace fortuna_client {
+
 typedef unsigned long long ullong;
 
 
@@ -69,5 +71,7 @@ private:
     void write_chunk_of_data_to_stream(std::ostream& ostream, std::size_t length);
 };
 
+
+} // namespace fortuna_client
 
 #endif // FORTUNA_CLIENT_APPLICATION_HPP

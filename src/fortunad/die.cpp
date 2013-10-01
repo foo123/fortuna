@@ -23,8 +23,15 @@ along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 
 
+namespace fortuna_daemon {
+
+
 void die(const std::string& msg, int status_code)
 {
     std::cerr << "error: " << msg << std::endl;
     std::exit(status_code);
 }
+
+
+} // fortuna_daemon
+

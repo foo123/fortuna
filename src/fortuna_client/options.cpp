@@ -26,6 +26,9 @@ along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 #include "die.hpp"
 
 
+namespace fortuna_client {
+
+
 namespace {
 
 
@@ -72,3 +75,6 @@ Application::AllConfig handle_options(int argc, char* argv[])
     
     return std::move(config);
 }
+
+
+} // namespace fortuna_client

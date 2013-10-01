@@ -23,7 +23,12 @@ along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 #include <iosfwd>
 
 
+namespace fortuna_client {
+
+
 void die(const std::string& msg, int status_code = 1);
 
+
+} // fortuna_client
 
 #endif // FORTUNA_CLIENT_DIE_HPP
