@@ -23,7 +23,7 @@ along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/program_options.hpp>
 
-#include "die.hpp"
+#include "main.hpp"
 
 
 namespace fortuna_client {

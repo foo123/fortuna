@@ -120,9 +120,8 @@ bin_PROGRAMS += fortuna_client
 fortuna_client_SOURCES = \
     src/fortuna_client/application.cpp \
     src/fortuna_client/application.hpp \
-    src/fortuna_client/die.cpp \
-    src/fortuna_client/die.hpp \
     src/fortuna_client/main.cpp \
+    src/fortuna_client/main.hpp \
     src/fortuna_client/options.cpp \
     src/fortuna_client/options.hpp
 
@@ -147,9 +146,8 @@ bin_PROGRAMS += fortunad
 fortunad_SOURCES = \
     src/fortunad/application.cpp \
     src/fortunad/application.hpp \
-    src/fortunad/die.cpp \
-    src/fortunad/die.hpp \
     src/fortunad/main.cpp \
+    src/fortunad/main.hpp \
     src/fortunad/options.cpp \
     src/fortunad/options.hpp \
     src/fortunad/server.cpp \

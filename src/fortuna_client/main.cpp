@@ -17,11 +17,21 @@ You should have received a copy of the GNU General Public License
 along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cstdlib>
+#include <iostream>
+
 #include <libfortuna_daemon/client_exception.hpp>
 
 #include "application.hpp"
-#include "die.hpp"
+#include "main.hpp"
 #include "options.hpp"
+
+
+void die(const std::string& msg, int status_code)
+{
+    std::cerr << "error: " << msg << std::endl;
+    std::exit(status_code);
+}
 
 
 int main(int argc, char* argv[])

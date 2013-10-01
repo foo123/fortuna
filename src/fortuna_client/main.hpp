@@ -17,21 +17,13 @@ You should have received a copy of the GNU General Public License
 along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "die.hpp"
+#ifndef FORTUNA_CLIENT_MAIN_HPP
+#define FORTUNA_CLIENT_MAIN_HPP
 
-#include <cstdlib>
-#include <iostream>
-
-
-namespace fortuna_client {
+#include <iosfwd>
 
 
-void die(const std::string& msg, int status_code)
-{
-    std::cerr << "error: " << msg << std::endl;
-    std::exit(status_code);
-}
+void die(const std::string& msg, int status_code = 1);
 
 
-} // fortuna_client
-
+#endif // FORTUNA_CLIENT_MAIN_HPP

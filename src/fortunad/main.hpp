@@ -17,18 +17,13 @@ You should have received a copy of the GNU General Public License
 along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef FORTUNA_DAEMON_DIE_HPP
-#define FORTUNA_DAEMON_DIE_HPP
+#ifndef FORTUNA_DAEMON_MAIN_HPP
+#define FORTUNA_DAEMON_MAIN_HPP
 
 #include <iosfwd>
-
-
-namespace fortuna_daemon {
 
 
 void die(const std::string& msg, int status_code = 1);
 
 
-} // fortuna_daemon
-
-#endif // FORTUNA_DAEMON_DIE_HPP
+#endif // FORTUNA_DAEMON_MAIN_HPP
