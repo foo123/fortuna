@@ -82,7 +82,7 @@ private:
         bool is_zero() const noexcept
         { return _is_zero; }
 
-        Counter& operator++();
+        void increment();
     };
 
     Key key;

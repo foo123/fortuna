@@ -59,11 +59,10 @@ Generator::Counter::Counter()
     my_fill(data, 0);
 }
 
-auto Generator::Counter::operator++() -> Counter&
+void Generator::Counter::increment()
 {
     CryptoPP::IncrementCounterByOne(data, data.size());
     _is_zero = false;
-    return *this;
 }
 
 
@@ -94,7 +93,7 @@ bool Generator::is_time_to_reseed() const
 void Generator::reseed(const byte* seed, std::size_t seed_length)
 {
     key.reseed(seed, seed_length);
-    ++counter;
+    counter.increment();
     ++reseed_counter;
     last_reseed = std::chrono::steady_clock::now();
 }
@@ -112,7 +111,7 @@ void Generator::generate_blocks(byte* output, std::size_t blocks_count)
     CryptoPP::AES::Encryption aes{key, key.size()}; // makes a copy of the key, so it's not a problem when the key is also an output
     for (unsigned long i = 0; i < blocks_count; ++i) {
         aes.ProcessBlock(counter, output + i*CryptoPP::AES::BLOCKSIZE);
-        ++counter;
+        counter.increment();
     }
 }
 
