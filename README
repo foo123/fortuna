@@ -1,8 +1,7 @@
 General Information
 ===================
 
-This is implementation of Fortuna PRNG (https://en.wikipedia.org/wiki/Fortuna_%28PRNG%29)
-in C++11 using Boost and Crypto++ libraries, originally written by Adam Mizerski <adam@mizerski.pl>.
+This is implementation of Fortuna PRNG (https://en.wikipedia.org/wiki/Fortuna_%28PRNG%29) in C++11 using Boost and Crypto++ libraries, originally written by Adam Mizerski <adam@mizerski.pl>.
 
 Components:
   - libfortuna          - Implementation of Fortuna algorithm.
@@ -13,7 +12,6 @@ Components:
 Licensing:
   - Libraries (libfortuna, libfortuna_daemon) are released under LGPLv3 or later.
   - Programs (everything else) are released under GPLv3 or later.
-  - Components contains parts of stdex library (https://github.com/etam/stdex), which is released under the WTFPLv2.
 
 Tested with:
   - g++         4.7.2
