@@ -51,10 +51,6 @@ public:
     };
 
 
-    Client()
-        : impl(nullptr)
-    {}
-
     explicit
     Client(Config&& config);
 
@@ -67,7 +63,6 @@ public:
     ~Client();
 
     /**
-     * \throw std::logic_error if object is not associated with a connection
      * \throw boost::system::system_error on connection failure
      * \throw ClientException if length is too big (max is 2^20 == 1048576)
      * \throw ClientException if generator is not seeded

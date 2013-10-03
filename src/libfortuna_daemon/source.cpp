@@ -19,7 +19,6 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "source.hpp"
 
-#include <stdexcept>
 #include <utility>
 
 #include "source_impl.hpp"
@@ -51,8 +50,6 @@ Source::~Source()
 
 void Source::add_random_event(const byte* data, byte data_size)
 {
-    if (!impl)
-        throw std::logic_error("Source object is not associated with a connection");
     impl->add_random_event(data, data_size);
 }
 

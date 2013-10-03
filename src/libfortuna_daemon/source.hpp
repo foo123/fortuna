@@ -46,10 +46,6 @@ public:
     };
 
 
-    Source()
-        : impl(nullptr)
-    {}
-
     explicit
     Source(Config&& config);
 
@@ -62,7 +58,6 @@ public:
     ~Source();
 
     /**
-     * \throw std::logic_error if object is not associated with a connection
      * \throw std::length_error if length == 0 || length > 32
      * \throw boost::system::system_error on connection failure
      */
