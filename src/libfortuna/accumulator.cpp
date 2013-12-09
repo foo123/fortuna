@@ -92,6 +92,7 @@ void Accumulator::reseed(Generator& generator)
     
     CryptoPP::SecByteBlock buffer{pools_to_use * Pool::hash_length};
     
+    // TODO: maybe just use openmp here?
     std::vector<std::future<void>> tasks;
     tasks.reserve(pools_to_use);
     

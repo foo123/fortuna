@@ -49,7 +49,7 @@ public:
     monitor() = default;
 
     monitor(const T& _obj)
-        : obj(_obj)
+        : obj{_obj}
     {}
 
     monitor(T&& _obj)
@@ -57,7 +57,7 @@ public:
     {}
 
     monitor(const monitor<T>& other_monitor)
-        : obj(other_monitor.synced_obj_copy())
+        : obj{other_monitor.synced_obj_copy()}
     {}
 
     monitor& operator=(const monitor& other_monitor)
