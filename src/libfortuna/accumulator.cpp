@@ -19,7 +19,6 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "accumulator.hpp"
 
-#include <future>
 #include <utility>
 
 #include "fortuna_exception.hpp"
@@ -92,21 +91,13 @@ void Accumulator::reseed(Generator& generator)
     
     CryptoPP::SecByteBlock buffer{pools_to_use * Pool::hash_length};
     
-    // TODO: maybe just use openmp here?
-    std::vector<std::future<void>> tasks;
-    tasks.reserve(pools_to_use);
-    
-    {
-        auto task = [this](byte i, byte* dest) {
-            monitored_pools[i]( [dest](Pool& pool) {
-                pool.get_hash_and_clear(dest);
-            });
-        };
-        for (byte i = 0; i < pools_to_use; ++i)
-            tasks.push_back(std::async(std::launch::async, task, i, buffer.BytePtr() + i*Pool::hash_length));
+    #pragma omp parallel for
+    for (byte i = 0; i < pools_to_use; ++i) {
+        byte* dest = buffer.BytePtr() + i*Pool::hash_length;
+        monitored_pools[i]([dest](Pool& pool) {
+            pool.get_hash_and_clear(dest);
+        });
     }
-    for (auto& task : tasks)
-        task.wait();
     
     generator.reseed(buffer, buffer.SizeInBytes());
 }

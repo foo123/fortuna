@@ -46,10 +46,12 @@ libfortuna_la_include_HEADERS = \
 
 libfortuna_la_CPPFLAGS = \
     $(CRYPTOPP_CPPFLAGS) \
+    $(OPENMP_CXXFLAGS) \
     $(AM_CPPFLAGS)
 
 libfortuna_la_LDFLAGS = \
     $(CRYPTOPP_LDFLAGS) \
+    $(OPENMP_CXXFLAGS) \
     -version-info $(LIBFORTUNA_LT_VERSION)
 
 libfortuna_la_LIBADD = \

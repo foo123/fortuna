@@ -67,6 +67,8 @@ AX_CHECK_LIBRARY([CRYPTOPP], [cryptopp/config.h], [cryptopp], [], [AC_MSG_ERROR(
 
 # Checks for typedefs, structures, and compiler characteristics.
 AX_CXX_COMPILE_STDCXX_11([noext])
+AX_OPENMP
+AC_SUBST(OPENMP_CXXFLAGS)
 
 # Checks for library functions.
 
