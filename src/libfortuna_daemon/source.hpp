@@ -20,6 +20,8 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef FORTUNA_DAEMON_SOURCE_HPP
 #define FORTUNA_DAEMON_SOURCE_HPP
 
+#include <memory>
+
 #include "connection_info.hpp"
 
 typedef unsigned char byte;
@@ -33,7 +35,7 @@ class Source
 private:
     class Impl; ///> Hides all the boost::asio and cryptopp stuff.
 
-    Impl* impl;
+    std::unique_ptr<Impl> impl;
 
 public:
     struct Config
@@ -47,13 +49,13 @@ public:
 
 
     explicit
-    Source(Config&& config);
+    Source(const Config& config);
 
     Source(const Source&) = delete;
     Source& operator=(const Source&) = delete;
 
-    Source(Source&& other);
-    Source& operator=(Source&& other);
+    Source(Source&& other) = default;
+    Source& operator=(Source&& other) = default;
 
     ~Source();
 

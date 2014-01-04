@@ -27,26 +27,13 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna_daemon {
 
 
-Client::Client(Config&& config)
-    : impl{new Impl(std::move(config))}
+Client::Client(const Config& config)
+    : impl{new Impl{config}}
 {}
 
-Client::Client(Client&& other)
-    : impl(other.impl)
-{
-    other.impl = nullptr;
-}
-
-Client& Client::operator=(Client&& other)
-{
-    std::swap(impl, other.impl);
-    return *this;
-}
-
 Client::~Client()
-{
-    delete impl;
-}
+{}
+
 
 void Client::get_random_data(byte* data, std::uint32_t length)
 {

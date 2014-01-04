@@ -27,26 +27,13 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna_daemon {
 
 
-Source::Source(Config&& config)
-    : impl{new Impl(std::move(config))}
+Source::Source(const Config& config)
+    : impl{new Impl{config}}
 {}
 
-Source::Source(Source&& other)
-    : impl{other.impl}
-{
-    other.impl = nullptr;
-}
-
-Source& Source::operator=(Source&& other)
-{
-    std::swap(impl, other.impl);
-    return *this;
-}
-
 Source::~Source()
-{
-    delete impl;
-}
+{}
+
 
 void Source::add_random_event(const byte* data, byte data_size)
 {

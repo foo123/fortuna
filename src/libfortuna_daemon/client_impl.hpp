@@ -41,7 +41,7 @@ private:
 
 public:
     explicit
-    Impl(Config&& config);
+    Impl(const Config& config);
 
     Impl(const Impl&) = delete;
     Impl& operator=(const Impl&) = delete;

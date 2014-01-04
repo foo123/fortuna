@@ -29,7 +29,7 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna_daemon {
 
 
-Client::Impl::Impl(Config&& config)
+Client::Impl::Impl(const Config& config)
     : io_service{}
     , socket{io_service}
     , buffer{}

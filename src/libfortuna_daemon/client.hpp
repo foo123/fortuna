@@ -21,6 +21,7 @@ along with libfortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #define FORTUNA_DAEMON_CLIENT_HPP
 
 #include <cstdint>
+#include <memory>
 #include <string>
 
 #include "connection_info.hpp"
@@ -36,7 +37,7 @@ class Client
 private:
     class Impl; ///> Hides all the boost::asio and cryptopp stuff.
 
-    Impl* impl;
+    std::unique_ptr<Impl> impl;
 
 public:
     static constexpr
@@ -52,13 +53,13 @@ public:
 
 
     explicit
-    Client(Config&& config);
+    Client(const Config& config);
 
     Client(const Client&) = delete;
     Client& operator=(const Client&) = delete;
 
-    Client(Client&& other);
-    Client& operator=(Client&& other);
+    Client(Client&& other) = default;
+    Client& operator=(Client&& other) = default;
 
     ~Client();
 
