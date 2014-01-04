@@ -64,7 +64,7 @@ private:
     Server server;
 
 public:
-    Application(AllConfig&& all_config = AllConfig{});
+    Application(AllConfig all_config = AllConfig{});
 
     void run();
 };

@@ -30,7 +30,7 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna_daemon {
 
 
-Server::Server(boost::asio::io_service& ios, AllConfig&& all_config)
+Server::Server(boost::asio::io_service& ios, AllConfig all_config)
     : config{std::move(all_config.server)}
     , io_service(ios)
     , acceptor{ios, boost::asio::local::stream_protocol::endpoint{config.connection_info.socket}}

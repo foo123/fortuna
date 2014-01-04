@@ -62,7 +62,7 @@ private:
     CryptoPP::SecByteBlock buffer;
 
 public:
-    Application(AllConfig&& all_config);
+    Application(AllConfig all_config);
 
     void run();
 

@@ -27,11 +27,6 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna {
 
 
-Accumulator::Accumulator(Config&& config)
-    : config{std::move(config)}
-{}
-
-
 void Accumulator::add_random_event(std::uint8_t pool_number, std::uint8_t source_number, const byte* data, std::uint8_t length)
 {
     if (Pool::is_event_data_length_invalid(length))

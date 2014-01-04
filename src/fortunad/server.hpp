@@ -67,7 +67,7 @@ private:
     fortuna::Accumulator accumulator;
 
 public:
-    Server(boost::asio::io_service& ios, AllConfig&& all_config = AllConfig{});
+    Server(boost::asio::io_service& ios, AllConfig all_config = AllConfig{});
 
     void run();
 

@@ -25,7 +25,7 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna_daemon {
 
 
-Application::Application(Application::AllConfig&& all_config)
+Application::Application(Application::AllConfig all_config)
     : config{std::move(all_config.application)}
     , io_service{}
     , signals{io_service, SIGINT, SIGTERM}

@@ -28,7 +28,7 @@ along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna_client {
 
 
-Application::Application(AllConfig&& all_config)
+Application::Application(AllConfig all_config)
     : config{std::move(all_config.application)}
     , fortuna{std::move(all_config.client)}
     , buffer{std::min(static_cast<ullong>(fortuna_daemon::Client::max_request_length), config.length)}
