@@ -64,7 +64,7 @@ void Accumulator::reseed_if_needed(Generator& generator)
 
 bool Accumulator::is_min_pool_size_satisfied() const
 {
-    return monitored_pools[0]([](Pool& pool){ return pool.get_total_length_of_appended_data(); }) >= config.min_pool_size;
+    return monitored_pools[0]([](const Pool& pool){ return pool.get_total_length_of_appended_data(); }) >= config.min_pool_size;
 }
 
 static inline constexpr
