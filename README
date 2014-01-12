@@ -18,7 +18,7 @@ Tested with:
   - autoconf    2.69
   - automake    1.12.1
   - libtool     2.4.2
-  - Boost       1.53.0
+  - Boost       1.54.0
   - Crypto++    5.6.2
 
 

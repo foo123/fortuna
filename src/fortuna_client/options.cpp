@@ -69,11 +69,10 @@ Application::AllConfig handle_options(int argc, char* argv[])
         std::exit(0);
     }
     
-    if (!vm.count("length")) {
+    if (!vm.count("length"))
         die("you must specify length");
-    }
     
-    return std::move(config);
+    return config;
 }
 
 

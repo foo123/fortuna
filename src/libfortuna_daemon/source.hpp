@@ -40,7 +40,7 @@ private:
 public:
     struct Config
     {
-        byte source_number = 0;
+        byte source_number;
         ConnectionInfo connection_info;
 
         Config()
