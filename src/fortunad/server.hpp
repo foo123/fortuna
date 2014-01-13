@@ -59,7 +59,7 @@ public:
     };
 
 private:
-    Config config;
+    const Config config;
 
     boost::asio::io_service& io_service;
     boost::asio::local::stream_protocol::acceptor acceptor;

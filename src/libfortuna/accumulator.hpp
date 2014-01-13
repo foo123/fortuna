@@ -46,7 +46,7 @@ public:
     };
 
 private:
-    Config config;
+    const Config config;
 
     std::array<monitor<Pool>, 32> monitored_pools;
     monitor<Generator> monitored_generator;
