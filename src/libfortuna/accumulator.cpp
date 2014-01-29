@@ -32,7 +32,7 @@ void Accumulator::add_random_event(std::uint8_t pool_number, std::uint8_t source
     if (Pool::is_event_data_length_invalid(length))
         throw FortunaException::invaild_event_length();
     
-    monitored_pools.at(pool_number)([=](Pool& pool){
+    monitored_pools.at(pool_number).exec([=](Pool& pool){
         pool.add_random_event(source_number, data, length);
     });
 }
@@ -43,7 +43,7 @@ void Accumulator::get_random_data(byte* output, std::size_t blocks_count)
     if (Generator::is_request_too_big(blocks_count))
         throw FortunaException::request_length_too_big();
     
-    monitored_generator([=](Generator& generator){
+    monitored_generator.exec([=](Generator& generator){
         reseed_if_needed(generator);
         if (!generator.is_seeded())
             throw FortunaException::generator_is_not_seeded();
@@ -59,7 +59,7 @@ void Accumulator::reseed_if_needed(Generator& generator)
 
 bool Accumulator::is_min_pool_size_satisfied() const
 {
-    return monitored_pools[0]([](const Pool& pool){ return pool.get_total_length_of_appended_data(); }) >= config.min_pool_size;
+    return monitored_pools[0].exec([](const Pool& pool){ return pool.get_total_length_of_appended_data(); }) >= config.min_pool_size;
 }
 
 static inline constexpr
@@ -89,7 +89,7 @@ void Accumulator::reseed(Generator& generator)
     #pragma omp parallel for
     for (byte i = 0; i < pools_to_use; ++i) {
         byte* dest = buffer.BytePtr() + i*Pool::hash_length;
-        monitored_pools[i]([dest](Pool& pool) {
+        monitored_pools[i].exec([dest](Pool& pool) {
             pool.get_hash_and_clear(dest);
         });
     }
