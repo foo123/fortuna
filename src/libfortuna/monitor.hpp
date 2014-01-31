@@ -27,6 +27,7 @@ which is, I hope, public domain.
 
 #include <utility>
 
+// TODO: use std::shared_mutex when available in compilers
 #include <boost/thread/shared_mutex.hpp>
 #include <boost/thread/locks.hpp>
 
@@ -58,14 +59,14 @@ public:
     monitor& operator=(const monitor&) = delete;
 
     template <typename F>
-    auto exec_ro(F f) const -> decltype(f(obj))
+    auto exec_ro(F f) const
     {
         boost::shared_lock<boost::shared_mutex> shared_lock{shared_mutex};
         return f(obj);
     }
 
     template <typename F>
-    auto exec_rw(F f) -> decltype(f(&obj))
+    auto exec_rw(F f)
     {
         boost::unique_lock<boost::shared_mutex> unique_lock{shared_mutex};
         return f(&obj);

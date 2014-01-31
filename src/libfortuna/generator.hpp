@@ -65,14 +65,12 @@ private:
         bool _is_zero {true};
 
     public:
-        typedef typename decltype(data)::const_iterator const_iterator;
-
         Counter();
 
-        const_iterator begin() const
+        auto begin() const
         { return data.begin(); }
 
-        const_iterator end() const
+        auto end() const
         { return data.end(); }
 
         operator const byte*() const
