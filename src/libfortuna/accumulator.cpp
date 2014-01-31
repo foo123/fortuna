@@ -43,7 +43,7 @@ void Accumulator::get_random_data(byte* output, std::size_t blocks_count)
     if (Generator::is_request_too_big(blocks_count))
         throw FortunaException::request_length_too_big();
     
-    monitored_generator.exec_rw([=](Generator* generator){
+    monitored_generator.exec_rw([=](auto* generator){
         reseed_if_needed(generator);
         if (!generator->is_seeded())
             throw FortunaException::generator_is_not_seeded();
