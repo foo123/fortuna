@@ -102,7 +102,7 @@ void Generator::reseed(const byte* seed, std::size_t seed_length)
 void Generator::get_pseudo_random_data(byte* output, std::size_t blocks_count)
 {
     generate_blocks(output, blocks_count);
-    static_assert(key.size() % CryptoPP::AES::BLOCKSIZE == 0, "key.size must be multiple of CryptoPP::AES::BLOCKSIZE");
+    static_assert(Key::size() % CryptoPP::AES::BLOCKSIZE == 0, "key.size must be multiple of CryptoPP::AES::BLOCKSIZE");
     generate_blocks(key, key.size()/CryptoPP::AES::BLOCKSIZE);
 }
 
