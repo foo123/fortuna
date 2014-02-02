@@ -1,7 +1,7 @@
 General Information
 ===================
 
-This is implementation of Fortuna PRNG (https://en.wikipedia.org/wiki/Fortuna_%28PRNG%29) in C++11 using Boost and Crypto++ libraries, originally written by Adam Mizerski <adam@mizerski.pl>.
+This is implementation of Fortuna PRNG (https://en.wikipedia.org/wiki/Fortuna_%28PRNG%29) in C++11 using Boost and Crypto++ libraries, written by Adam Mizerski <adam@mizerski.pl>.
 
 Components:
   - libfortuna          - Implementation of Fortuna algorithm.
@@ -28,3 +28,9 @@ Notes about libfortuna
   - Random data is generated in blocks of bytes. User must allocate enough memory to store whole blocks.
     In Accumulator there are output_block_length variable and bytes_to_blocks method, which helps with this task.
   - Accumulator's methods add_random_event and get_random_data are internally synchronized, so they can be called from multiple threads.
+
+
+Contributing
+============
+  - Patches, bug reports, improvements and new features are welcome and appreciated.
+  - As is sending Bitcoins at 15yFjvHc8BZehVHcammmAvd4qZ6ArFMJRF
