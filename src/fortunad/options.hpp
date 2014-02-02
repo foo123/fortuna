@@ -20,13 +20,13 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef FORTUNAD_OPTIONS_HPP
 #define FORTUNAD_OPTIONS_HPP
 
-#include "application.hpp"
+#include "server.hpp"
 
 
 namespace fortuna_daemon {
 
 
-Application::AllConfig handle_options(int argc, char* argv[]);
+Server::AllConfig handle_options(int argc, char* argv[]);
 
 
 } // namespace fortuna_daemon

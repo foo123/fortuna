@@ -45,17 +45,16 @@ boost::program_options::typed_value<T>* self_default_value(T* val)
 } // namespace
 
 
-Application::AllConfig handle_options(int argc, char* argv[])
+Server::AllConfig handle_options(int argc, char* argv[])
 {
     namespace po = boost::program_options;
     
-    Application::AllConfig config;
+    Server::AllConfig config;
     
     po::options_description options{"General Options"};
     options.add_options()
         ("help,h", "print this help")
         ("socket,s", self_default_value(&config.server.connection_info.socket))
-        ("threads,t", "specify number of worker threads (defaults to number of hardware threads)")
     ;
     
     po::options_description accumulator_options{"Accumulator Options"};
@@ -76,12 +75,7 @@ Application::AllConfig handle_options(int argc, char* argv[])
         std::exit(0);
     }
     
-    if (vm.count("threads")) {
-        config.application.default_threads_num = false;
-        config.application.custom_threads_num = vm["threads"].as<decltype(config.application.custom_threads_num)>();
-    }
-    
-    return std::move(config);
+    return config;
 }
 
 

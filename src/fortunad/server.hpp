@@ -25,11 +25,13 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/local/stream_protocol.hpp>
-#include <boost/noncopyable.hpp>
+#include <boost/asio/signal_set.hpp>
 
 #include <libfortuna/accumulator.hpp>
 
 #include <libfortuna_daemon/connection_info.hpp>
+
+#include "connection_manager.hpp"
 
 
 namespace fortuna_daemon {
@@ -38,7 +40,6 @@ class Session;
 
 
 class Server
-    : boost::noncopyable
 {
 public:
     struct Config
@@ -61,19 +62,26 @@ public:
 private:
     const Config config;
 
-    boost::asio::io_service& io_service;
+    boost::asio::io_service io_service;
+    boost::asio::signal_set signals;
     boost::asio::local::stream_protocol::acceptor acceptor;
+    boost::asio::local::stream_protocol::socket socket;
+    ConnectionManager connection_manager;
 
     fortuna::Accumulator accumulator;
 
 public:
-    Server(boost::asio::io_service& ios, AllConfig all_config = AllConfig{});
+    Server(AllConfig all_config = AllConfig{});
+    ~Server() noexcept;
+
+    Server(const Server&) = delete;
+    Server& operator=(const Server&) = delete;
 
     void run();
 
 private:
-    void create_session(std::shared_ptr<Session>& new_session);
-    void handle_accept(std::shared_ptr<Session> new_session, const boost::system::error_code& error);
+    void do_accept();
+    void do_await_stop();
 };
 
 

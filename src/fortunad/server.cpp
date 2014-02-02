@@ -30,36 +30,48 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna_daemon {
 
 
-Server::Server(boost::asio::io_service& ios, AllConfig all_config)
+Server::Server(AllConfig all_config)
     : config{std::move(all_config.server)}
-    , io_service(ios)
-    , acceptor{ios, boost::asio::local::stream_protocol::endpoint{config.connection_info.socket}}
+    , io_service{}
+    , signals{io_service, SIGINT, SIGTERM}
+    , acceptor{io_service, boost::asio::local::stream_protocol::endpoint{config.connection_info.socket}}
+    , socket{io_service}
     , accumulator{std::move(all_config.accumulator)}
 {
-    std::shared_ptr<Session> new_session;
-    create_session(new_session);
+    do_await_stop();
+    do_accept();
 }
 
-void Server::create_session(std::shared_ptr<Session>& new_session)
+Server::~Server() noexcept
+{}
+
+
+void Server::run()
 {
-    new_session.reset(new Session{io_service, accumulator});
+    #pragma omp parallel
+    io_service.run();
+}
+
+void Server::do_accept()
+{
     acceptor.async_accept(
-        new_session->get_socket(),
-        boost::bind(
-            &Server::handle_accept,
-            this,
-            new_session,
-            boost::asio::placeholders::error
-        )
+        socket,
+        [this](boost::system::error_code ec) {
+            if (!acceptor.is_open())
+                return;
+            if (!ec)
+                connection_manager.start(std::make_shared<Session>(std::move(socket), &connection_manager, &accumulator));
+            do_accept();
+        }
     );
 }
 
-void Server::handle_accept(std::shared_ptr<Session> new_session, const boost::system::error_code& error)
+void Server::do_await_stop()
 {
-    if (!error)
-        new_session->start();
-    create_session(new_session);
+    signals.async_wait([this](boost::system::error_code /*ec*/, int /*signo*/) {
+        acceptor.close();
+        connection_manager.stop_all();
+    });
 }
-
 
 } // namespace fortuna_daemon

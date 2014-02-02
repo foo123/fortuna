@@ -21,9 +21,9 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include <exception>
 #include <iostream>
 
-#include "application.hpp"
 #include "main.hpp"
 #include "options.hpp"
+#include "server.hpp"
 
 
 void die(const std::string& msg, int status_code)
@@ -37,10 +37,9 @@ int main(int argc, char* argv[])
 {
     using namespace fortuna_daemon;
     try {
-        Application{handle_options(argc, argv)}.run();
+        Server{handle_options(argc, argv)}.run();
     }
     catch (std::exception& e) {
         die( e.what() );
     }
-    return 0;
 }

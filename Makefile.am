@@ -174,8 +174,8 @@ fortuna_source_timer_LDADD = \
 bin_PROGRAMS += fortunad
 
 fortunad_SOURCES = \
-    src/fortunad/application.cpp \
-    src/fortunad/application.hpp \
+    src/fortunad/connection_manager.cpp \
+    src/fortunad/connection_manager.hpp \
     src/fortunad/main.cpp \
     src/fortunad/main.hpp \
     src/fortunad/options.cpp \
@@ -189,11 +189,13 @@ fortunad_SOURCES = \
 fortunad_CPPFLAGS = \
     $(BOOST_CPPFLAGS) \
     $(CRYPTOPP_CPPFLAGS) \
+    $(OPENMP_CXXFLAGS) \
     $(AM_CPPFLAGS)
 
 fortunad_LDFLAGS = \
     $(BOOST_LDFLAGS) \
-    $(CRYPTOPP_LDFLAGS)
+    $(CRYPTOPP_LDFLAGS) \
+    $(OPENMP_CXXFLAGS)
 
 fortunad_LDADD = \
     $(BOOST_ASIO_LIB) \
