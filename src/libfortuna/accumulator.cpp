@@ -63,7 +63,7 @@ bool Accumulator::is_min_pool_size_satisfied() const
 }
 
 static inline constexpr
-std::uint32_t greatest_power_of_2_that_divides(std::uint32_t n) noexcept
+std::uint32_t greatest_power_of_2_that_divides(std::uint32_t n)
 {
     return n & -n; // Bits magic. Powered by "Two's complement"
 }
@@ -72,7 +72,7 @@ std::uint32_t greatest_power_of_2_that_divides(std::uint32_t n) noexcept
  * \todo use something faster like http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogLookup or some one instruction assembly
  */
 static inline
-std::uint8_t ilog2(std::uint32_t n) noexcept
+std::uint8_t ilog2(std::uint32_t n)
 {
     std::uint8_t ans = 0;
     while (n >>= 1)
