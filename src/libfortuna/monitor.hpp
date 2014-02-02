@@ -38,7 +38,7 @@ template <class T>
 class monitor
 {
 private:
-    mutable T obj;
+    T obj;
     mutable boost::shared_mutex shared_mutex;
 
 public:
@@ -65,7 +65,7 @@ public:
     }
 
     template <typename F>
-    auto exec_rw(F f) const -> decltype(f(&obj))
+    auto exec_rw(F f) -> decltype(f(&obj))
     {
         boost::unique_lock<boost::shared_mutex> unique_lock{shared_mutex};
         return f(&obj);
