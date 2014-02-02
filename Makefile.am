@@ -45,6 +45,7 @@ libfortuna_la_include_HEADERS = \
 
 
 libfortuna_la_CPPFLAGS = \
+    $(BOOST_CPPFLAGS) \
     $(CRYPTOPP_CPPFLAGS) \
     $(OPENMP_CXXFLAGS) \
     $(AM_CPPFLAGS)
@@ -55,6 +56,7 @@ libfortuna_la_LDFLAGS = \
     -version-info $(LIBFORTUNA_LT_VERSION)
 
 libfortuna_la_LIBADD = \
+    $(BOOST_THREAD_LIB) \
     -lcryptopp
 
 pkgconfig_DATA += pc/fortuna.pc

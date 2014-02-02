@@ -25,8 +25,10 @@ which is, I hope, public domain.
 #ifndef FORTUNA_MONITOR_HPP
 #define FORTUNA_MONITOR_HPP
 
-#include <mutex>
 #include <utility>
+
+#include <boost/thread/shared_mutex.hpp>
+#include <boost/thread/locks.hpp>
 
 
 namespace fortuna {
@@ -37,7 +39,7 @@ class monitor
 {
 private:
     mutable T obj;
-    mutable std::mutex mutex;
+    mutable boost::shared_mutex shared_mutex;
 
 public:
     monitor() = default;
@@ -56,10 +58,17 @@ public:
     monitor& operator=(const monitor&) = delete;
 
     template <typename F>
-    auto exec(F f) const -> decltype(f(obj))
+    auto exec_ro(F f) const -> decltype(f(obj))
     {
-        std::lock_guard<std::mutex> lock{mutex};
-        return f(obj);
+        boost::shared_lock<boost::shared_mutex> shared_lock{shared_mutex};
+        return f(const_cast<const T&>(obj));
+    }
+
+    template <typename F>
+    auto exec_rw(F f) const -> decltype(f(&obj))
+    {
+        boost::unique_lock<boost::shared_mutex> unique_lock{shared_mutex};
+        return f(&obj);
     }
 };
 

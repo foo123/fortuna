@@ -32,8 +32,8 @@ void Accumulator::add_random_event(std::uint8_t pool_number, std::uint8_t source
     if (Pool::is_event_data_length_invalid(length))
         throw FortunaException::invaild_event_length();
     
-    monitored_pools.at(pool_number).exec([=](Pool& pool){
-        pool.add_random_event(source_number, data, length);
+    monitored_pools.at(pool_number).exec_rw([=](Pool* pool){
+        pool->add_random_event(source_number, data, length);
     });
 }
 
@@ -43,23 +43,23 @@ void Accumulator::get_random_data(byte* output, std::size_t blocks_count)
     if (Generator::is_request_too_big(blocks_count))
         throw FortunaException::request_length_too_big();
     
-    monitored_generator.exec([=](Generator& generator){
+    monitored_generator.exec_rw([=](Generator* generator){
         reseed_if_needed(generator);
-        if (!generator.is_seeded())
+        if (!generator->is_seeded())
             throw FortunaException::generator_is_not_seeded();
-        generator.get_pseudo_random_data(output, blocks_count);
+        generator->get_pseudo_random_data(output, blocks_count);
     });
 }
 
-void Accumulator::reseed_if_needed(Generator& generator)
+void Accumulator::reseed_if_needed(Generator* generator)
 {
-    if (is_min_pool_size_satisfied() && generator.is_time_to_reseed())
+    if (is_min_pool_size_satisfied() && generator->is_time_to_reseed())
         reseed(generator);
 }
 
 bool Accumulator::is_min_pool_size_satisfied() const
 {
-    return monitored_pools[0].exec([](const Pool& pool){ return pool.get_total_length_of_appended_data(); }) >= config.min_pool_size;
+    return monitored_pools[0].exec_ro([](const Pool& pool){ return pool.get_total_length_of_appended_data(); }) >= config.min_pool_size;
 }
 
 static inline constexpr
@@ -80,21 +80,21 @@ std::uint8_t ilog2(std::uint32_t n) noexcept
     return ans;
 }
 
-void Accumulator::reseed(Generator& generator)
+void Accumulator::reseed(Generator* generator)
 {
-    const unsigned long pools_to_use = ilog2(greatest_power_of_2_that_divides(generator.get_reseed_count())) + 1;
+    const unsigned long pools_to_use = ilog2(greatest_power_of_2_that_divides(generator->get_reseed_count())) + 1;
     
     CryptoPP::SecByteBlock buffer{pools_to_use * Pool::hash_length};
     
     #pragma omp parallel for
     for (byte i = 0; i < pools_to_use; ++i) {
         byte* dest = buffer.BytePtr() + i*Pool::hash_length;
-        monitored_pools[i].exec([dest](Pool& pool) {
-            pool.get_hash_and_clear(dest);
+        monitored_pools[i].exec_rw([dest](Pool* pool) {
+            pool->get_hash_and_clear(dest);
         });
     }
     
-    generator.reseed(buffer, buffer.SizeInBytes());
+    generator->reseed(buffer, buffer.SizeInBytes());
 }
 
 
