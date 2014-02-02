@@ -109,7 +109,7 @@ public:
 
         BitReference operator*() const
         {
-            return {it, 1 << byte_pos};
+            return {it, static_cast<byte>(1 << byte_pos)};
         }
     };
 
