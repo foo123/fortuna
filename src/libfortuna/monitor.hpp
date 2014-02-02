@@ -62,7 +62,7 @@ public:
     auto exec_ro(F f) const
     {
         boost::shared_lock<boost::shared_mutex> shared_lock{shared_mutex};
-        return f(const_cast<const T&>(obj));
+        return f(obj);
     }
 
     template <typename F>
