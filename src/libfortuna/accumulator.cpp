@@ -19,6 +19,7 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "accumulator.hpp"
 
+#include <functional>
 #include <utility>
 
 #include "fortuna_exception.hpp"
@@ -32,9 +33,8 @@ void Accumulator::add_random_event(std::uint8_t pool_number, std::uint8_t source
     if (Pool::is_event_data_length_invalid(length))
         throw FortunaException::invaild_event_length();
     
-    monitored_pools.at(pool_number).exec_rw([=](Pool* pool){
-        pool->add_random_event(source_number, data, length);
-    });
+    using namespace std::placeholders;
+    monitored_pools.at(pool_number).exec_rw(std::bind(&Pool::add_random_event, _1, source_number, data, length));
 }
 
 
@@ -59,7 +59,7 @@ void Accumulator::reseed_if_needed(Generator* generator)
 
 bool Accumulator::is_min_pool_size_satisfied() const
 {
-    return monitored_pools[0].exec_ro([](const Pool& pool){ return pool.get_total_length_of_appended_data(); }) >= config.min_pool_size;
+    return monitored_pools[0].exec_ro(std::mem_fn(&Pool::get_total_length_of_appended_data)) >= config.min_pool_size;
 }
 
 static inline constexpr
@@ -89,9 +89,8 @@ void Accumulator::reseed(Generator* generator)
     #pragma omp parallel for
     for (byte i = 0; i < pools_to_use; ++i) {
         byte* dest = buffer.BytePtr() + i*Pool::hash_length;
-        monitored_pools[i].exec_rw([dest](Pool* pool) {
-            pool->get_hash_and_clear(dest);
-        });
+        using namespace std::placeholders;
+        monitored_pools[i].exec_rw(std::bind(&Pool::get_hash_and_clear, _1, dest));
     }
     
     generator->reseed(buffer, buffer.SizeInBytes());
