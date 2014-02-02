@@ -40,7 +40,7 @@ AC_CONFIG_SRCDIR([src/libfortuna/accumulator.hpp])
 AC_CONFIG_HEADERS([config.h])
 
 # Automake
-AM_INIT_AUTOMAKE([foreign -Wall no-dist-gzip dist-bzip2 silent-rules])
+AM_INIT_AUTOMAKE([foreign -Wall no-dist-gzip dist-bzip2 silent-rules subdir-objects])
 AM_PROG_AR
 
 # Libtool
