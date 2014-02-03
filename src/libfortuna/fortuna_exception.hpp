@@ -47,18 +47,15 @@ private:
     {}
 
 public:
-    static
-    FortunaException request_length_too_big() noexcept
-    { return FortunaException{msg_id_t::request_length_too_big}; }
+#define FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR(id) \
+    static \
+    FortunaException id() noexcept \
+    { return FortunaException{msg_id_t::id}; }
 
-    static
-    FortunaException generator_is_not_seeded() noexcept
-    { return FortunaException{msg_id_t::generator_is_not_seeded}; }
-
-    static
-    FortunaException invaild_event_length() noexcept
-    { return FortunaException{msg_id_t::invaild_event_length}; }
-
+    FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR(request_length_too_big)
+    FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR(generator_is_not_seeded)
+    FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR(invaild_event_length)
+#undef FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR
 
     msg_id_t get_msg_id() const noexcept
     { return msg_id; }
