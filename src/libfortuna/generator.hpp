@@ -88,7 +88,7 @@ private:
     Key key;
     Counter counter;
 
-    std::uint32_t reseed_counter = 0; // 32 bits, because 32 pools
+    std::uint32_t reseed_count = 0; // 32 bits, because 32 pools
     std::chrono::steady_clock::time_point last_reseed;
 
 public:
@@ -102,7 +102,7 @@ public:
     { return !counter.is_zero(); }
 
     std::uint32_t get_reseed_count() const noexcept
-    { return reseed_counter; }
+    { return reseed_count; }
 
     bool is_time_to_reseed() const;
 

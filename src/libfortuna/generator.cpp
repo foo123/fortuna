@@ -97,7 +97,7 @@ void Generator::reseed(const byte* seed, std::size_t seed_length)
 {
     key.reseed(seed, seed_length);
     counter.increment();
-    ++reseed_counter;
+    ++reseed_count;
     last_reseed = std::chrono::steady_clock::now();
 }
 
