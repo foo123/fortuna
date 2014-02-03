@@ -65,17 +65,16 @@ public:
     }
 
 
-    Accumulator() = default;
+    Accumulator();
 
     explicit
-    Accumulator(const Config& _config)
-        : config{_config}
-    {}
+    Accumulator(const Config& _config);
 
     explicit
-    Accumulator(Config&& _config)
-        : config{std::move(_config)}
-    {}
+    Accumulator(Config&& _config);
+
+    ~Accumulator();
+
 
     /**
      * \throw FortunaException if Pool::is_event_data_length_invalig(length)

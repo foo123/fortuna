@@ -82,6 +82,9 @@ Generator::Generator()
     : last_reseed{distant_past()}
 {}
 
+Generator::~Generator()
+{}
+
 
 bool Generator::is_time_to_reseed() const
 {

@@ -23,6 +23,12 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna {
 
 
+Pool::Pool() = default;
+
+Pool::~Pool()
+{}
+
+
 void Pool::add_random_event(byte source_number, const byte* data, byte length)
 {
     hash.Update(&source_number, 1);

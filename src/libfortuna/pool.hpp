@@ -42,6 +42,9 @@ public:
     bool is_event_data_length_invalid(byte length)
     { return length == 0 || length > 32; }
 
+    Pool();
+    ~Pool();
+
     /**
      * \pre !is_event_data_length_invalid(length)
      */
