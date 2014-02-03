@@ -73,6 +73,9 @@ public:
     explicit
     Accumulator(Config&& _config);
 
+    Accumulator(const Accumulator&) = delete;
+    Accumulator& operator=(const Accumulator&) = delete;
+
     ~Accumulator();
 
 
