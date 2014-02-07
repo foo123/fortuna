@@ -37,7 +37,7 @@ namespace {
  * and its value is used as default.
  */
 template <typename T>
-boost::program_options::typed_value<T>* self_default_value(T* val)
+auto self_default_value(T* val)
 {
     return boost::program_options::value<T>(val)->default_value(*val);
 }

@@ -28,7 +28,7 @@ namespace fortuna_daemon {
 
 
 Source::Source(const Config& config)
-    : impl{new Impl{config}}
+    : impl{std::make_unique<Impl>(config)}
 {}
 
 Source::~Source() noexcept

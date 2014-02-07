@@ -32,7 +32,7 @@ namespace {
 
 typedef unsigned char byte;
 
-std::chrono::nanoseconds measure_sleep()
+auto measure_sleep()
 {
     using namespace std::chrono;
     const auto start = steady_clock::now();

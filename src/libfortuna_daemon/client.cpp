@@ -28,7 +28,7 @@ namespace fortuna_daemon {
 
 
 Client::Client(const Config& config)
-    : impl{new Impl{config}}
+    : impl{std::make_unique<Impl>(config)}
 {}
 
 Client::~Client() noexcept
