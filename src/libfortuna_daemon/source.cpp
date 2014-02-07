@@ -31,7 +31,7 @@ Source::Source(const Config& config)
     : impl{new Impl{config}}
 {}
 
-Source::~Source()
+Source::~Source() noexcept
 {}
 
 

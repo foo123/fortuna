@@ -57,7 +57,7 @@ public:
     Source(Source&& other) = default;
     Source& operator=(Source&& other) = default;
 
-    ~Source();
+    ~Source() noexcept;
 
     /**
      * \throw std::length_error if length == 0 || length > 32

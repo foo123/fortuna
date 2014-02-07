@@ -31,7 +31,7 @@ Client::Client(const Config& config)
     : impl{new Impl{config}}
 {}
 
-Client::~Client()
+Client::~Client() noexcept
 {}
 
 

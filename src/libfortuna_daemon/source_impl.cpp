@@ -51,12 +51,7 @@ void Source::Impl::add_random_event(const byte* data, byte length)
 void Source::Impl::send_data(const byte* data, byte length)
 {
     header.BytePtr()[3] = length;
-    
-    std::array<boost::asio::const_buffer,2> buffer = {{
-        boost::asio::const_buffer(header, 4),
-        boost::asio::const_buffer(data, length)
-    }};
-    
+    std::array<boost::asio::const_buffer,2> buffer = {{ {header, 4}, {data, length} }};
     boost::asio::write(socket, buffer);
 }
 

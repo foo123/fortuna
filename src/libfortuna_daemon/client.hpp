@@ -61,7 +61,7 @@ public:
     Client(Client&& other) = default;
     Client& operator=(Client&& other) = default;
 
-    ~Client();
+    ~Client() noexcept;
 
     /**
      * \throw boost::system::system_error on connection failure

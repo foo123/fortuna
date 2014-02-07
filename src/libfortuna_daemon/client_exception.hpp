@@ -48,18 +48,15 @@ private:
     {}
 
 public:
-    static
-    ClientException request_too_big()
-    { return ClientException{msg_id_t::request_too_big}; }
+#define CLIENT_EXCEPTION_NAMED_CONSTRUCTOR(id) \
+    static \
+    ClientException id() \
+    { return ClientException{msg_id_t::id}; }
 
-    static
-    ClientException generator_is_not_seeded()
-    { return ClientException{msg_id_t::generator_is_not_seeded}; }
-
-    static
-    ClientException illegal_status()
-    { return ClientException{msg_id_t::illegal_status}; }
-
+    CLIENT_EXCEPTION_NAMED_CONSTRUCTOR(request_too_big)
+    CLIENT_EXCEPTION_NAMED_CONSTRUCTOR(generator_is_not_seeded)
+    CLIENT_EXCEPTION_NAMED_CONSTRUCTOR(illegal_status)
+#undef CLIENT_EXCEPTION_NAMED_CONSTRUCTOR
 
     msg_id_t msg_id() const noexcept
     { return _msg_id; }
