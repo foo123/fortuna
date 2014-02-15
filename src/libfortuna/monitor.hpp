@@ -17,7 +17,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
-Based on Herb Shutter's monitor implementation presented on
+Based on Herb Sutter's monitor implementation presented on
 https://channel9.msdn.com/Shows/Going+Deep/C-and-Beyond-2012-Herb-Sutter-Concurrency-and-Parallelism at 40:30,
 which is, I hope, public domain.
 */
