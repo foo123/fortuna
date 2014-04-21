@@ -48,6 +48,7 @@ Session::Session(boost::asio::local::stream_protocol::socket&& _socket, Connecti
     , connection_manager{_connection_manager}
     , accumulator{_accumulator}
     , buffer{}
+    , shutting_down{false}
 {}
 
 Session::~Session() noexcept
@@ -61,7 +62,11 @@ void Session::start()
 
 void Session::stop()
 {
-    socket.close();
+    if (socket.is_open()) {
+        shutting_down = true;
+        socket.shutdown(boost::asio::socket_base::shutdown_both);
+        socket.close();
+    }
 }
 
 
@@ -75,9 +80,17 @@ void Session::async_read(std::size_t offset, std::size_t length, F handler)
         boost::asio::buffer(buffer + offset, length),
         [this,handler](boost::system::error_code ec, size_t /*bytes_transferred*/) {
             if (!ec) {
-                handler();
-            } else if (ec != boost::asio::error::operation_aborted) {
-                connection_manager->stop(shared_from_this());
+                try {
+                    handler();
+                } catch (std::exception &e) {
+                    log_error(std::string{"unexpected exception thrown by handler: "} + e.what());
+                    connection_manager->stop(shared_from_this());
+                }
+            } else {
+                if (ec != boost::asio::error::eof && !(shutting_down && ec == boost::asio::error::operation_aborted))
+                    log_error(ec.message());
+                if (!shutting_down)
+                    connection_manager->stop(shared_from_this());
             }
         }
     );
@@ -91,9 +104,17 @@ void Session::async_write(std::size_t offset, std::size_t length, F handler)
         boost::asio::buffer(buffer + offset, length),
         [this,handler](boost::system::error_code ec, size_t /*bytes_transferred*/) {
             if (!ec) {
-                handler();
-            } else if (ec != boost::asio::error::operation_aborted) {
-                connection_manager->stop(shared_from_this());
+                try {
+                    handler();
+                } catch (std::exception &e) {
+                    log_error(std::string{"unexpected exception thrown by handler: "} + e.what());
+                    connection_manager->stop(shared_from_this());
+                }
+            } else {
+                if (ec != boost::asio::error::eof && !(shutting_down && ec == boost::asio::error::operation_aborted))
+                    log_error(ec.message());
+                if (!shutting_down)
+                    connection_manager->stop(shared_from_this());
             }
         }
     );
@@ -157,23 +178,29 @@ void Session::async_read_request_length()
             return;
         }
         
-        try {
-            async_write_random_data(length);
-        } catch (fortuna::FortunaException& e) {
-            if (e.get_msg_id() == fortuna::FortunaException::msg_id_t::request_length_too_big)
-                async_write_request_too_big();
-            if (e.get_msg_id() == fortuna::FortunaException::msg_id_t::generator_is_not_seeded)
-                async_write_generator_not_seeded();
+        const unsigned long blocks_count = fortuna::Accumulator::bytes_to_blocks(length);
+        if (fortuna::Generator::is_request_too_big(blocks_count)) {
+            async_write_request_too_big();
+            return;
         }
+        
+        buffer.Grow(1 + blocks_count * fortuna::Accumulator::output_block_length);
+        try {
+            accumulator->get_random_data(buffer + 1, blocks_count);
+        } catch (fortuna::FortunaException& e) {
+            if (e.get_msg_id() == fortuna::FortunaException::msg_id_t::generator_is_not_seeded) {
+                async_write_generator_not_seeded();
+                return;
+            }
+            throw;
+        }
+        async_write_random_data(length);
     });
 }
 
 void Session::async_write_random_data(std::uint32_t length)
 {
-    const unsigned long blocks_count = fortuna::Accumulator::bytes_to_blocks(length);
-    buffer.New(1 + blocks_count * fortuna::Accumulator::output_block_length);
     buffer.BytePtr()[0] = 0x00;
-    accumulator->get_random_data(buffer + 1, blocks_count);
     
     auto self = shared_from_this();
     async_write(0, 1+length, [this,self]{
