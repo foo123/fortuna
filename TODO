@@ -2,7 +2,3 @@
 - libraries visibility
 - build system: enable/disable components -> enable/disable library checks
 - seed file
-
-networking:
-- add loopback tcp socket; options to enable/disable unix domain or tcp sockets
-- allow compile-time enable/disable unix domain socket
