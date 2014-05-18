@@ -151,6 +151,7 @@ fortuna_source_timer_SOURCES = \
     src/fortuna_source_timer/application.cpp \
     src/fortuna_source_timer/application.hpp \
     src/fortuna_source_timer/main.cpp \
+    src/fortuna_source_timer/main.hpp \
     src/fortuna_source_timer/options.cpp \
     src/fortuna_source_timer/options.hpp \
     src/fortuna_source_timer/sleep_for.hpp
