@@ -145,6 +145,32 @@ fortuna_client_LDADD = \
 
 
 
+bin_PROGRAMS += fortuna_source_file
+
+fortuna_source_file_SOURCES = \
+    src/fortuna_source_file/application.cpp \
+    src/fortuna_source_file/application.hpp \
+    src/fortuna_source_file/main.cpp \
+    src/fortuna_source_file/main.hpp \
+    src/fortuna_source_file/options.cpp \
+    src/fortuna_source_file/options.hpp
+
+fortuna_source_file_CPPFLAGS = \
+    $(CRYPTOPP_CPPFLAGS) \
+    $(BOOST_CPPFLAGS) \
+    $(AM_CPPFLAGS)
+
+fortuna_source_file_LDFLAGS = \
+    $(BOOST_LDFLAGS) \
+    $(CRYPTOPP_LDFLAGS)
+
+fortuna_source_file_LDADD = \
+    $(BOOST_PROGRAM_OPTIONS_LIB) \
+    libfortuna_daemon_source.la \
+    -lcryptopp
+
+
+
 bin_PROGRAMS += fortuna_source_timer
 
 fortuna_source_timer_SOURCES = \
