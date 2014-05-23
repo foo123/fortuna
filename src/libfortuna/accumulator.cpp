@@ -38,7 +38,7 @@ Accumulator::Accumulator(Config&& _config)
     : config{std::move(_config)}
 {}
 
-Accumulator::~Accumulator() noexcept
+Accumulator::~Accumulator()
 {}
 
 
