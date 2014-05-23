@@ -34,14 +34,14 @@ void Pool::add_random_event(byte source_number, const byte* data, byte length)
     hash.Update(&source_number, 1);
     hash.Update(&length, 1);
     hash.Update(data, length);
-    
+
     total_length_of_appended_data += length;
 }
 
 void Pool::get_hash_and_clear(byte* output)
 {
     hash.Final(output);
-    
+
     total_length_of_appended_data = 0;
 }
 

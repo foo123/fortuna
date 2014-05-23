@@ -65,10 +65,10 @@ public:
     }
 
     template <typename F>
-    auto exec_rw(F f) -> decltype(f(&obj))
+    auto exec_rw(F f) -> decltype(f(obj))
     {
         boost::unique_lock<boost::shared_mutex> unique_lock{shared_mutex};
-        return f(&obj);
+        return f(obj);
     }
 };
 

@@ -92,9 +92,9 @@ public:
     void get_random_data(byte* output, std::size_t blocks_count);
 
 private:
-    void reseed_if_needed(Generator* generator);
+    void reseed_if_needed(Generator& generator);
     bool is_min_pool_size_satisfied() const;
-    void reseed(Generator* generator);
+    void reseed(Generator& generator);
 };
 
 
