@@ -48,33 +48,33 @@ boost::program_options::typed_value<T>* self_default_value(T* val)
 Server::AllConfig handle_options(int argc, char* argv[])
 {
     namespace po = boost::program_options;
-    
+
     Server::AllConfig config;
-    
+
     po::options_description options{"General Options"};
     options.add_options()
         ("help,h", "print this help")
         ("socket,s", self_default_value(&config.server.connection_info.socket))
     ;
-    
+
     po::options_description accumulator_options{"Accumulator Options"};
     accumulator_options.add_options()
-        ("min_pool_size,p", self_default_value(&config.accumulator.min_pool_size), "minimum pool size [bytes]")
+        ("min_pool_size,p", self_default_value(&config.accumulator.accumulator.min_pool_size), "minimum pool size [bytes]")
     ;
-    
+
     options
         .add(accumulator_options)
     ;
-    
+
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, options), vm);
     po::notify(vm);
-    
+
     if (vm.count("help")) {
         std::cout << options << std::endl;
         std::exit(0);
     }
-    
+
     return config;
 }
 

@@ -28,14 +28,9 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna {
 
 
-Accumulator::Accumulator() = default;
-
-Accumulator::Accumulator(const Config& _config)
-    : config{_config}
-{}
-
-Accumulator::Accumulator(Config&& _config)
-    : config{std::move(_config)}
+Accumulator::Accumulator(AllConfig all_config)
+    : config{std::move(all_config.accumulator)}
+    , seed_file_manager{std::move(all_config.seed_file_manager), *this}
 {}
 
 Accumulator::~Accumulator()

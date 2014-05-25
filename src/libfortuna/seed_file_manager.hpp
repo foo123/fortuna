@@ -17,23 +17,48 @@ You should have received a copy of the GNU Lesser General Public License
 along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "fortuna_exception.hpp"
+#ifndef SEED_FILE_MANAGER_HPP
+#define SEED_FILE_MANAGER_HPP
 
+#include <chrono>
+#include <mutex>
+#include <thread>
 
 namespace fortuna {
 
+class Accumulator;
 
-static const std::string messages[] = {
-    "request length too big",
-    "generator is not seeded",
-    "invaild event length",
-    "seed file error"
+
+class SeedFileManager
+{
+public:
+    struct Config
+    {
+        std::string seed_file_path = "./fortuna.seed";
+        size_t seed_file_length = 64;
+        std::chrono::minutes write_interval{10};
+
+        Config()
+        {}
+    };
+
+private:
+    const Config config;
+    Accumulator& accumulator;
+    std::timed_mutex sleeper;
+    std::thread thread;
+
+public:
+    SeedFileManager(Config _config, Accumulator& _accumulator);
+    ~SeedFileManager();
+
+private:
+    void write_seed_file();
+    void update_seed_file();
+    void stop();
 };
-
-FortunaException::FortunaException(msg_id_t _msg_id, std::string info) noexcept
-    : msg_id{_msg_id}
-    , msg{messages[static_cast<byte>(msg_id)] + ": " + info}
-{}
 
 
 } // namespace fortuna
+
+#endif // SEED_FILE_MANAGER_HPP

@@ -33,7 +33,8 @@ libfortuna_la_SOURCES = \
     src/libfortuna/accumulator.cpp \
     src/libfortuna/fortuna_exception.cpp \
     src/libfortuna/generator.cpp \
-    src/libfortuna/pool.cpp
+    src/libfortuna/pool.cpp \
+    src/libfortuna/seed_file_manager.cpp
 
 libfortuna_la_includedir = $(includedir)/fortuna
 libfortuna_la_include_HEADERS = \
@@ -41,7 +42,8 @@ libfortuna_la_include_HEADERS = \
     src/libfortuna/fortuna_exception.hpp \
     src/libfortuna/generator.hpp \
     src/libfortuna/monitor.hpp \
-    src/libfortuna/pool.hpp
+    src/libfortuna/pool.hpp \
+    src/libfortuna/seed_file_manager.hpp
 
 
 libfortuna_la_CPPFLAGS = \

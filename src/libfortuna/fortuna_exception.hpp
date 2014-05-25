@@ -21,6 +21,7 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #define FORTUNA_EXCEPTION_HPP
 
 #include <stdexcept>
+#include <string>
 
 typedef unsigned char byte;
 
@@ -35,32 +36,34 @@ public:
     enum class msg_id_t : byte {
         request_length_too_big,
         generator_is_not_seeded,
-        invaild_event_length
+        invaild_event_length,
+        seed_file_error
     };
 
 private:
     msg_id_t msg_id;
+    std::string msg;
 
     explicit
-    FortunaException(msg_id_t _msg_id) noexcept
-        : msg_id{_msg_id}
-    {}
+    FortunaException(msg_id_t _msg_id, std::string info) noexcept;
 
 public:
 #define FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR(id) \
     static \
-    FortunaException id() noexcept \
-    { return FortunaException{msg_id_t::id}; }
+    FortunaException id(std::string info = "") noexcept \
+    { return FortunaException{msg_id_t::id, std::move(info)}; }
 
     FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR(request_length_too_big)
     FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR(generator_is_not_seeded)
     FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR(invaild_event_length)
+    FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR(seed_file_error)
 #undef FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR
 
     msg_id_t get_msg_id() const noexcept
     { return msg_id; }
 
-    const char* what() const noexcept;
+    const char* what() const noexcept
+    { return msg.c_str(); }
 };
 
 
