@@ -26,6 +26,7 @@ namespace fortuna {
 static const std::string messages[] = {
     "request length too big",
     "generator is not seeded",
+    "invalid pool number",
     "invaild event length",
     "seed file error"
 };

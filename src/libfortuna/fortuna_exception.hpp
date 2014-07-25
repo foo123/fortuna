@@ -36,6 +36,7 @@ public:
     enum class msg_id_t : byte {
         request_length_too_big,
         generator_is_not_seeded,
+        invalid_pool_number,
         invaild_event_length,
         seed_file_error
     };
@@ -55,6 +56,7 @@ public:
 
     FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR(request_length_too_big)
     FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR(generator_is_not_seeded)
+    FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR(invalid_pool_number)
     FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR(invaild_event_length)
     FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR(seed_file_error)
 #undef FORTUNA_EXCEPTION_NAMED_CONSTRUCTOR

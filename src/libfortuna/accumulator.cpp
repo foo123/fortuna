@@ -39,11 +39,13 @@ Accumulator::~Accumulator()
 
 void Accumulator::add_random_event(std::uint8_t pool_number, std::uint8_t source_number, const byte* data, std::uint8_t length)
 {
+    if (pool_number >= monitored_pools.size())
+        throw FortunaException::invalid_pool_number();
     if (Pool::is_event_data_length_invalid(length))
         throw FortunaException::invaild_event_length();
 
     using namespace std::placeholders;
-    monitored_pools.at(pool_number).exec_rw(std::bind(&Pool::add_random_event, _1, source_number, data, length));
+    monitored_pools[pool_number].exec_rw(std::bind(&Pool::add_random_event, _1, source_number, data, length));
 }
 
 
