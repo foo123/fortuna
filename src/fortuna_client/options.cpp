@@ -19,6 +19,7 @@ along with fortuna_client.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "options.hpp"
 
+#include <iostream>
 #include <utility>
 
 #include <boost/program_options.hpp>
