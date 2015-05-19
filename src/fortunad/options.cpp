@@ -20,9 +20,30 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 #include "options.hpp"
 
 #include <iostream>
+#include <string>
 #include <utility>
 
 #include <boost/program_options.hpp>
+
+
+// http://stackoverflow.com/a/26263786
+namespace boost {
+
+
+template <>
+std::string lexical_cast(const std::chrono::minutes& minutes)
+{
+    return std::to_string(minutes.count());
+}
+
+template <>
+std::chrono::minutes lexical_cast(const std::string& string)
+{
+    return std::chrono::minutes{std::stoi(string)};
+}
+
+
+} // namesapce boost
 
 
 namespace fortuna_daemon {
@@ -62,8 +83,16 @@ Server::AllConfig handle_options(int argc, char* argv[])
         ("min_pool_size,p", self_default_value(&config.accumulator.accumulator.min_pool_size), "minimum pool size [bytes]")
     ;
 
+    po::options_description seed_file_manager_options{"Seed File Manager Options"};
+    seed_file_manager_options.add_options()
+        ("seed_file_path", self_default_value(&config.accumulator.seed_file_manager.seed_file_path))
+        ("seed_file_length", self_default_value(&config.accumulator.seed_file_manager.seed_file_length), "[bytes]")
+        ("seed_file_write_interval", self_default_value(&config.accumulator.seed_file_manager.write_interval), "[minutes]")
+    ;
+
     options
         .add(accumulator_options)
+        .add(seed_file_manager_options)
     ;
 
     po::variables_map vm;
