@@ -17,33 +17,48 @@ You should have received a copy of the GNU Lesser General Public License
 along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "pool.hpp"
+#ifndef SEED_FILE_MANAGER_HPP
+#define SEED_FILE_MANAGER_HPP
 
+#include <chrono>
+#include <mutex>
+#include <thread>
 
 namespace fortuna {
 
-
-Pool::Pool() = default;
-
-Pool::~Pool()
-{}
+class Accumulator;
 
 
-void Pool::add_random_event(byte source_number, const byte* data, byte length)
+class SeedFileManager
 {
-    hash.Update(&source_number, 1);
-    hash.Update(&length, 1);
-    hash.Update(data, length);
+public:
+    struct Config
+    {
+        std::string seed_file_path = "./fortuna.seed";
+        size_t seed_file_length = 64;
+        std::chrono::minutes write_interval{10};
 
-    total_length_of_appended_data += length;
-}
+        Config()
+        {}
+    };
 
-void Pool::get_hash_and_clear(byte* output)
-{
-    hash.Final(output);
+private:
+    const Config config;
+    Accumulator& accumulator;
+    std::timed_mutex sleeper;
+    std::thread thread;
 
-    total_length_of_appended_data = 0;
-}
+public:
+    SeedFileManager(Config _config, Accumulator& _accumulator);
+    ~SeedFileManager();
+
+private:
+    void write_seed_file();
+    void update_seed_file();
+    void stop();
+};
 
 
 } // namespace fortuna
+
+#endif // SEED_FILE_MANAGER_HPP

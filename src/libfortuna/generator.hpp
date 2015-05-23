@@ -94,7 +94,7 @@ public:
     const std::size_t output_block_length = CryptoPP::AES::BLOCKSIZE;
 
     Generator();
-    ~Generator() noexcept;
+    ~Generator();
 
     bool is_seeded() const
     { return !counter.is_zero(); }

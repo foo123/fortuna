@@ -45,6 +45,7 @@ private:
     ConnectionManager* connection_manager;
     fortuna::Accumulator* accumulator;
     CryptoPP::SecByteBlock buffer;
+    bool shutting_down;
 
 public:
     Session(boost::asio::local::stream_protocol::socket&& _socket, ConnectionManager* _connection_manager, fortuna::Accumulator* _accumulator);

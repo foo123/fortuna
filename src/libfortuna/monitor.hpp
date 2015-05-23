@@ -17,7 +17,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
-Based on Herb Shutter's monitor implementation presented on
+Based on Herb Sutter's monitor implementation presented on
 https://channel9.msdn.com/Shows/Going+Deep/C-and-Beyond-2012-Herb-Sutter-Concurrency-and-Parallelism at 40:30,
 which is, I hope, public domain.
 */
@@ -37,7 +37,7 @@ class monitor
 {
 private:
     T obj;
-    mutable std::shared_mutex shared_mutex;
+    mutable std::shared_timed_mutex shared_mutex;
 
 public:
     monitor() = default;
@@ -58,15 +58,15 @@ public:
     template <typename F>
     auto exec_ro(F f) const
     {
-        std::shared_lock<std::shared_mutex> shared_lock{shared_mutex};
+        std::shared_lock<std::shared_timed_mutex> shared_lock{shared_mutex};
         return f(obj);
     }
 
     template <typename F>
     auto exec_rw(F f)
     {
-        std::unique_lock<std::shared_mutex> unique_lock{shared_mutex};
-        return f(&obj);
+        std::unique_lock<std::shared_timed_mutex> unique_lock{shared_mutex};
+        return f(obj);
     }
 };
 

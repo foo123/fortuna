@@ -53,7 +53,7 @@ public:
     struct AllConfig
     {
         Config server;
-        fortuna::Accumulator::Config accumulator;
+        fortuna::Accumulator::AllConfig accumulator;
 
         AllConfig()
         {}

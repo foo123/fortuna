@@ -25,6 +25,7 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 #include "generator.hpp"
 #include "monitor.hpp"
 #include "pool.hpp"
+#include "seed_file_manager.hpp"
 
 typedef unsigned char byte;
 
@@ -35,6 +36,8 @@ namespace fortuna {
 class Accumulator
 {
 public:
+    friend SeedFileManager;
+
     struct Config
     {
         unsigned long min_pool_size = 64;
@@ -45,11 +48,22 @@ public:
         {}
     };
 
+    struct AllConfig
+    {
+        Config accumulator;
+        SeedFileManager::Config seed_file_manager;
+
+        AllConfig()
+        {}
+    };
+
 private:
     const Config config;
 
     std::array<monitor<Pool>, 32> monitored_pools;
     monitor<Generator> monitored_generator;
+
+    SeedFileManager seed_file_manager;
 
 public:
     static constexpr
@@ -65,18 +79,13 @@ public:
     }
 
 
-    Accumulator();
-
     explicit
-    Accumulator(const Config& _config);
-
-    explicit
-    Accumulator(Config&& _config);
+    Accumulator(AllConfig all_config = AllConfig{});
 
     Accumulator(const Accumulator&) = delete;
     Accumulator& operator=(const Accumulator&) = delete;
 
-    ~Accumulator() noexcept;
+    ~Accumulator();
 
 
     /**
@@ -92,9 +101,9 @@ public:
     void get_random_data(byte* output, std::size_t blocks_count);
 
 private:
-    void reseed_if_needed(Generator* generator);
+    void reseed_if_needed(Generator& generator);
     bool is_min_pool_size_satisfied() const;
-    void reseed(Generator* generator);
+    void reseed(Generator& generator);
 };
 
 

@@ -19,22 +19,36 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "server.hpp"
 
+#include <unistd.h>
 #include <utility>
-
-#include <boost/asio/placeholders.hpp>
-#include <boost/bind.hpp>
 
 #include "session.hpp"
 
 
 namespace fortuna_daemon {
 
+namespace {
+
+class LocalEndpoint : public boost::asio::local::stream_protocol::endpoint
+{
+private:
+    typedef boost::asio::local::stream_protocol::endpoint parent_type;
+public:
+    using parent_type::parent_type;
+    ~LocalEndpoint()
+    {
+        ::unlink(path().c_str());
+    }
+};
+
+} // namespace
+
 
 Server::Server(AllConfig all_config)
     : config{std::move(all_config.server)}
     , io_service{}
     , signals{io_service, SIGINT, SIGTERM}
-    , acceptor{io_service, boost::asio::local::stream_protocol::endpoint{config.connection_info.socket}}
+    , acceptor{io_service, LocalEndpoint{config.connection_info.socket}}
     , socket{io_service}
     , accumulator{std::move(all_config.accumulator)}
 {

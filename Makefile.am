@@ -33,7 +33,8 @@ libfortuna_la_SOURCES = \
     src/libfortuna/accumulator.cpp \
     src/libfortuna/fortuna_exception.cpp \
     src/libfortuna/generator.cpp \
-    src/libfortuna/pool.cpp
+    src/libfortuna/pool.cpp \
+    src/libfortuna/seed_file_manager.cpp
 
 libfortuna_la_includedir = $(includedir)/fortuna
 libfortuna_la_include_HEADERS = \
@@ -41,7 +42,8 @@ libfortuna_la_include_HEADERS = \
     src/libfortuna/fortuna_exception.hpp \
     src/libfortuna/generator.hpp \
     src/libfortuna/monitor.hpp \
-    src/libfortuna/pool.hpp
+    src/libfortuna/pool.hpp \
+    src/libfortuna/seed_file_manager.hpp
 
 
 libfortuna_la_CPPFLAGS = \
@@ -143,12 +145,39 @@ fortuna_client_LDADD = \
 
 
 
+bin_PROGRAMS += fortuna_source_file
+
+fortuna_source_file_SOURCES = \
+    src/fortuna_source_file/application.cpp \
+    src/fortuna_source_file/application.hpp \
+    src/fortuna_source_file/main.cpp \
+    src/fortuna_source_file/main.hpp \
+    src/fortuna_source_file/options.cpp \
+    src/fortuna_source_file/options.hpp
+
+fortuna_source_file_CPPFLAGS = \
+    $(CRYPTOPP_CPPFLAGS) \
+    $(BOOST_CPPFLAGS) \
+    $(AM_CPPFLAGS)
+
+fortuna_source_file_LDFLAGS = \
+    $(BOOST_LDFLAGS) \
+    $(CRYPTOPP_LDFLAGS)
+
+fortuna_source_file_LDADD = \
+    $(BOOST_PROGRAM_OPTIONS_LIB) \
+    libfortuna_daemon_source.la \
+    -lcryptopp
+
+
+
 bin_PROGRAMS += fortuna_source_timer
 
 fortuna_source_timer_SOURCES = \
     src/fortuna_source_timer/application.cpp \
     src/fortuna_source_timer/application.hpp \
     src/fortuna_source_timer/main.cpp \
+    src/fortuna_source_timer/main.hpp \
     src/fortuna_source_timer/options.cpp \
     src/fortuna_source_timer/options.hpp \
     src/fortuna_source_timer/sleep_for.hpp

@@ -23,15 +23,18 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna {
 
 
-const char* FortunaException::what() const noexcept
-{
-    static const char* messages[] = {
-        "request length too big",
-        "generator is not seeded",
-        "invaild event length"
-    };
-    return messages[static_cast<byte>(msg_id)];
-}
+static const std::string messages[] = {
+    "request length too big",
+    "generator is not seeded",
+    "invalid pool number",
+    "invaild event length",
+    "seed file error"
+};
+
+FortunaException::FortunaException(msg_id_t _msg_id, std::string info) noexcept
+    : msg_id{_msg_id}
+    , msg{messages[static_cast<byte>(msg_id)] + ": " + info}
+{}
 
 
 } // namespace fortuna
