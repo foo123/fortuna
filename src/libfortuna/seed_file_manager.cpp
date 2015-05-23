@@ -19,7 +19,6 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "seed_file_manager.hpp"
 
-#include <chrono>
 #include <fstream>
 #include <functional>
 
@@ -37,17 +36,7 @@ SeedFileManager::SeedFileManager(Config _config, Accumulator& _accumulator)
     , accumulator(_accumulator)
 {
     update_seed_file();
-    sleeper.lock();
-    thread = std::thread([this] {
-        while (!sleeper.try_lock_for(config.write_interval)) {
-            write_seed_file();
-        }
-    });
-}
-
-SeedFileManager::~SeedFileManager()
-{
-    stop();
+    repeating_task.start(config.write_interval, std::bind(&SeedFileManager::write_seed_file, this));
 }
 
 void SeedFileManager::write_seed_file()
@@ -79,12 +68,6 @@ void SeedFileManager::update_seed_file()
 
     accumulator.monitored_generator.exec_rw(std::bind(&Generator::reseed, _1, buffer, buffer.SizeInBytes()));
     write_seed_file();
-}
-
-void SeedFileManager::stop()
-{
-    sleeper.unlock();
-    thread.join();
 }
 
 
