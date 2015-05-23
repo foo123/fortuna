@@ -35,23 +35,14 @@ namespace fortuna {
 SeedFileManager::SeedFileManager(Config _config, Accumulator& _accumulator)
     : config{std::move(_config)}
     , accumulator(_accumulator)
-    , thread([this]{
-        sleeper.lock();
-        while (true) {
-            if (sleeper.try_lock_for(config.write_interval))
-                return;
+{
+    update_seed_file();
+    sleeper.lock();
+    thread = std::thread([this] {
+        while (!sleeper.try_lock_for(config.write_interval)) {
             write_seed_file();
         }
-    })
-{
-    try {
-        update_seed_file();
-    } catch (FortunaException& e) {
-        if (e.get_msg_id() == FortunaException::msg_id_t::seed_file_error) {
-            stop();
-            throw;
-        }
-    }
+    });
 }
 
 SeedFileManager::~SeedFileManager()
