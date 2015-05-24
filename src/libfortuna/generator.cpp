@@ -111,7 +111,8 @@ void Generator::get_pseudo_random_data(byte* output, std::size_t blocks_count)
 
 void Generator::generate_blocks(byte* output, std::size_t blocks_count)
 {
-    CryptoPP::AES::Encryption aes{key, key.size()}; // makes a copy of the key, so it's not a problem when the key is also an output
+    const auto old_key = key; // in case key is an output
+    CryptoPP::AES::Encryption aes{old_key, old_key.size()};
     for (std::size_t i = 0; i < blocks_count; ++i) {
         aes.ProcessBlock(counter, output + i*CryptoPP::AES::BLOCKSIZE);
         counter.increment();
