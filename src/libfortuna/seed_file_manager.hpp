@@ -36,7 +36,7 @@ public:
     struct Config
     {
         std::string seed_file_path = "./fortuna.seed";
-        size_t seed_file_length = 64;
+        std::size_t seed_file_length = 64;
         std::chrono::minutes write_interval{10};
 
         Config()

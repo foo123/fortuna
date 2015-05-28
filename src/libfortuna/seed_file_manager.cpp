@@ -41,7 +41,7 @@ SeedFileManager::SeedFileManager(Config _config, Accumulator& _accumulator)
 
 void SeedFileManager::write_seed_file()
 {
-    const size_t seed_file_length_in_blocks = Accumulator::bytes_to_blocks(config.seed_file_length);
+    const std::size_t seed_file_length_in_blocks = Accumulator::bytes_to_blocks(config.seed_file_length);
     CryptoPP::SecByteBlock buffer{seed_file_length_in_blocks * Accumulator::output_block_length};
     accumulator.get_random_data(buffer.BytePtr(), seed_file_length_in_blocks);
 
@@ -62,7 +62,7 @@ void SeedFileManager::update_seed_file()
             throw FortunaException::seed_file_error("could not open seed file");
 
         filestream.read(reinterpret_cast<char*>(buffer.BytePtr()), config.seed_file_length);
-        if (filestream.gcount() != config.seed_file_length)
+        if (static_cast<std::size_t>(filestream.gcount()) != config.seed_file_length)
             throw FortunaException::seed_file_error("could not read seed");
     }
 
