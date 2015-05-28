@@ -102,7 +102,7 @@ void Session::async_write(std::size_t offset, std::size_t length, F handler)
     boost::asio::async_write(
         socket,
         boost::asio::buffer(buffer + offset, length),
-        [this,handler](boost::system::error_code ec, size_t /*bytes_transferred*/) {
+        [this,handler](boost::system::error_code ec, std::size_t /*bytes_transferred*/) {
             if (!ec) {
                 try {
                     handler();

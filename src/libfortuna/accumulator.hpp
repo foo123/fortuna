@@ -51,6 +51,7 @@ public:
     struct AllConfig
     {
         Config accumulator;
+        Generator::Config generator;
         SeedFileManager::Config seed_file_manager;
 
         AllConfig()

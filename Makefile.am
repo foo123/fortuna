@@ -34,6 +34,7 @@ libfortuna_la_SOURCES = \
     src/libfortuna/fortuna_exception.cpp \
     src/libfortuna/generator.cpp \
     src/libfortuna/pool.cpp \
+    src/libfortuna/repeating_task.cpp \
     src/libfortuna/seed_file_manager.cpp
 
 libfortuna_la_includedir = $(includedir)/fortuna
@@ -43,6 +44,7 @@ libfortuna_la_include_HEADERS = \
     src/libfortuna/generator.hpp \
     src/libfortuna/monitor.hpp \
     src/libfortuna/pool.hpp \
+    src/libfortuna/repeating_task.hpp \
     src/libfortuna/seed_file_manager.hpp
 
 

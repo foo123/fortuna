@@ -19,7 +19,6 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "seed_file_manager.hpp"
 
-#include <chrono>
 #include <fstream>
 #include <functional>
 
@@ -37,22 +36,12 @@ SeedFileManager::SeedFileManager(Config _config, Accumulator& _accumulator)
     , accumulator(_accumulator)
 {
     update_seed_file();
-    sleeper.lock();
-    thread = std::thread([this] {
-        while (!sleeper.try_lock_for(config.write_interval)) {
-            write_seed_file();
-        }
-    });
-}
-
-SeedFileManager::~SeedFileManager()
-{
-    stop();
+    repeating_task.start(config.write_interval, std::bind(&SeedFileManager::write_seed_file, this));
 }
 
 void SeedFileManager::write_seed_file()
 {
-    const size_t seed_file_length_in_blocks = Accumulator::bytes_to_blocks(config.seed_file_length);
+    const std::size_t seed_file_length_in_blocks = Accumulator::bytes_to_blocks(config.seed_file_length);
     CryptoPP::SecByteBlock buffer{seed_file_length_in_blocks * Accumulator::output_block_length};
     accumulator.get_random_data(buffer.BytePtr(), seed_file_length_in_blocks);
 
@@ -73,18 +62,12 @@ void SeedFileManager::update_seed_file()
             throw FortunaException::seed_file_error("could not open seed file");
 
         filestream.read(reinterpret_cast<char*>(buffer.BytePtr()), config.seed_file_length);
-        if (filestream.gcount() != config.seed_file_length)
+        if (static_cast<std::size_t>(filestream.gcount()) != config.seed_file_length)
             throw FortunaException::seed_file_error("could not read seed");
     }
 
     accumulator.monitored_generator.exec_rw(std::bind(&Generator::reseed, _1, buffer, buffer.SizeInBytes()));
     write_seed_file();
-}
-
-void SeedFileManager::stop()
-{
-    sleeper.unlock();
-    thread.join();
 }
 
 

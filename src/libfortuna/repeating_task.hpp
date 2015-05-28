@@ -17,46 +17,35 @@ You should have received a copy of the GNU Lesser General Public License
 along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef FORTUNA_SEED_FILE_MANAGER_HPP
-#define FORTUNA_SEED_FILE_MANAGER_HPP
+#ifndef FORTUNA_REPEATING_TASK_HPP
+#define FORTUNA_REPEATING_TASK_HPP
 
 #include <chrono>
-#include <string>
-
-#include "repeating_task.hpp"
+#include <functional>
+#include <mutex>
+#include <thread>
 
 namespace fortuna {
 
-class Accumulator;
-
-
-class SeedFileManager
+class RepeatingTask
 {
+private:
+    std::chrono::minutes interval;
+    std::function<void()> callback;
+    std::timed_mutex sleeper;
+    std::thread thread;
+
 public:
-    struct Config
+    ~RepeatingTask() noexcept
     {
-        std::string seed_file_path = "./fortuna.seed";
-        std::size_t seed_file_length = 64;
-        std::chrono::minutes write_interval{10};
+        stop();
+    }
 
-        Config()
-        {}
-    };
+    void start(const std::chrono::minutes& _interval, std::function<void()> _callback);
 
-private:
-    const Config config;
-    Accumulator& accumulator;
-    RepeatingTask repeating_task;
-
-public:
-    SeedFileManager(Config _config, Accumulator& _accumulator);
-
-private:
-    void write_seed_file();
-    void update_seed_file();
+    void stop();
 };
-
 
 } // namespace fortuna
 
-#endif // FORTUNA_SEED_FILE_MANAGER_HPP
+#endif // FORTUNA_REPEATING_TASK_HPP

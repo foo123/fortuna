@@ -42,14 +42,9 @@ private:
 public:
     monitor() = default;
 
-    explicit
-    monitor(const T& _obj)
-        : obj{_obj}
-    {}
-
-    explicit
-    monitor(T&& _obj)
-        : obj{std::move(_obj)}
+    template <typename... Args>
+    monitor(Args&&... args)
+        : obj(std::forward<Args>(args)...)
     {}
 
     monitor(const monitor&) = delete;

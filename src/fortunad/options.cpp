@@ -42,6 +42,18 @@ std::chrono::minutes lexical_cast(const std::string& string)
     return std::chrono::minutes{std::stoi(string)};
 }
 
+template <>
+std::string lexical_cast(const std::chrono::milliseconds& milliseconds)
+{
+    return std::to_string(milliseconds.count());
+}
+
+template <>
+std::chrono::milliseconds lexical_cast(const std::string& string)
+{
+    return std::chrono::milliseconds{std::stoi(string)};
+}
+
 
 } // namesapce boost
 
@@ -72,27 +84,15 @@ Server::AllConfig handle_options(int argc, char* argv[])
 
     Server::AllConfig config;
 
-    po::options_description options{"General Options"};
+    po::options_description options{"Options"};
     options.add_options()
         ("help,h", "print this help")
         ("socket,s", self_default_value(&config.server.connection_info.socket))
-    ;
-
-    po::options_description accumulator_options{"Accumulator Options"};
-    accumulator_options.add_options()
-        ("min_pool_size,p", self_default_value(&config.accumulator.accumulator.min_pool_size), "minimum pool size [bytes]")
-    ;
-
-    po::options_description seed_file_manager_options{"Seed File Manager Options"};
-    seed_file_manager_options.add_options()
+        ("min_pool_size", self_default_value(&config.accumulator.accumulator.min_pool_size), "minimum pool size [bytes]")
+        ("generator_reseed_interval", self_default_value(&config.accumulator.generator.reseed_interval), "[milliseconds]")
         ("seed_file_path", self_default_value(&config.accumulator.seed_file_manager.seed_file_path))
         ("seed_file_length", self_default_value(&config.accumulator.seed_file_manager.seed_file_length), "[bytes]")
         ("seed_file_write_interval", self_default_value(&config.accumulator.seed_file_manager.write_interval), "[minutes]")
-    ;
-
-    options
-        .add(accumulator_options)
-        .add(seed_file_manager_options)
     ;
 
     po::variables_map vm;

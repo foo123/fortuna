@@ -32,6 +32,16 @@ namespace fortuna {
 
 class Generator
 {
+public:
+    struct Config
+    {
+        std::chrono::milliseconds reseed_interval{100};
+
+        constexpr
+        Config()
+        {}
+    };
+
 private:
     class Key
     {
@@ -83,6 +93,8 @@ private:
         void increment();
     };
 
+    Config config;
+
     Key key;
     Counter counter;
 
@@ -93,7 +105,7 @@ public:
     static constexpr
     const std::size_t output_block_length = CryptoPP::AES::BLOCKSIZE;
 
-    Generator();
+    Generator(Config _config = Config{});
     ~Generator();
 
     bool is_seeded() const
