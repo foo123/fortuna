@@ -30,6 +30,7 @@ namespace fortuna {
 
 Accumulator::Accumulator(AllConfig all_config)
     : config{std::move(all_config.accumulator)}
+    , monitored_generator{std::move(all_config.generator)}
     , seed_file_manager{std::move(all_config.seed_file_manager), *this}
 {}
 
