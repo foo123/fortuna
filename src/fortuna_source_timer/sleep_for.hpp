@@ -25,8 +25,8 @@ http://stackoverflow.com/questions/12523122/what-is-glibcxx-use-nanosleep-all-ab
 Its just copied sleep_for from GCC's standard library with some tweaks.
 
 The reason for this is that on some major linux distributions gcc is compiled
-without --TODO which enables std::chrono::sleep_for. Using this workaround
-allows us to use nanosleep directly.
+without --enable-libstdcxx-time which enables std::chrono::sleep_for. Using
+this workaround allows us to use nanosleep directly.
 */
 
 #ifndef SLEEP_FOR
