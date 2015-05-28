@@ -78,8 +78,9 @@ std::chrono::steady_clock::time_point distant_past()
     return steady_clock::now() - milliseconds(102);
 }
 
-Generator::Generator()
-    : last_reseed{distant_past()}
+Generator::Generator(Config _config)
+    : config(_config)
+    , last_reseed{distant_past()}
 {}
 
 Generator::~Generator()
@@ -89,7 +90,7 @@ Generator::~Generator()
 bool Generator::is_time_to_reseed() const
 {
     using namespace std::chrono;
-    return duration_cast<milliseconds>(steady_clock::now() - last_reseed).count() > 100; // TODO: config?
+    return duration_cast<milliseconds>(steady_clock::now() - last_reseed) > config.reseed_interval;
 }
 
 
