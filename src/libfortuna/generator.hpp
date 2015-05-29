@@ -93,7 +93,7 @@ private:
         void increment();
     };
 
-    Config config;
+    const Config config;
 
     Key key;
     Counter counter;
