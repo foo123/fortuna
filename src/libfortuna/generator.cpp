@@ -19,8 +19,7 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "generator.hpp"
 
-#include <algorithm>
-#include <iterator>
+#include <boost/range/algorithm/fill.hpp>
 
 #include <cryptopp/misc.h>
 #include <cryptopp/sha3.h>
@@ -29,19 +28,9 @@ along with libfortuna.  If not, see <http://www.gnu.org/licenses/>.
 namespace fortuna {
 
 
-template <class Iterable, class T>
-static inline
-void my_fill(Iterable& iterable, const T& value)
-{
-    using std::begin;
-    using std::end;
-    std::fill(begin(iterable), end(iterable), value);
-}
-
-
 Generator::Key::Key()
 {
-    my_fill(data, 0);
+    boost::fill(data, 0);
 }
 
 void Generator::Key::reseed(const byte* seed, std::size_t seed_length)
@@ -56,7 +45,7 @@ void Generator::Key::reseed(const byte* seed, std::size_t seed_length)
 
 Generator::Counter::Counter()
 {
-    my_fill(data, 0);
+    boost::fill(data, 0);
 }
 
 void Generator::Counter::increment()
@@ -67,20 +56,20 @@ void Generator::Counter::increment()
 
 
 
-/**
- * Using time_point::min() causes overflow.
- * 102 ms is enough distant past that forces generator reseed.
- */
 static inline
-std::chrono::steady_clock::time_point distant_past()
+std::chrono::steady_clock::time_point distant_past(const std::chrono::milliseconds& reseed_interval)
 {
     using namespace std::chrono;
-    return steady_clock::now() - milliseconds(102);
+    /*
+     * Using time_point::min() causes overflow.
+     * This is enough distant past that forces generator reseed.
+     */
+    return steady_clock::now() - 2*reseed_interval;
 }
 
 Generator::Generator(Config _config)
     : config(_config)
-    , last_reseed{distant_past()}
+    , last_reseed{distant_past(config.reseed_interval)}
 {}
 
 Generator::~Generator() noexcept
