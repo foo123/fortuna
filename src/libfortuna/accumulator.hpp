@@ -86,7 +86,7 @@ public:
     Accumulator(const Accumulator&) = delete;
     Accumulator& operator=(const Accumulator&) = delete;
 
-    ~Accumulator();
+    ~Accumulator() noexcept;
 
 
     /**

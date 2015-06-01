@@ -43,7 +43,7 @@ public:
     { return length == 0 || length > 32; }
 
     Pool();
-    ~Pool();
+    ~Pool() noexcept;
 
     /**
      * \pre !is_event_data_length_invalid(length)

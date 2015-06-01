@@ -25,7 +25,7 @@ namespace fortuna {
 
 Pool::Pool() = default;
 
-Pool::~Pool()
+Pool::~Pool() noexcept
 {}
 
 

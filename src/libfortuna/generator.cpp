@@ -83,7 +83,7 @@ Generator::Generator(Config _config)
     , last_reseed{distant_past()}
 {}
 
-Generator::~Generator()
+Generator::~Generator() noexcept
 {}
 
 
