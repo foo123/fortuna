@@ -34,7 +34,7 @@ Accumulator::Accumulator(AllConfig all_config)
     , seed_file_manager{std::move(all_config.seed_file_manager), *this}
 {}
 
-Accumulator::~Accumulator()
+Accumulator::~Accumulator() noexcept
 {}
 
 

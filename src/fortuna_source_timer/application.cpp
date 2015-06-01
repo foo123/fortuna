@@ -117,7 +117,7 @@ private:
     byte _data[Nbytes];
 
 public:
-    ~ContinuousBitsetSecure() {
+    ~ContinuousBitsetSecure() noexcept {
         CryptoPP::SecureWipeArray(_data, Nbytes);
     }
 
