@@ -36,10 +36,7 @@ private:
     std::thread thread;
 
 public:
-    ~RepeatingTask() noexcept
-    {
-        stop();
-    }
+    ~RepeatingTask() noexcept;
 
     void start(const std::chrono::minutes& _interval, std::function<void()> _callback);
 

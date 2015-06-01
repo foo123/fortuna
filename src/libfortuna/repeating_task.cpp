@@ -4,6 +4,13 @@
 
 namespace fortuna {
 
+RepeatingTask::~RepeatingTask() noexcept
+{
+    if (thread.joinable()) {
+        stop();
+    }
+}
+
 void RepeatingTask::start(const std::chrono::minutes& _interval, std::function<void()> _callback)
 {
     if (thread.joinable()) {
