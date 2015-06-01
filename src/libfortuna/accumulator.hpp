@@ -71,12 +71,12 @@ public:
     const std::size_t output_block_length = Generator::output_block_length;
 
     /**
-     * \return number of blocks required to store given bytes
+     * \return number of blocks required to store given number of bytes
      */
     static constexpr
     std::size_t bytes_to_blocks(std::size_t bytes) noexcept
     {
-        return ((bytes-1)/output_block_length) + 1; /* ceil( size / (float)output_block_size ) without using floats */
+        return ((bytes-1)/output_block_length) + 1; /* ceil( bytes / (float)output_block_size ) without using floats */
     }
 
 
