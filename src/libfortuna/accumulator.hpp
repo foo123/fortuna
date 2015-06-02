@@ -92,12 +92,14 @@ public:
     /**
      * \throw FortunaException if Pool::is_event_data_length_invalig(length)
      * \throw std::out_of_range if pool_number > 31
+     * \note It's safe to call this method from multiple threads.
      */
     void add_random_event(std::uint8_t pool_number, std::uint8_t source_number, const byte* data, std::uint8_t length);
 
     /**
      * \throw FortunaException if blocks_count is too big (greater than 2^20/CryptoPP::AES::BLOCKSIZE).
      * \throw FortunaException if generator is not seeded.
+     * \note It's safe to call this method from multiple threads.
      */
     void get_random_data(byte* output, std::size_t blocks_count);
 
