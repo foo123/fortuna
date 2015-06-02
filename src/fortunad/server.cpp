@@ -27,28 +27,19 @@ along with fortuna_daemon.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace fortuna_daemon {
 
-namespace {
 
-class LocalEndpoint : public boost::asio::local::stream_protocol::endpoint
+Server::LocalEndpoint::~LocalEndpoint() noexcept
 {
-private:
-    typedef boost::asio::local::stream_protocol::endpoint parent_type;
-public:
-    using parent_type::parent_type;
-    ~LocalEndpoint()
-    {
-        ::unlink(path().c_str());
-    }
-};
-
-} // namespace
+    ::unlink(path().c_str());
+}
 
 
 Server::Server(AllConfig all_config)
     : config{std::move(all_config.server)}
     , io_service{}
     , signals{io_service, SIGINT, SIGTERM}
-    , acceptor{io_service, LocalEndpoint{config.connection_info.socket}}
+    , endpoint{config.connection_info.socket}
+    , acceptor{io_service, endpoint}
     , socket{io_service}
     , accumulator{std::move(all_config.accumulator)}
 {
