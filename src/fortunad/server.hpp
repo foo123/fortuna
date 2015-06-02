@@ -60,10 +60,21 @@ public:
     };
 
 private:
+    class LocalEndpoint
+        : public boost::asio::local::stream_protocol::endpoint
+    {
+    private:
+        typedef boost::asio::local::stream_protocol::endpoint parent_type;
+    public:
+        using parent_type::parent_type;
+        ~LocalEndpoint() noexcept;
+    };
+
     const Config config;
 
     boost::asio::io_service io_service;
     boost::asio::signal_set signals;
+    LocalEndpoint endpoint;
     boost::asio::local::stream_protocol::acceptor acceptor;
     boost::asio::local::stream_protocol::socket socket;
     ConnectionManager connection_manager;
