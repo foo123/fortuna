@@ -28,7 +28,6 @@ Notes about libfortuna
   - SHA3 (Keccak) is used instead of double SHA2.
   - Random data is generated in blocks of bytes. User must allocate enough memory to store whole blocks.
     In Accumulator there are output_block_length variable and bytes_to_blocks method, which helps with this task.
-  - Accumulator's methods add_random_event and get_random_data are internally synchronized, so they can be called from multiple threads.
 
 
 Contributing
