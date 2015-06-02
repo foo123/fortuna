@@ -25,10 +25,10 @@ Tested with:
 
 Notes about libfortuna
 ======================
+  - You must provide the seed file. For example by 'dd if=/dev/random of=./fortuna.seed bs=64 count=1'. Please note that it's not safe when done at first boot on a virtual machine without entropy provided by host.
   - SHA3 (Keccak) is used instead of double SHA2.
   - Random data is generated in blocks of bytes. User must allocate enough memory to store whole blocks.
     In Accumulator there are output_block_length variable and bytes_to_blocks method, which helps with this task.
-  - Accumulator's methods add_random_event and get_random_data are internally synchronized, so they can be called from multiple threads.
 
 
 Contributing
