@@ -30,15 +30,13 @@ namespace fortuna {
 class RepeatingTask
 {
 private:
-    std::chrono::minutes interval;
-    std::function<void()> callback;
     std::timed_mutex sleeper;
     std::thread thread;
 
 public:
     ~RepeatingTask() noexcept;
 
-    void start(const std::chrono::minutes& _interval, std::function<void()> _callback);
+    void start(const std::chrono::minutes& interval, std::function<void()> callback);
 
     void stop();
 };
