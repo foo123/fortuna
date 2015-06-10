@@ -178,7 +178,7 @@ void Session::async_read_request_length()
             return;
         }
         
-        const unsigned long blocks_count = fortuna::Accumulator::bytes_to_blocks(length);
+        const std::size_t blocks_count = fortuna::Accumulator::bytes_to_blocks(length);
         if (fortuna::Generator::is_request_too_big(blocks_count)) {
             async_write_request_too_big();
             return;
