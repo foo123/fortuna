@@ -40,5 +40,17 @@ void Client::get_random_data(byte* data, std::uint32_t length)
     impl->get_random_data(data, length);
 }
 
+void Client::get_long_random_data(byte* data, unsigned long long length)
+{
+    typedef unsigned long long ullong;
+    ullong data_left_to_get = length;
+    while (data_left_to_get) {
+        std::size_t data_to_get_now = std::min(static_cast<ullong>(max_request_length), data_left_to_get);
+        impl->get_random_data(data, data_to_get_now);
+        data_left_to_get -= data_to_get_now;
+        data += data_to_get_now;
+    }
+}
+
 
 } // namespace fortuna_daemon

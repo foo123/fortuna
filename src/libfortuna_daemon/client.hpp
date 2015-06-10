@@ -69,6 +69,15 @@ public:
      * \throw ClientException if generator is not seeded
      */
     void get_random_data(byte* data, std::uint32_t length);
+
+    /**
+     * It's like get_random_data, but instead of throwing ClientException if
+     * length is too big, it makes more calls to get_random_data.
+     *
+     * \throw boost::system::system_error on connection failure
+     * \throw ClientException if generator is not seeded
+     */
+    void get_long_random_data(byte* data, unsigned long long length);
 };
 
 
