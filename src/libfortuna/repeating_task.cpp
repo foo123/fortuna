@@ -30,16 +30,14 @@ RepeatingTask::~RepeatingTask() noexcept
     }
 }
 
-void RepeatingTask::start(const std::chrono::minutes& _interval, std::function<void()> _callback)
+void RepeatingTask::start(const std::chrono::minutes& interval, std::function<void()> callback)
 {
     if (thread.joinable()) {
         stop();
     }
     
-    interval = _interval;
-    callback = std::move(_callback);
     sleeper.lock();
-    thread = std::thread([this] {
+    thread = std::thread([this, interval, callback] {
         while (!sleeper.try_lock_for(interval)) {
             callback();
         }
