@@ -37,7 +37,7 @@ void RepeatingTask::start(const std::chrono::minutes& interval, std::function<vo
     }
     
     sleeper.lock();
-    thread = std::thread([this, interval, callback] {
+    thread = std::thread([this, interval, callback = std::move(callback)] {
         while (!sleeper.try_lock_for(interval)) {
             callback();
         }
