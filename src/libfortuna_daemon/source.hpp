@@ -38,6 +38,9 @@ private:
     std::unique_ptr<Impl> impl;
 
 public:
+    static constexpr
+    const std::size_t max_event_length = 32;
+
     struct Config
     {
         byte source_number;
@@ -64,6 +67,15 @@ public:
      * \throw boost::system::system_error on connection failure
      */
     void add_random_event(const byte* data, byte length);
+
+    /**
+     * It's like add_random_event, but instead of throwing std::length_error if
+     * length is too big, it makes more calls to add_random_event.
+     *
+     * \throw std::length_error if length == 0
+     * \throw boost::system::system_error on connection failure
+     */
+    void add_random_events(const byte* data, std::size_t length);
 };
 
 
